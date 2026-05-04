@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriScienza — Aggiorna il tuo profilo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #2D5F3F;
+      --green-dark: #1A2E22;
+      --green-tint: #E8F0EB;
+      --cream: #F5F1E8;
+      --cream-light: #FBF9F4;
+      --gold: #C9A66B;
+      --text: #2A2A2A;
+      --text-muted: #6B6B6B;
+      --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--cream-light);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    h1, h2 { font-family: 'Playfair Display', serif; font-weight: 600; }
+
+    header { background: white; border-bottom: 1px solid var(--border); padding: 18px 24px; }
+    .nav { max-width: 980px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+
+    main { flex: 1; max-width: 520px; margin: 0 auto; padding: 72px 24px; }
+
+    .card {
+      background: white; border: 1px solid var(--border); border-radius: 16px; padding: 36px;
+    }
+    .eyebrow {
+      text-transform: uppercase; letter-spacing: 2px; font-size: 12px;
+      color: var(--gold); font-weight: 700; margin-bottom: 12px;
+    }
+    h1 { font-size: 28px; margin-bottom: 10px; color: var(--green-deep); line-height: 1.2; }
+    .lead { font-size: 15px; color: var(--text-muted); margin-bottom: 28px; }
+
+    .field { margin-bottom: 20px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+    input[type="number"] {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: 16px; color: var(--text);
+      background: white; transition: border-color .15s;
+    }
+    input[type="number"]:focus { outline: none; border-color: var(--green-deep); }
+
+    .current-weight {
+      background: var(--green-tint); border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; color: var(--green-deep); margin-bottom: 20px;
+    }
+
+    .btn {
+      width: 100%; background: var(--green-deep); color: white;
+      padding: 14px; border-radius: 10px; border: none;
+      font-size: 16px; font-weight: 700; cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .88; }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+    .success-box {
+      text-align: center; padding: 28px;
+      display: none;
+    }
+    .check-circle {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--green-tint); display: flex; align-items: center;
+      justify-content: center; margin: 0 auto 20px;
+    }
+    .check-circle svg { width: 32px; height: 32px; stroke: var(--green-deep); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .success-box h2 { font-size: 22px; color: var(--green-deep); margin-bottom: 10px; }
+    .success-box p { font-size: 15px; color: var(--text-muted); }
+
+    .error-msg { font-size: 13px; color: #C44; margin-top: 10px; display: none; }
+
+    #state-invalid { display: none; }
+    #state-invalid .invalid-msg {
+      background: var(--cream); border-left: 3px solid var(--gold);
+      padding: 18px 22px; border-radius: 0 8px 8px 0; font-size: 14px;
+    }
+
+    footer { background: var(--green-dark); color: rgba(255,255,255,0.7); padding: 20px; text-align: center; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo">Nutri<span>Scienza</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Stato: loading -->
+    <div id="state-loading" class="card" style="text-align:center;padding:48px 36px;">
+      <div style="font-size:14px;color:var(--text-muted);">Caricamento profilo…</div>
+    </div>
+
+    <!-- Stato: token non valido -->
+    <div id="state-invalid" class="card">
+      <div class="invalid-msg">
+        <strong style="color:var(--green-deep);">Link non valido o già utilizzato.</strong><br>
+        Ogni link di check-in è monouso. Se hai già aggiornato il tuo peso questo mese, non devi fare nulla.<br><br>
+        Hai bisogno di aiuto? Scrivi a <a href="mailto:supporto@nutriscienza.org" style="color:var(--green-deep);">supporto@nutriscienza.org</a>.
+      </div>
+    </div>
+
+    <!-- Stato: form -->
+    <div id="state-form" class="card" style="display:none;">
+      <div class="eyebrow">Check-in mensile</div>
+      <h1 id="greeting">Aggiorna il tuo profilo</h1>
+      <p class="lead">Il piano del prossimo mese verrà generato usando il peso che ci comunichi qui.</p>
+
+      <div class="current-weight" id="current-weight-info"></div>
+
+      <form id="checkin-form">
+        <div class="field">
+          <label for="weight">Il tuo peso attuale (kg)</label>
+          <input type="number" id="weight" name="weight" min="30" max="300" step="0.1" placeholder="es. 72.5" required>
+        </div>
+        <button type="submit" class="btn" id="submit-btn">Aggiorna il mio peso →</button>
+        <p class="error-msg" id="error-msg"></p>
+      </form>
+
+      <div class="success-box" id="success-box">
+        <div class="check-circle">
+          <svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg>
+        </div>
+        <h2>Peso aggiornato!</h2>
+        <p>Il prossimo piano mensile utilizzerà il nuovo valore. Riceverai l'email entro il rinnovo del tuo abbonamento.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 NutriScienza S.r.l. · Conforme alle linee guida LARN
+  </footer>
+
+  <script>
+    const token = new URLSearchParams(window.location.search).get('token');
+
+    const stateLoading = document.getElementById('state-loading');
+    const stateInvalid = document.getElementById('state-invalid');
+    const stateForm    = document.getElementById('state-form');
+
+    function showState(name) {
+      stateLoading.style.display = name === 'loading' ? 'block' : 'none';
+      stateInvalid.style.display = name === 'invalid' ? 'block' : 'none';
+      stateForm.style.display    = name === 'form'    ? 'block' : 'none';
+    }
+
+    if (!token) {
+      showState('invalid');
+    } else {
+      // Carica profilo subscriber
+      fetch('/api/checkin/' + token)
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+          if (!data) { showState('invalid'); return; }
+          document.getElementById('greeting').textContent =
+            'Ciao ' + data.first_name + ', aggiorna il tuo profilo';
+          document.getElementById('current-weight-info').innerHTML =
+            'Peso registrato: <strong>' + data.current_weight + ' kg</strong> · Mese ' + data.plan_month;
+          document.getElementById('weight').value = data.current_weight;
+          showState('form');
+        })
+        .catch(function() { showState('invalid'); });
+    }
+
+    document.getElementById('checkin-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const errMsg = document.getElementById('error-msg');
+      const weight = parseFloat(document.getElementById('weight').value);
+
+      btn.disabled = true;
+      btn.textContent = 'Aggiornamento…';
+      errMsg.style.display = 'none';
+
+      fetch('/api/checkin/' + token, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ weight: weight }),
+      })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.success) {
+            document.getElementById('checkin-form').style.display = 'none';
+            document.getElementById('success-box').style.display = 'block';
+          } else {
+            throw new Error(data.detail || 'Errore sconosciuto');
+          }
+        })
+        .catch(function(err) {
+          btn.disabled = false;
+          btn.textContent = 'Aggiorna il mio peso →';
+          errMsg.textContent = 'Si è verificato un errore: ' + err.message;
+          errMsg.style.display = 'block';
+        });
+    });
+  </script>
+  <script src="cookie-banner.js"></script>
+</body>
+</html>

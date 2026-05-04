@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cookie Policy — NutriScienza</title>
+  <meta name="description" content="Informativa sull'uso dei cookie sul sito NutriScienza, ai sensi del Provvedimento del Garante Privacy e della Direttiva ePrivacy.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #2D5F3F; --green-dark: #1A2E22; --gold: #C9A66B;
+      --cream: #F5F1E8; --cream-light: #FBF9F4;
+      --text: #2A2A2A; --text-muted: #6B6B6B; --white: #FFFFFF; --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: var(--text); line-height: 1.7; background: var(--cream-light); -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    header { background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1180px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+    .btn-primary { background: var(--green-deep); color: var(--white); padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 15px; }
+    .btn-primary:hover { background: var(--green-dark); }
+
+    .page-hero { background: var(--green-dark); padding: 64px 0 56px; }
+    .page-hero .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+    .page-hero h1 { font-size: clamp(32px, 4vw, 48px); color: var(--white); margin-bottom: 12px; }
+    .page-hero p { font-size: 16px; color: rgba(255,255,255,0.7); }
+
+    .legal-body { padding: 72px 0 96px; }
+    .legal-grid { display: grid; grid-template-columns: 240px 1fr; gap: 64px; align-items: start; }
+    .toc { position: sticky; top: 88px; }
+    .toc-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); font-weight: 700; margin-bottom: 16px; }
+    .toc ul { list-style: none; }
+    .toc li { margin-bottom: 8px; }
+    .toc a { font-size: 14px; color: var(--text-muted); text-decoration: none; padding: 4px 0; display: block; border-left: 2px solid var(--border); padding-left: 12px; transition: color 0.15s, border-color 0.15s; }
+    .toc a:hover { color: var(--green-deep); border-color: var(--green-deep); }
+
+    .legal-content { min-width: 0; }
+    .legal-content .updated { font-size: 13px; color: var(--text-muted); margin-bottom: 40px; padding: 12px 16px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; display: inline-block; }
+    .legal-section { margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--border); }
+    .legal-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .legal-section h2 { font-size: 22px; color: var(--green-deep); margin-bottom: 16px; }
+    .legal-section h3 { font-size: 17px; margin-bottom: 10px; margin-top: 24px; }
+    .legal-section p { font-size: 15px; color: var(--text); margin-bottom: 14px; }
+    .legal-section ul, .legal-section ol { padding-left: 20px; margin-bottom: 14px; }
+    .legal-section li { font-size: 15px; color: var(--text); margin-bottom: 6px; line-height: 1.65; }
+    .legal-section a { color: var(--green-deep); }
+
+    /* Cookie table */
+    .cookie-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+    .cookie-table th { background: var(--cream); padding: 10px 14px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); border-bottom: 2px solid var(--border); font-weight: 700; }
+    .cookie-table td { padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .cookie-table tr:last-child td { border-bottom: none; }
+    .cookie-table tr:hover td { background: var(--cream-light); }
+    .tag { display: inline-block; padding: 2px 10px; border-radius: 100px; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; }
+    .tag-tech { background: #E8F0EB; color: var(--green-deep); }
+    .tag-analytics { background: #FDF3E7; color: #A88349; }
+    .tag-marketing { background: #FEE2E2; color: #B91C1C; }
+
+    .consent-box { background: var(--green-deep); color: white; border-radius: 12px; padding: 24px 28px; margin: 24px 0; }
+    .consent-box h3 { color: white; margin-bottom: 8px; font-size: 17px; }
+    .consent-box p { font-size: 14px; opacity: 0.88; margin-bottom: 16px; }
+    .consent-btn { display: inline-block; background: var(--gold); color: var(--green-dark); padding: 10px 22px; border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; }
+
+    footer { background: var(--green-dark); color: rgba(255,255,255,0.7); padding: 40px 0 28px; font-size: 14px; }
+    .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; }
+
+    @media (max-width: 760px) { .legal-grid { grid-template-columns: 1fr; gap: 32px; } .toc { position: static; } .cookie-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; } }
+    @media (max-width: 480px) { .legal-body { padding: 48px 0 72px; } }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="nav">
+      <a href="nutriscienza.html" class="logo">Nutri<span>Scienza</span></a>
+      <a href="nutriscienza.html#piani" class="btn-primary">Inizia ora</a>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow">Legale</div>
+      <h1>Cookie Policy</h1>
+      <p>Informativa sull'uso dei cookie ai sensi del Provvedimento del Garante Privacy dell'8 maggio 2014 e della Direttiva ePrivacy</p>
+    </div>
+  </div>
+
+  <section class="legal-body">
+    <div class="container">
+      <div class="legal-grid">
+
+        <nav class="toc">
+          <div class="toc-title">Indice</div>
+          <ul>
+            <li><a href="#cosa-sono">1. Cosa sono i cookie</a></li>
+            <li><a href="#tipi">2. Tipi di cookie usati</a></li>
+            <li><a href="#tabella">3. Elenco dettagliato</a></li>
+            <li><a href="#terze-parti">4. Cookie di terze parti</a></li>
+            <li><a href="#consenso">5. Gestione del consenso</a></li>
+            <li><a href="#disabilitare">6. Come disabilitarli</a></li>
+            <li><a href="#modifiche">7. Modifiche</a></li>
+          </ul>
+        </nav>
+
+        <div class="legal-content">
+          <span class="updated">Ultimo aggiornamento: maggio 2026</span>
+
+          <div class="legal-section" id="cosa-sono">
+            <h2>1. Cosa sono i cookie</h2>
+            <p>I cookie sono piccoli file di testo che i siti web salvano sul tuo dispositivo (computer, tablet, smartphone) quando li visiti. Vengono poi reinviati al sito ad ogni visita successiva, consentendo al sito di riconoscerti e di ricordare le tue preferenze.</p>
+            <p>Oltre ai cookie tradizionali, utilizziamo tecnologie simili come il <em>local storage</em> del browser. Nella presente informativa, il termine "cookie" si riferisce a tutte queste tecnologie.</p>
+          </div>
+
+          <div class="legal-section" id="tipi">
+            <h2>2. Tipi di cookie che utilizziamo</h2>
+            <h3>Cookie tecnici — strettamente necessari</h3>
+            <p>Indispensabili per il funzionamento del sito: gestione della sessione, sicurezza, preferenze di consenso. Non richiedono il tuo consenso ai sensi dell'art. 122 del Codice Privacy.</p>
+            <h3>Cookie analitici</h3>
+            <p>Ci permettono di capire come gli utenti interagiscono con il Sito (pagine visitate, durata, provenienza) in forma anonima o pseudonimizzata. Utilizziamo queste informazioni esclusivamente per migliorare il servizio. Vengono attivati solo previo tuo consenso.</p>
+            <h3>Cookie di marketing</h3>
+            <p>Usati per mostrarti annunci pertinenti su piattaforme esterne (es. Meta, Google). Al momento <strong>non utilizziamo cookie di profilazione o marketing</strong>. Qualora venissero introdotti, la presente policy verrà aggiornata e ti verrà richiesto il consenso.</p>
+          </div>
+
+          <div class="legal-section" id="tabella">
+            <h2>3. Elenco dettagliato dei cookie</h2>
+            <table class="cookie-table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Tipo</th>
+                  <th>Durata</th>
+                  <th>Finalità</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>ns_session</code></td>
+                  <td><span class="tag tag-tech">Tecnico</span></td>
+                  <td>Sessione</td>
+                  <td>Gestione della sessione utente autenticato</td>
+                </tr>
+                <tr>
+                  <td><code>ns_consent</code></td>
+                  <td><span class="tag tag-tech">Tecnico</span></td>
+                  <td>12 mesi</td>
+                  <td>Memorizza le preferenze di consenso ai cookie</td>
+                </tr>
+                <tr>
+                  <td><code>ns_csrf</code></td>
+                  <td><span class="tag tag-tech">Tecnico</span></td>
+                  <td>Sessione</td>
+                  <td>Protezione contro attacchi CSRF nei form</td>
+                </tr>
+                <tr>
+                  <td><code>_ga</code></td>
+                  <td><span class="tag tag-analytics">Analitico</span></td>
+                  <td>2 anni</td>
+                  <td>Google Analytics — distingue gli utenti unici (ID anonimizzato)</td>
+                </tr>
+                <tr>
+                  <td><code>_ga_*</code></td>
+                  <td><span class="tag tag-analytics">Analitico</span></td>
+                  <td>2 anni</td>
+                  <td>Google Analytics — mantiene lo stato della sessione</td>
+                </tr>
+                <tr>
+                  <td><code>__stripe_mid</code></td>
+                  <td><span class="tag tag-tech">Tecnico</span></td>
+                  <td>1 anno</td>
+                  <td>Stripe — prevenzione frodi durante il pagamento</td>
+                </tr>
+                <tr>
+                  <td><code>__stripe_sid</code></td>
+                  <td><span class="tag tag-tech">Tecnico</span></td>
+                  <td>Sessione</td>
+                  <td>Stripe — sicurezza della sessione di pagamento</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="legal-section" id="terze-parti">
+            <h2>4. Cookie di terze parti</h2>
+            <p>Alcuni cookie vengono impostati direttamente da terze parti che operano sul nostro Sito:</p>
+            <ul>
+              <li><strong>Google Analytics</strong> (Google LLC) — analisi statistica del traffico. Privacy policy: <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a>. Abbiamo attivato l'anonimizzazione dell'IP e disabilitato la condivisione dei dati con Google Signals.</li>
+              <li><strong>Stripe</strong> (Stripe Inc.) — elaborazione sicura dei pagamenti. Privacy policy: <a href="https://stripe.com/it/privacy" target="_blank">stripe.com/it/privacy</a>. I cookie di Stripe sono classificati come tecnici in quanto strettamente necessari alla transazione.</li>
+            </ul>
+            <p>NutriScienza non ha accesso diretto ai dati raccolti da questi soggetti, che agiscono come titolari autonomi del trattamento per quanto riguarda i propri cookie.</p>
+          </div>
+
+          <div class="legal-section" id="consenso">
+            <h2>5. Gestione del consenso</h2>
+            <p>Al primo accesso al Sito, ti viene presentato un banner cookie che ti consente di:</p>
+            <ul>
+              <li>Accettare tutti i cookie (tecnici + analitici)</li>
+              <li>Accettare solo i cookie tecnici strettamente necessari</li>
+              <li>Personalizzare le tue preferenze per categoria</li>
+            </ul>
+            <p>Puoi modificare le tue preferenze in qualsiasi momento cliccando su "Gestisci preferenze cookie" nel footer del Sito.</p>
+            <div class="consent-box">
+              <h3>Vuoi modificare le tue preferenze?</h3>
+              <p>Puoi aggiornare il tuo consenso in qualsiasi momento. Le modifiche hanno effetto immediato.</p>
+              <a href="#" class="consent-btn" onclick="alert('Il pannello preferenze cookie verrà visualizzato qui.'); return false;">Gestisci preferenze cookie</a>
+            </div>
+          </div>
+
+          <div class="legal-section" id="disabilitare">
+            <h2>6. Come disabilitare i cookie dal browser</h2>
+            <p>Puoi disabilitare i cookie direttamente dalle impostazioni del tuo browser. Tieni presente che la disabilitazione dei cookie tecnici potrebbe compromettere il corretto funzionamento del Sito:</p>
+            <ul>
+              <li><strong>Chrome:</strong> Impostazioni → Privacy e sicurezza → Cookie e altri dati dei siti</li>
+              <li><strong>Safari:</strong> Preferenze → Privacy → Gestisci dati sito web</li>
+              <li><strong>Firefox:</strong> Impostazioni → Privacy e sicurezza → Cookie e dati dei siti web</li>
+              <li><strong>Edge:</strong> Impostazioni → Cookie e autorizzazioni del sito</li>
+            </ul>
+            <p>Per disabilitare specificamente Google Analytics, puoi installare il componente aggiuntivo del browser disponibile su <a href="https://tools.google.com/dlpage/gaoptout" target="_blank">tools.google.com/dlpage/gaoptout</a>.</p>
+          </div>
+
+          <div class="legal-section" id="modifiche">
+            <h2>7. Modifiche alla Cookie Policy</h2>
+            <p>Ci riserviamo il diritto di aggiornare la presente Cookie Policy in qualsiasi momento, ad esempio in seguito all'introduzione di nuovi cookie o a modifiche normative. Le modifiche entrano in vigore dalla data di pubblicazione sul Sito. Ti invitiamo a controllare periodicamente questa pagina.</p>
+            <p>Per qualsiasi domanda: <a href="mailto:privacy@nutriscienza.org">privacy@nutriscienza.org</a></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 NutriScienza</span>
+        <span>
+          <a href="privacy-policy.html" style="color:rgba(255,255,255,0.7); text-decoration:none; margin-right:16px;">Privacy Policy</a>
+          <a href="termini-e-condizioni.html" style="color:rgba(255,255,255,0.7); text-decoration:none; margin-right:16px;">Termini</a>
+          <a href="cookie-policy.html" style="color:rgba(255,255,255,0.7); text-decoration:none;">Cookie Policy</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

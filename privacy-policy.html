@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — NutriScienza</title>
+  <meta name="description" content="Informativa sul trattamento dei dati personali di NutriScienza, ai sensi del Regolamento UE 2016/679 (GDPR).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #2D5F3F; --green-dark: #1A2E22; --gold: #C9A66B;
+      --cream: #F5F1E8; --cream-light: #FBF9F4;
+      --text: #2A2A2A; --text-muted: #6B6B6B; --white: #FFFFFF; --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: var(--text); line-height: 1.7; background: var(--cream-light); -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    header { background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1180px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+    .btn-primary { background: var(--green-deep); color: var(--white); padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 15px; }
+    .btn-primary:hover { background: var(--green-dark); }
+
+    .page-hero { background: var(--green-dark); padding: 64px 0 56px; }
+    .page-hero .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); font-weight: 700; margin-bottom: 12px; }
+    .page-hero h1 { font-size: clamp(32px, 4vw, 48px); color: var(--white); margin-bottom: 12px; }
+    .page-hero p { font-size: 16px; color: rgba(255,255,255,0.7); }
+
+    .legal-body { padding: 72px 0 96px; }
+    .legal-grid { display: grid; grid-template-columns: 240px 1fr; gap: 64px; align-items: start; }
+    .toc { position: sticky; top: 88px; }
+    .toc-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); font-weight: 700; margin-bottom: 16px; }
+    .toc ul { list-style: none; }
+    .toc li { margin-bottom: 8px; }
+    .toc a { font-size: 14px; color: var(--text-muted); text-decoration: none; padding: 4px 0; display: block; border-left: 2px solid var(--border); padding-left: 12px; transition: color 0.15s, border-color 0.15s; }
+    .toc a:hover { color: var(--green-deep); border-color: var(--green-deep); }
+
+    .legal-content { min-width: 0; }
+    .legal-content .updated { font-size: 13px; color: var(--text-muted); margin-bottom: 40px; padding: 12px 16px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; display: inline-block; }
+    .legal-section { margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--border); }
+    .legal-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .legal-section h2 { font-size: 22px; color: var(--green-deep); margin-bottom: 16px; }
+    .legal-section h3 { font-size: 17px; margin-bottom: 10px; margin-top: 24px; }
+    .legal-section p { font-size: 15px; color: var(--text); margin-bottom: 14px; }
+    .legal-section ul, .legal-section ol { padding-left: 20px; margin-bottom: 14px; }
+    .legal-section li { font-size: 15px; color: var(--text); margin-bottom: 6px; line-height: 1.65; }
+    .legal-section a { color: var(--green-deep); }
+    .highlight-box { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 20px 0; font-size: 14px; }
+    .highlight-box strong { display: block; color: var(--green-deep); margin-bottom: 4px; font-size: 15px; }
+
+    footer { background: var(--green-dark); color: rgba(255,255,255,0.7); padding: 40px 0 28px; font-size: 14px; }
+    .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; }
+
+    @media (max-width: 760px) {
+      .legal-grid { grid-template-columns: 1fr; gap: 32px; }
+      .toc { position: static; }
+    }
+    @media (max-width: 480px) {
+      .legal-body { padding: 48px 0 72px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <nav class="nav">
+      <a href="nutriscienza.html" class="logo">Nutri<span>Scienza</span></a>
+      <a href="nutriscienza.html#piani" class="btn-primary">Inizia ora</a>
+    </nav>
+  </header>
+
+  <div class="page-hero">
+    <div class="container">
+      <div class="eyebrow">Legale</div>
+      <h1>Privacy Policy</h1>
+      <p>Informativa sul trattamento dei dati personali ai sensi del Regolamento (UE) 2016/679 (GDPR)</p>
+    </div>
+  </div>
+
+  <section class="legal-body">
+    <div class="container">
+      <div class="legal-grid">
+
+        <nav class="toc">
+          <div class="toc-title">Indice</div>
+          <ul>
+            <li><a href="#titolare">1. Titolare del trattamento</a></li>
+            <li><a href="#dati-raccolti">2. Dati raccolti</a></li>
+            <li><a href="#finalita">3. Finalità e base giuridica</a></li>
+            <li><a href="#conservazione">4. Conservazione</a></li>
+            <li><a href="#condivisione">5. Condivisione</a></li>
+            <li><a href="#trasferimenti">6. Trasferimenti extra-UE</a></li>
+            <li><a href="#diritti">7. I tuoi diritti</a></li>
+            <li><a href="#minori">8. Minori</a></li>
+            <li><a href="#contatti">9. Contatti</a></li>
+          </ul>
+        </nav>
+
+        <div class="legal-content">
+          <span class="updated">Ultimo aggiornamento: maggio 2026</span>
+
+          <div class="legal-section" id="titolare">
+            <h2>1. Titolare del trattamento</h2>
+            <p>Il titolare del trattamento dei dati personali raccolti tramite il sito <strong>nutriscienza.org</strong> è <strong>NutriScienza</strong>, con sede in Italia, contattabile all'indirizzo email: <a href="mailto:privacy@nutriscienza.org">privacy@nutriscienza.org</a>.</p>
+          </div>
+
+          <div class="legal-section" id="dati-raccolti">
+            <h2>2. Dati raccolti</h2>
+            <p>Raccogliamo le seguenti categorie di dati personali:</p>
+            <h3>Dati forniti direttamente dall'utente</h3>
+            <ul>
+              <li>Nome e indirizzo email (necessari per la consegna del piano)</li>
+              <li>Dati antropometrici: peso, altezza, età, sesso</li>
+              <li>Informazioni sullo stile di vita: livello di attività fisica, obiettivi</li>
+              <li>Preferenze alimentari e intolleranze/allergie dichiarate</li>
+              <li>Dati di pagamento (gestiti direttamente da Stripe — non li archiviamo)</li>
+            </ul>
+            <h3>Dati raccolti automaticamente</h3>
+            <ul>
+              <li>Indirizzo IP, tipo di browser, sistema operativo</li>
+              <li>Pagine visitate, durata della sessione (tramite cookie analitici, con previo consenso)</li>
+            </ul>
+            <div class="highlight-box">
+              <strong>Nota sui dati di salute</strong>
+              I dati antropometrici e sulle intolleranze alimentari possono essere considerati dati relativi alla salute ai sensi dell'art. 9 GDPR. Li trattiamo esclusivamente sulla base del tuo consenso esplicito, fornito al momento della compilazione del questionario.
+            </div>
+          </div>
+
+          <div class="legal-section" id="finalita">
+            <h2>3. Finalità e base giuridica del trattamento</h2>
+            <ul>
+              <li><strong>Erogazione del servizio</strong> — elaborazione e consegna del piano nutrizionale personalizzato (base: esecuzione del contratto, art. 6.1.b GDPR)</li>
+              <li><strong>Gestione dei pagamenti</strong> — verifica e registrazione delle transazioni tramite Stripe (base: esecuzione del contratto)</li>
+              <li><strong>Comunicazioni di servizio</strong> — invio del PDF, aggiornamenti del piano, check-in mensili (base: esecuzione del contratto)</li>
+              <li><strong>Marketing diretto</strong> — invio di newsletter e offerte, solo previo consenso esplicito (base: consenso, art. 6.1.a GDPR)</li>
+              <li><strong>Analisi statistica aggregata</strong> — miglioramento del servizio, con dati anonimi o pseudonimizzati (base: legittimo interesse, art. 6.1.f GDPR)</li>
+              <li><strong>Obblighi di legge</strong> — conservazione di dati contabili e fiscali (base: obbligo legale, art. 6.1.c GDPR)</li>
+            </ul>
+          </div>
+
+          <div class="legal-section" id="conservazione">
+            <h2>4. Conservazione dei dati</h2>
+            <p>I dati personali sono conservati per il tempo strettamente necessario alle finalità indicate:</p>
+            <ul>
+              <li>Dati di account e piani nutrizionali: per tutta la durata del rapporto contrattuale e per 24 mesi successivi alla sua conclusione</li>
+              <li>Dati di fatturazione: 10 anni, ai sensi della normativa fiscale italiana</li>
+              <li>Dati di profilazione per marketing: fino alla revoca del consenso</li>
+              <li>Log tecnici e dati analitici: massimo 13 mesi</li>
+            </ul>
+          </div>
+
+          <div class="legal-section" id="condivisione">
+            <h2>5. Condivisione con terze parti</h2>
+            <p>Non vendiamo i tuoi dati. Condividiamo dati personali solo con i seguenti soggetti, nella misura strettamente necessaria:</p>
+            <ul>
+              <li><strong>Stripe Inc.</strong> — processore dei pagamenti (USA; soggetto a Standard Contractual Clauses)</li>
+              <li><strong>Provider email</strong> — per la consegna dei piani in PDF</li>
+              <li><strong>Hosting provider</strong> — infrastruttura cloud con server in Europa</li>
+              <li><strong>Autorità competenti</strong> — su richiesta legalmente fondata</li>
+            </ul>
+            <p>Tutti i fornitori sono nominati responsabili del trattamento ex art. 28 GDPR con appositi accordi.</p>
+          </div>
+
+          <div class="legal-section" id="trasferimenti">
+            <h2>6. Trasferimenti extra-UE</h2>
+            <p>Alcuni fornitori (tra cui Stripe) hanno sede negli Stati Uniti. Il trasferimento dei dati avviene nel rispetto delle garanzie previste dal GDPR, in particolare tramite le Clausole Contrattuali Standard (SCC) adottate dalla Commissione Europea. Puoi richiedere copia delle garanzie adottate scrivendo a <a href="mailto:privacy@nutriscienza.org">privacy@nutriscienza.org</a>.</p>
+          </div>
+
+          <div class="legal-section" id="diritti">
+            <h2>7. I tuoi diritti</h2>
+            <p>Ai sensi degli articoli 15–22 del GDPR, hai il diritto di:</p>
+            <ul>
+              <li><strong>Accesso</strong> — ottenere conferma del trattamento e copia dei dati</li>
+              <li><strong>Rettifica</strong> — correggere dati inesatti o incompleti</li>
+              <li><strong>Cancellazione</strong> — ottenere la rimozione dei dati ("diritto all'oblio")</li>
+              <li><strong>Limitazione</strong> — richiedere la sospensione del trattamento</li>
+              <li><strong>Portabilità</strong> — ricevere i dati in formato strutturato e leggibile da macchina</li>
+              <li><strong>Opposizione</strong> — opporti al trattamento basato su legittimo interesse o a fini di marketing</li>
+              <li><strong>Revoca del consenso</strong> — in qualsiasi momento, senza pregiudizio per i trattamenti precedenti</li>
+            </ul>
+            <p>Per esercitare i tuoi diritti scrivi a <a href="mailto:privacy@nutriscienza.org">privacy@nutriscienza.org</a>. Risponderemo entro 30 giorni. Hai inoltre il diritto di proporre reclamo al Garante per la protezione dei dati personali (<a href="https://www.garanteprivacy.it" target="_blank">www.garanteprivacy.it</a>).</p>
+          </div>
+
+          <div class="legal-section" id="minori">
+            <h2>8. Minori</h2>
+            <p>Il servizio è rivolto a persone di età pari o superiore a 18 anni. Non raccogliamo consapevolmente dati di minori. Se ritieni che dati di un minore siano stati forniti per errore, contattaci immediatamente.</p>
+          </div>
+
+          <div class="legal-section" id="contatti">
+            <h2>9. Contatti</h2>
+            <p>Per qualsiasi domanda relativa al trattamento dei tuoi dati personali:</p>
+            <p><strong>NutriScienza</strong><br>
+            Email: <a href="mailto:privacy@nutriscienza.org">privacy@nutriscienza.org</a><br>
+            Sito: <a href="https://nutriscienza.org">nutriscienza.org</a></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2026 NutriScienza</span>
+        <span>
+          <a href="privacy-policy.html" style="color:rgba(255,255,255,0.7); text-decoration:none; margin-right:16px;">Privacy Policy</a>
+          <a href="termini-e-condizioni.html" style="color:rgba(255,255,255,0.7); text-decoration:none; margin-right:16px;">Termini</a>
+          <a href="cookie-policy.html" style="color:rgba(255,255,255,0.7); text-decoration:none;">Cookie Policy</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

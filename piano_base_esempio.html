@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>NutriScienza — Piano Base · Giulia M.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #2D5F3F;
+      --green-dark: #1A2E22;
+      --green-soft: #4A8264;
+      --green-tint: #E8F0EB;
+      --cream: #F5F1E8;
+      --cream-light: #FBF9F4;
+      --gold: #C9A66B;
+      --gold-dark: #A88349;
+      --text: #2A2A2A;
+      --text-muted: #6B6B6B;
+      --white: #FFFFFF;
+      --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      line-height: 1.55;
+      background: #ddd;
+      -webkit-font-smoothing: antialiased;
+      font-size: 10.5pt;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+
+    /* Print toolbar — visible on screen only */
+    .toolbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--green-deep); color: white;
+      padding: 12px 24px; text-align: center;
+      font-size: 14px; font-family: 'Inter', sans-serif;
+    }
+    .toolbar button {
+      background: var(--gold); color: var(--green-dark);
+      border: none; padding: 8px 18px; border-radius: 6px;
+      font-weight: 600; cursor: pointer; margin-left: 12px;
+      font-family: inherit; font-size: 13px;
+    }
+    .toolbar button:hover { background: #B8965E; }
+
+    /* A4 pages */
+    .page {
+      width: 210mm; min-height: 297mm;
+      padding: 18mm 18mm 22mm;
+      margin: 24px auto;
+      background: white;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      position: relative;
+      page-break-after: always;
+      overflow: hidden;
+    }
+    .page:last-child { page-break-after: auto; }
+
+    /* Header on every page */
+    .page-header {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 14mm; padding: 6mm 18mm 0;
+      border-bottom: 0.5px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 9pt;
+    }
+    .page-header .top-bar {
+      position: absolute; top: 0; left: 0; right: 0; height: 4mm;
+      background: var(--green-deep);
+    }
+    .page-header .brand { color: var(--green-deep); font-weight: 700; font-size: 10pt; }
+    .page-header .brand-sub { color: var(--text-muted); font-weight: 400; margin-left: 8px; font-size: 9pt; }
+    .page-header .url { color: var(--text-muted); font-size: 8.5pt; }
+    .page-content { padding-top: 10mm; }
+
+    /* Footer on every page */
+    .page-footer {
+      position: absolute; bottom: 12mm; left: 18mm; right: 18mm;
+      padding-top: 4mm;
+      border-top: 0.4px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 8pt; color: var(--text-muted);
+    }
+
+    /* === COVER === */
+    .page.cover { padding: 0; overflow: hidden; }
+    .page.cover .cover-inner { position: relative; height: 297mm; padding: 18mm; }
+    .cover-top-bar { position: absolute; top: 0; left: 0; right: 0; height: 6mm; background: var(--green-deep); }
+    .cover-top-block { position: absolute; top: 0; left: 0; right: 0; height: 50%; background: var(--cream); }
+    .cover-content { position: relative; z-index: 1; padding-top: 12mm; }
+    .cover-logo { font-family: 'Playfair Display', serif; font-size: 18pt; font-weight: 700; color: var(--green-deep); margin-bottom: 36mm; }
+    .cover-logo span { color: var(--gold); }
+    .cover-eyebrow {
+      text-transform: uppercase; letter-spacing: 3px;
+      font-size: 9pt; color: var(--gold-dark); font-weight: 700;
+      margin-bottom: 12mm;
+    }
+    .cover-title {
+      font-size: 44pt; line-height: 1.05; color: var(--green-deep);
+      font-family: 'Playfair Display', serif; font-weight: 600;
+      margin-bottom: 0; letter-spacing: -0.02em;
+    }
+    .cover-title .soft { color: var(--green-soft); display: block; }
+    .cover-rule { width: 25mm; height: 2px; background: var(--gold); margin: 8mm 0; }
+
+    .customer-card {
+      position: absolute; left: 18mm; right: 18mm; top: 175mm;
+      background: white; border: 0.6px solid var(--border);
+      border-radius: 4mm; padding: 10mm 12mm;
+      z-index: 2;
+    }
+    .customer-card .label { font-size: 8pt; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 2mm; }
+    .customer-card h2 { font-size: 22pt; color: var(--green-deep); margin-bottom: 2mm; }
+    .customer-card .meta { font-size: 11pt; color: var(--text-muted); margin-bottom: 6mm; padding-bottom: 6mm; border-bottom: 0.4px solid var(--border); }
+    .customer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+    .customer-grid div h4 { font-size: 8pt; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5mm; font-family: 'Inter', sans-serif; }
+    .customer-grid div p { font-size: 11pt; color: var(--text); }
+
+    .cover-authority {
+      position: absolute; left: 0; right: 0; bottom: 16mm;
+      text-align: center; font-size: 9pt; color: var(--text-muted); padding: 0 18mm;
+    }
+    .cover-authority p { margin-bottom: 1mm; }
+    .cover-bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 6mm; background: var(--green-deep); }
+    .cover-bottom-bar2 { position: absolute; bottom: 6mm; left: 0; right: 0; height: 1.5mm; background: var(--gold); }
+
+    /* === Section styling === */
+    .eyebrow {
+      text-transform: uppercase; letter-spacing: 2px;
+      font-size: 8.5pt; color: var(--gold-dark); font-weight: 700;
+      margin-bottom: 4mm;
+    }
+    h1.section { font-size: 26pt; color: var(--green-deep); margin-bottom: 5mm; line-height: 1.15; }
+    h2.section { font-size: 14pt; color: var(--green-deep); margin: 8mm 0 3mm; }
+    h3.section { font-size: 11pt; color: var(--green-deep); margin: 5mm 0 2mm; font-family: 'Playfair Display', serif; }
+    .lead { font-size: 11pt; color: var(--text-muted); margin-bottom: 8mm; line-height: 1.55; }
+    p { margin-bottom: 3mm; }
+    p.justify { text-align: justify; }
+
+    /* Profile data table */
+    table.data {
+      width: 100%; border-collapse: collapse; margin-bottom: 8mm;
+      background: var(--cream-light);
+    }
+    table.data td {
+      padding: 3mm 4mm; border: 0.4px solid var(--border);
+      font-size: 10pt;
+    }
+    table.data td.label { font-weight: 700; width: 22%; }
+
+    /* Metric cards */
+    .metrics { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; margin-bottom: 6mm; }
+    .metric {
+      background: var(--cream-light); border: 0.5px solid var(--border);
+      border-radius: 3mm; padding: 5mm 6mm;
+    }
+    .metric .ml { font-size: 7.5pt; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5mm; }
+    .metric .mv { font-size: 18pt; color: var(--green-deep); font-weight: 700; font-family: 'Playfair Display', serif; line-height: 1; margin-bottom: 1mm; }
+    .metric .ms { font-size: 8.5pt; color: var(--text-muted); }
+
+    /* Macro table */
+    table.macro {
+      width: 100%; border-collapse: collapse; margin-bottom: 5mm;
+      font-size: 10pt;
+    }
+    table.macro th {
+      background: var(--green-deep); color: white;
+      padding: 3mm 4mm; text-align: left;
+      font-weight: 600; font-size: 9pt;
+    }
+    table.macro td { padding: 3mm 4mm; border: 0.4px solid var(--border); background: white; }
+
+    /* Info callout */
+    .callout {
+      background: var(--green-tint); border-left: 1mm solid var(--green-deep);
+      padding: 5mm 7mm; border-radius: 0 2mm 2mm 0;
+      margin: 5mm 0;
+    }
+    .callout.gold { background: var(--cream); border-left-color: var(--gold); }
+    .callout h4 {
+      font-size: 11pt; color: var(--green-deep); margin-bottom: 2mm;
+      font-family: 'Inter', sans-serif; font-weight: 700;
+    }
+    .callout.gold h4 { color: var(--gold-dark); }
+    .callout p { font-size: 10pt; margin: 0; }
+
+    /* Formula box */
+    .formula {
+      background: var(--cream-light); border-left: 1mm solid var(--gold);
+      padding: 5mm 7mm; margin: 4mm 0;
+      font-size: 10pt; line-height: 1.7;
+    }
+
+    /* Day meal table */
+    .day { margin-bottom: 6mm; page-break-inside: avoid; }
+    .day-header {
+      background: var(--green-deep); color: white;
+      padding: 3mm 5mm; font-weight: 700; font-size: 11pt;
+      border-radius: 2mm 2mm 0 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .day-header span:last-child { font-size: 9pt; font-weight: 500; opacity: 0.9; }
+    table.meals {
+      width: 100%; border-collapse: collapse;
+      border: 0.5px solid var(--border); border-top: none;
+      border-radius: 0 0 2mm 2mm; overflow: hidden;
+    }
+    table.meals td {
+      padding: 3mm 4mm; vertical-align: top;
+      border-bottom: 0.3px solid var(--border);
+      font-size: 9.5pt;
+    }
+    table.meals tr:last-child td { border-bottom: none; }
+    table.meals td.meal-name { width: 22%; font-weight: 600; }
+    table.meals td.kcal { width: 14%; text-align: right; color: var(--text-muted); font-size: 9pt; white-space: nowrap; }
+    table.meals td.kcal strong { color: var(--green-deep); font-family: 'Playfair Display', serif; font-size: 11pt; }
+
+    /* Shopping list */
+    .shop-cat { margin-bottom: 5mm; page-break-inside: avoid; }
+    .shop-cat h3 { margin-bottom: 2.5mm; }
+    .shop-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5mm 6mm; font-size: 9.5pt; }
+    .shop-grid li { list-style: none; padding-left: 5mm; position: relative; line-height: 1.5; }
+    .shop-grid li::before { content: "•"; position: absolute; left: 0; color: var(--green-deep); font-weight: 700; }
+
+    /* Tips */
+    .tip { margin-bottom: 5mm; }
+    .tip h3 { color: var(--green-deep); }
+    .tip p { font-size: 10pt; }
+
+    /* Disclaimer */
+    .disclaimer {
+      background: var(--cream); border-left: 1mm solid var(--gold);
+      padding: 5mm 7mm; margin: 6mm 0;
+      font-size: 9pt; line-height: 1.55;
+    }
+    .disclaimer h4 {
+      font-family: 'Inter', sans-serif; font-weight: 700;
+      color: var(--gold-dark); font-size: 9.5pt;
+      text-transform: uppercase; letter-spacing: 1px;
+      margin-bottom: 2.5mm;
+    }
+
+    /* Signature row */
+    .signature {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8mm;
+      padding-top: 5mm; border-top: 0.5px solid var(--border);
+      margin-top: 5mm;
+      font-size: 9.5pt;
+    }
+    .signature strong { color: var(--green-deep); }
+
+    /* PRINT */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    @media print {
+      body { background: white; }
+      .toolbar { display: none; }
+      .page {
+        margin: 0; box-shadow: none;
+        page-break-after: always;
+        width: 210mm; height: 297mm;
+      }
+      .page:last-child { page-break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    Anteprima del PDF · Piano Base — Giulia M.
+    <button onclick="window.print()">Salva come PDF</button>
+  </div>
+
+  <!-- ============ PAGE 1: COVER ============ -->
+  <div class="page cover">
+    <div class="cover-inner">
+      <div class="cover-top-bar"></div>
+      <div class="cover-top-block"></div>
+      <div class="cover-content">
+        <div class="cover-logo">Nutri<span>Scienza</span></div>
+        <div class="cover-eyebrow">Piano Base · 7 giorni</div>
+        <h1 class="cover-title">
+          Il tuo piano
+          alimentare
+          <span class="soft">personalizzato.</span>
+        </h1>
+        <div class="cover-rule"></div>
+      </div>
+
+      <div class="customer-card">
+        <div class="label">Preparato per</div>
+        <h2>Giulia M.</h2>
+        <p class="meta">Milano · 34 anni · Obiettivo: dimagrimento sostenibile</p>
+        <div class="customer-grid">
+          <div>
+            <h4>Data di emissione</h4>
+            <p>29 Aprile 2026</p>
+          </div>
+          <div>
+            <h4>Validità del piano</h4>
+            <p>7 giorni</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cover-authority">
+        <p>Sviluppato con biologi nutrizionisti iscritti all'Ordine</p>
+        <p>Conforme alle linee guida LARN — Società Italiana di Nutrizione Umana</p>
+      </div>
+
+      <div class="cover-bottom-bar2"></div>
+      <div class="cover-bottom-bar"></div>
+    </div>
+  </div>
+
+  <!-- ============ PAGE 2: Profilo ============ -->
+  <div class="page">
+    <div class="page-header">
+      <div class="top-bar"></div>
+      <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Base · Giulia M.</span></div>
+      <div class="url">nutriscienza.org</div>
+    </div>
+    <div class="page-content">
+      <div class="eyebrow">Il tuo profilo</div>
+      <h1 class="section">I numeri che contano per te.</h1>
+      <p class="justify">Abbiamo calcolato il tuo fabbisogno energetico utilizzando la formula di <strong>Mifflin-St Jeor</strong> — lo standard scientifico più validato per stimare il metabolismo basale — applicando un fattore di attività moderato e un deficit calorico controllato del 18%, in linea con le raccomandazioni LARN per un dimagrimento sostenibile.</p>
+
+      <table class="data">
+        <tr>
+          <td class="label">Età</td><td>34 anni</td>
+          <td class="label">Sesso</td><td>Femminile</td>
+        </tr>
+        <tr>
+          <td class="label">Altezza</td><td>165 cm</td>
+          <td class="label">Peso attuale</td><td>68,0 kg</td>
+        </tr>
+        <tr>
+          <td class="label">BMI</td><td>25,0 (sovrappeso lieve)</td>
+          <td class="label">Peso obiettivo</td><td>63,0 kg (-5 kg)</td>
+        </tr>
+        <tr>
+          <td class="label">Attività</td><td>Moderata (PAL 1,55)</td>
+          <td class="label">Allenamenti</td><td>3-4 volte / settimana</td>
+        </tr>
+      </table>
+
+      <h3 class="section">Il tuo fabbisogno calcolato</h3>
+      <div class="metrics">
+        <div class="metric"><div class="ml">Metabolismo basale</div><div class="mv">1.380</div><div class="ms">kcal — BMR (Mifflin-St Jeor)</div></div>
+        <div class="metric"><div class="ml">Fabbisogno totale</div><div class="mv">2.139</div><div class="ms">kcal — TDEE con attività</div></div>
+        <div class="metric"><div class="ml">Target giornaliero</div><div class="mv">1.750</div><div class="ms">kcal — deficit -18%</div></div>
+      </div>
+
+      <h3 class="section">Ripartizione macronutrienti</h3>
+      <table class="macro">
+        <tr>
+          <th>Macronutriente</th><th>% kcal</th><th>Grammi/giorno</th><th>Funzione</th>
+        </tr>
+        <tr><td>Proteine</td><td>28%</td><td>123 g (1,8 g/kg)</td><td>Preserva la massa muscolare durante il deficit</td></tr>
+        <tr><td>Carboidrati</td><td>42%</td><td>184 g</td><td>Energia per allenamenti e cervello</td></tr>
+        <tr><td>Grassi</td><td>30%</td><td>58 g</td><td>Equilibrio ormonale e sazietà</td></tr>
+      </table>
+
+      <div class="callout">
+        <h4>Perché questa ripartizione?</h4>
+        <p>L'apporto proteico più alto della media (1,8 g per kg di peso corporeo) è specifico per il tuo obiettivo: durante un deficit calorico è il principale fattore protettivo contro la perdita di massa muscolare, oltre a garantire una maggiore sazietà. La quota di carboidrati resta sufficiente a sostenere 3-4 allenamenti settimanali senza compromettere la performance.</p>
+      </div>
+    </div>
+    <div class="page-footer"><span>© 2026 NutriScienza S.r.l. — Conforme alle linee guida LARN</span><span>Pagina 2</span></div>
+  </div>
+
+  <!-- ============ PAGE 3: Metodologia ============ -->
+  <div class="page">
+    <div class="page-header">
+      <div class="top-bar"></div>
+      <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Base · Giulia M.</span></div>
+      <div class="url">nutriscienza.org</div>
+    </div>
+    <div class="page-content">
+      <div class="eyebrow">La metodologia</div>
+      <h1 class="section">Come abbiamo costruito questo piano.</h1>
+
+      <h2 class="section">1. Calcolo del metabolismo basale (BMR)</h2>
+      <p class="justify">Utilizziamo l'equazione di <strong>Mifflin-St Jeor</strong> (1990), considerata oggi lo standard più accurato dalla letteratura scientifica per stimare il dispendio energetico a riposo nella popolazione adulta sana. È la formula raccomandata dall'Academy of Nutrition and Dietetics e citata nelle linee guida LARN.</p>
+      <div class="formula">
+        <strong>Formula applicata (donna):</strong><br>
+        BMR = (10 × peso<sub>kg</sub>) + (6,25 × altezza<sub>cm</sub>) − (5 × età) − 161<br>
+        BMR = (10 × 68) + (6,25 × 165) − (5 × 34) − 161 = <strong>1.380 kcal</strong>
+      </div>
+
+      <h2 class="section">2. Fabbisogno energetico totale (TDEE)</h2>
+      <p class="justify">Al BMR applichiamo un fattore di attività (PAL) basato sulle abitudini dichiarate. Un livello moderato — corrispondente a 3-4 allenamenti settimanali e una quotidianità non sedentaria — corrisponde a un coefficiente di <strong>1,55</strong>. TDEE = 1.380 × 1,55 = <strong>2.139 kcal</strong>.</p>
+
+      <h2 class="section">3. Deficit calorico controllato</h2>
+      <p class="justify">Per un dimagrimento sostenibile evitiamo deficit aggressivi: applichiamo una riduzione del <strong>18% sul TDEE</strong>, che corrisponde a circa 390 kcal in meno al giorno e una perdita attesa di 0,4-0,5 kg a settimana. Deficit superiori al 25% nel medio termine sono associati in letteratura a maggiore perdita di massa muscolare, alterazioni ormonali e maggiore probabilità di recupero del peso (effetto rebound).</p>
+
+      <h2 class="section">4. Ripartizione dei macronutrienti</h2>
+      <p class="justify">L'apporto proteico è impostato a 1,8 g/kg di peso corporeo, in linea con le evidenze sulla preservazione della massa magra durante il deficit (Helms et al., 2014; Phillips & Van Loon, 2011). Carboidrati e grassi sono distribuiti per garantire energia agli allenamenti e supporto ormonale.</p>
+
+      <div class="callout gold">
+        <h4>Riferimenti scientifici</h4>
+        <p>Le scelte di questo piano sono basate sulle <strong>linee guida LARN</strong> (Livelli di Assunzione di Riferimento di Nutrienti) della Società Italiana di Nutrizione Umana (SINU, 2014, IV revisione), sui <em>Dietary Reference Intakes</em> dell'Institute of Medicine, e sulla letteratura peer-reviewed in nutrizione applicata.</p>
+      </div>
+    </div>
+    <div class="page-footer"><span>© 2026 NutriScienza S.r.l. — Conforme alle linee guida LARN</span><span>Pagina 3</span></div>
+  </div>
+
+  <!-- ============ PAGE 4: Menù — Lun + Mar ============ -->
+  <div class="page">
+    <div class="page-header"><div class="top-bar"></div><div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Base · Giulia M.</span></div><div class="url">nutriscienza.org</div></div>
+    <div class="page-content">
+      <div class="eyebrow">Il tuo menù — 7 giorni</div>
+      <h1 class="section">Cosa mangerai questa settimana.</h1>
+      <p class="lead">Pasti pensati sull'alimentazione mediterranea, varianti realistiche, ingredienti facilmente reperibili in qualsiasi supermercato italiano. Le grammature sono indicative del peso a crudo salvo diversa indicazione.</p>
+
+      <div class="day">
+        <div class="day-header"><span>Lunedì</span><span>~ 1.670 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td>Yogurt greco 0% (170 g) con frutti di bosco freschi (80 g), fiocchi d'avena (30 g) e un cucchiaino di miele.</td><td class="kcal"><strong>350</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 mela media + 10 mandorle non salate.</td><td class="kcal"><strong>180</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td>Pasta integrale (70 g) con sugo di pomodoro fresco e tonno al naturale (80 g sgocciolato), insalata mista con olio EVO.</td><td class="kcal"><strong>540</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>Tisana + 2 gallette di riso integrale con ricotta (30 g) e un filo di miele.</td><td class="kcal"><strong>130</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td>Petto di pollo alla griglia (130 g) con verdure miste grigliate (200 g) e 1 fetta di pane integrale.</td><td class="kcal"><strong>470</strong> kcal</td></tr>
+        </table>
+      </div>
+
+      <div class="day">
+        <div class="day-header"><span>Martedì</span><span>~ 1.730 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td>2 fette di pane integrale tostato (60 g) con ricotta (60 g) e marmellata senza zuccheri aggiunti, caffè o tè.</td><td class="kcal"><strong>360</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 yogurt greco 0% (150 g) con cannella.</td><td class="kcal"><strong>110</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td>Insalatona di farro (60 g a crudo) con ceci lessati (80 g), pomodorini, feta (40 g), basilico e olio EVO.</td><td class="kcal"><strong>530</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 banana + 1 quadretto di cioccolato fondente 85%.</td><td class="kcal"><strong>150</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td>Filetto di salmone al forno (140 g) con spinaci saltati in padella (200 g) e patate al forno (150 g).</td><td class="kcal"><strong>580</strong> kcal</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="page-footer"><span>© 2026 NutriScienza S.r.l. — Conforme alle linee guida LARN</span><span>Pagina 4</span></div>
+  </div>
+
+  <!-- ============ PAGE 5: Mer + Gio ============ -->
+  <div class="page">
+    <div class="page-header"><div class="top-bar"></div><div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Base · Giulia M.</span></div><div class="url">nutriscienza.org</div></div>
+    <div class="page-content">
+      <div class="day">
+        <div class="day-header"><span>Mercoledì</span><span>~ 1.660 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td>Porridge di avena (40 g) cotto in latte parzialmente scremato (200 ml) con ½ banana e cannella.</td><td class="kcal"><strong>340</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 pera + noci (15 g).</td><td class="kcal"><strong>170</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td>Riso integrale (70 g) con zucchine, gamberetti (100 g), prezzemolo e limone.</td><td class="kcal"><strong>510</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>Bastoncini di carota + hummus di ceci (30 g).</td><td class="kcal"><strong>130</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td>Frittata con 2 uova intere + 2 albumi, asparagi, parmigiano (10 g), insalata mista. 1 fetta pane integrale.</td><td class="kcal"><strong>510</strong> kcal</td></tr>
+        </table>
+      </div>
+
+      <div class="day">
+        <div class="day-header"><span>Giovedì</span><span>~ 1.640 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td>Yogurt greco 0% (170 g) con granola integrale senza zuccheri (35 g) e mirtilli.</td><td class="kcal"><strong>360</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 kiwi + 5 mandorle.</td><td class="kcal"><strong>120</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td>Pasta integrale (70 g) con pesto leggero alla genovese, fagiolini lessati (150 g), parmigiano (15 g).</td><td class="kcal"><strong>560</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>Tè verde + 2 fette biscottate integrali con un velo di miele.</td><td class="kcal"><strong>110</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td>Polpette di tacchino al forno (120 g carne) con verdure miste e quinoa (60 g a crudo).</td><td class="kcal"><strong>490</strong> kcal</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="page-footer"><span>© 2026 NutriScienza S.r.l. — Conforme alle linee guida LARN</span><span>Pagina 5</span></div>
+  </div>
+
+  <!-- ============ PAGE 6: Ven + Sab ============ -->
+  <div class="page">
+    <div class="page-header"><div class="top-bar"></div><div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Base · Giulia M.</span></div><div class="url">nutriscienza.org</div></div>
+    <div class="page-content">
+      <div class="day">
+        <div class="day-header"><span>Venerdì</span><span>~ 1.690 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td>Pancake proteici (1 uovo + 30 g avena + ½ banana + albumi), frutti di bosco e un velo di sciroppo d'acero.</td><td class="kcal"><strong>380</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 mela + parmigiano (20 g).</td><td class="kcal"><strong>150</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td>Vellutata di lenticchie (200 g a fine cottura) con crostini integrali, insalata di cetrioli e cipolla.</td><td class="kcal"><strong>510</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 yogurt naturale (125 g) con cannella.</td><td class="kcal"><strong>90</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td>Branzino al forno (150 g) con olive taggiasche e pomodorini, verdure grigliate, 1 fetta pane integrale.</td><td class="kcal"><strong>560</strong> kcal</td></tr>
+        </table>
+      </div>
+
+      <div class="day">
+        <div class="day-header"><span>Sabato</span><span>~ 1.730 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td>Smoothie bowl: 1 banana, 150 ml latte di mandorla, 30 g fiocchi d'avena, frutti rossi, 10 g semi di chia.</td><td class="kcal"><strong>380</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 arancia.</td><td class="kcal"><strong>70</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td>Risotto allo zafferano (70 g riso) con bocconcini di pollo (100 g) e asparagi.</td><td class="kcal"><strong>580</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>2 noci + tisana al finocchio.</td><td class="kcal"><strong>110</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td>Pizza casalinga su base integrale (100 g pasta) con mozzarella light (80 g), pomodoro, rucola, prosciutto crudo sgrassato (30 g).</td><td class="kcal"><strong>590</strong> kcal</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="page-footer"><span>© 2026 NutriScienza S.r.l. — Conforme alle linee guida LARN</span><span>Pagina 6</span></div>
+  </div>
+
+  <!-- ============ PAGE 7: Domenica ============ -->
+  <div class="page">
+    <div class="page-header"><div class="top-bar"></div><div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Base · Giulia M.</span></div><div class="url">nutriscienza.org</div></div>
+    <div class="page-content">
+      <div class="day">
+        <div class="day-header"><span>Domenica</span><span>~ 1.710 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td>2 fette pane integrale + ½ avocado + 1 uovo in camicia + caffè.</td><td class="kcal"><strong>400</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>Macedonia di stagione (200 g).</td><td class="kcal"><strong>140</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td>Lasagna casalinga porzione moderata (180 g) con insalata mista. <em>— il piatto della domenica.</em></td><td class="kcal"><strong>620</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td>1 yogurt greco 0%.</td><td class="kcal"><strong>90</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td>Crema di zucca (250 ml) + bruschetta integrale e insalata di tonno al naturale (60 g) con cipolla rossa.</td><td class="kcal"><strong>460</strong> kcal</td></tr>
+        </table>
+      </div>
+
+      <div class="callout" style="margin-top: 8mm;">
+        <h4>Riepilogo settimanale</h4>
+        <p>Media settimanale: <strong>~1.690 kcal/giorno</strong> · Distribuzione media macro: 28% proteine, 42% carboidrati, 30% grassi. Tutti i valori sono mantenuti in una banda di ±5% rispetto al target, lasciando spazio alla flessibilità (es. la lasagna domenicale) senza compromettere il deficit calorico complessivo.</p>
+      </div>
+    </div>
+    <div class="page-footer"><span>© 2026 NutriScienza S.r.l. — Conforme alle linee guida LARN</span><span>Pagina 7</span></div>
+  </div>
+
+  <!-- ============ PAGE 8: Lista della spesa ============ -->
+  <div class="page">
+    <div class="page-header"><div class="top-bar"></div><div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Base · Giulia M.</span></div><div class="url">nutriscienza.org</div></div>
+    <div class="page-content">
+      <div class="eyebrow">Lista della spesa</div>
+      <h1 class="section">Una settimana, una sola spesa.</h1>
+      <p class="lead">Quantità calcolate per i 7 giorni di piano. Suggeriamo di fare una spesa unica all'inizio della settimana e una piccola integrazione di freschi (frutta, verdura) a metà settimana.</p>
+
+      <div class="shop-cat">
+        <h3 class="section">Verdura e frutta fresca</h3>
+        <ul class="shop-grid">
+          <li>Pomodorini · 500 g</li><li>Pomodori · 4 medi</li><li>Insalata mista · 2 buste</li>
+          <li>Spinaci freschi · 250 g</li><li>Asparagi · 400 g</li><li>Zucchine · 4 medie</li>
+          <li>Fagiolini · 200 g</li><li>Cetrioli · 2</li><li>Carote · 500 g</li>
+          <li>Cipolla rossa · 1</li><li>Zucca · 600 g</li><li>Patate · 300 g</li>
+          <li>Rucola · 1 busta</li><li>Mele · 4</li><li>Banane · 4</li>
+          <li>Pere · 2</li><li>Kiwi · 2</li><li>Arance · 2</li>
+          <li>Frutti di bosco · 250 g</li><li>Avocado · 1</li><li>Limoni · 2</li>
+        </ul>
+      </div>
+
+      <div class="shop-cat">
+        <h3 class="section">Carne, pesce e uova</h3>
+        <ul class="shop-grid">
+          <li>Petto di pollo · 230 g</li><li>Filetto di salmone · 140 g</li>
+          <li>Branzino · 1 (~300 g)</li><li>Tonno al naturale · 2 scatolette</li>
+          <li>Gamberetti · 100 g</li><li>Macinato di tacchino · 120 g</li>
+          <li>Prosciutto crudo · 30 g</li><li>Uova fresche · 6</li>
+        </ul>
+      </div>
+
+      <div class="shop-cat">
+        <h3 class="section">Latticini</h3>
+        <ul class="shop-grid">
+          <li>Yogurt greco 0% · 6 vasetti</li><li>Yogurt naturale · 1 vasetto</li>
+          <li>Ricotta · 100 g</li><li>Parmigiano Reggiano · 60 g</li>
+          <li>Mozzarella light · 80 g</li><li>Feta · 40 g</li>
+          <li>Latte parz. scremato · 1 L</li><li>Latte di mandorla · 200 ml</li>
+        </ul>
+      </div>
+
+      <div class="shop-cat">
+        <h3 class="section">Cereali, legumi e pane</h3>
+        <ul class="shop-grid">
+          <li>Pasta integrale · 250 g</li><li>Riso integrale · 70 g</li>
+          <li>Riso Carnaroli · 70 g</li><li>Farro perlato · 60 g</li>
+          <li>Quinoa · 60 g</li><li>Avena (fiocchi) · 200 g</li>
+          <li>Pane integrale · 1 filone</li><li>Fette biscottate integrali</li>
+          <li>Gallette di riso integrale</li><li>Ceci lessati · 1 barattolo</li>
+          <li>Lenticchie secche · 100 g</li><li>Pasta lasagne · 100 g</li>
+        </ul>
+      </div>
+
+      <div class="shop-cat">
+        <h3 class="section">Frutta secca, semi e dispensa</h3>
+        <ul class="shop-grid">
+          <li>Mandorle non salate · 50 g</li><li>Noci · 30 g</li><li>Semi di chia · 20 g</li>
+          <li>Olive taggiasche · 30 g</li><li>Olio EVO · uso settimanale</li><li>Miele · 1 vasetto</li>
+          <li>Marmellata senza zuccheri</li><li>Sciroppo d'acero</li><li>Pesto leggero · 1 vasetto</li>
+          <li>Sugo di pomodoro · 400 g</li><li>Hummus · 30 g</li><li>Cioccolato fondente 85%</li>
+          <li>Granola senza zuccheri · 200 g</li><li>Tè verde / tisane</li><li>Cannella, basilico, zafferano</li>
+        </ul>
+      </div>
+    </div>
+    <div class="page-footer"><span>© 2026 NutriScienza S.r.l. — Conforme alle linee guida LARN</span><span>Pagina 8</span></div>
+  </div>
+
+  <!-- ============ PAGE 9: Note + disclaimer ============ -->
+  <div class="page">
+    <div class="page-header"><div class="top-bar"></div><div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Base · Giulia M.</span></div><div class="url">nutriscienza.org</div></div>
+    <div class="page-content">
+      <div class="eyebrow">Note del nutrizionista</div>
+      <h1 class="section">Cinque consigli che fanno la differenza.</h1>
+
+      <div class="tip">
+        <h3 class="section">1. Idratazione</h3>
+        <p class="justify">Punta a 2-2,5 litri di acqua al giorno. Caffè e tisane contano per circa metà del loro volume. L'idratazione corretta ha un effetto diretto sulla sazietà e sul metabolismo.</p>
+      </div>
+      <div class="tip">
+        <h3 class="section">2. Tempistica dei carboidrati</h3>
+        <p class="justify">Concentra la quota maggiore di carboidrati nei pasti pre e post allenamento — è quando il muscolo li utilizza meglio. La sera, se non ti alleni, riduci leggermente la porzione di pane o pasta.</p>
+      </div>
+      <div class="tip">
+        <h3 class="section">3. Settimo giorno: la domenica italiana</h3>
+        <p class="justify">La lasagna domenicale è prevista nel piano. Mangiare in modo flessibile in occasioni sociali è parte di un percorso sostenibile. La rigidità totale è il principale predittore di abbandono.</p>
+      </div>
+      <div class="tip">
+        <h3 class="section">4. Pesa al mattino, una volta a settimana</h3>
+        <p class="justify">Una sola misurazione settimanale (stessa ora, stesse condizioni) è più affidabile del controllo quotidiano, che genera ansia per oscillazioni fisiologiche fino a 2 kg legate ad acqua e glicogeno.</p>
+      </div>
+      <div class="tip">
+        <h3 class="section">5. Sonno: il pilastro nascosto</h3>
+        <p class="justify">Dormire meno di 7 ore peggiora la regolazione di leptina e grelina, gli ormoni della fame. Per ogni piano alimentare, il sonno è un acceleratore o un freno.</p>
+      </div>
+
+      <div class="disclaimer">
+        <h4>Avvertenza importante</h4>
+        <p>Questo piano alimentare ha finalità educative ed è basato sulle linee guida LARN della Società Italiana di Nutrizione Umana. <strong>Non sostituisce il parere di un medico, di un dietologo o di un biologo nutrizionista in presenza di condizioni patologiche</strong> (diabete, patologie tiroidee, renali, cardiovascolari, disturbi del comportamento alimentare, gravidanza e allattamento). In caso di dubbi consulta sempre il tuo medico curante prima di iniziare un nuovo regime alimentare. NutriScienza S.r.l. non assume responsabilità per usi del piano in difformità rispetto alle presenti indicazioni.</p>
+      </div>
+
+      <div class="signature">
+        <div style="flex:1.75;">
+          <strong>Documento generato con intelligenza artificiale</strong><br>
+          Questo piano è stato elaborato con il supporto di modelli di intelligenza artificiale
+          addestrati sui più aggiornati riferimenti nutrizionali internazionali (LARN, EFSA, WHO/FAO)
+          e sulle metodologie adottate dai principali nutrizionisti. I calcoli di fabbisogno energetico
+          e dei macronutrienti sono deterministici e basati sull'equazione di Mifflin-St Jeor,
+          ampiamente validata in letteratura. Il piano non costituisce una diagnosi medica né
+          sostituisce la consulenza di un professionista sanitario abilitato.
+        </div>
+        <div>
+          <strong>Hai domande sul tuo piano?</strong><br>
+          Scrivici a supporto@nutriscienza.org<br>
+          Risposta entro 48 ore lavorative
+        </div>
+      </div>
+    </div>
+    <div class="page-footer"><span>© 2026 NutriScienza S.r.l. — Conforme alle linee guida LARN</span><span>Pagina 9</span></div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriScienza — Il tuo questionario personalizzato</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #2D5F3F;
+      --green-dark: #1A2E22;
+      --green-soft: #4A8264;
+      --green-tint: #E8F0EB;
+      --cream: #F5F1E8;
+      --cream-light: #FBF9F4;
+      --gold: #C9A66B;
+      --gold-dark: #A88349;
+      --text: #2A2A2A;
+      --text-muted: #6B6B6B;
+      --white: #FFFFFF;
+      --border: #E5E0D3;
+      --border-strong: #C9C2B0;
+      --error: #B5453B;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--cream-light);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+
+    /* Header */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; max-width: 980px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+    .header-help { font-size: 13px; color: var(--text-muted); }
+    .header-help a { color: var(--green-deep); text-decoration: none; font-weight: 600; }
+
+    /* Progress */
+    .progress-wrap {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+    }
+    .progress-inner { max-width: 720px; margin: 0 auto; }
+    .progress-meta {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px; color: var(--text-muted); margin-bottom: 10px;
+    }
+    .progress-meta strong { color: var(--green-deep); font-weight: 600; }
+    .progress-bar {
+      height: 6px; background: var(--border); border-radius: 100px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, var(--green-soft), var(--green-deep));
+      width: 16.66%; transition: width 0.4s ease;
+      border-radius: 100px;
+    }
+
+    /* Main container */
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 48px 24px 120px;
+    }
+
+    /* Step */
+    .step {
+      display: none;
+      animation: fadeUp 0.35s ease;
+    }
+    .step.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .step-eyebrow {
+      text-transform: uppercase; letter-spacing: 2px;
+      font-size: 12px; color: var(--gold-dark); font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .step h2 { font-size: clamp(28px, 4vw, 36px); margin-bottom: 12px; line-height: 1.2; }
+    .step .lead { font-size: 16px; color: var(--text-muted); margin-bottom: 36px; }
+
+    /* Cards (radio big) */
+    .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+    .card-grid.cols-1 { grid-template-columns: 1fr; }
+    .card-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+    @media (max-width: 640px) {
+      .card-grid, .card-grid.cols-3 { grid-template-columns: 1fr; }
+    }
+    .card {
+      display: block;
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 20px;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+      position: relative;
+    }
+    .card:hover { border-color: var(--border-strong); }
+    .card input { position: absolute; opacity: 0; pointer-events: none; }
+    .card input:checked ~ .card-content { color: var(--green-deep); }
+    .card:has(input:checked) {
+      border-color: var(--green-deep);
+      background: var(--green-tint);
+      box-shadow: 0 4px 14px rgba(45, 95, 63, 0.10);
+    }
+    .card-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+    .card-title { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+    .card-desc { font-size: 13px; color: var(--text-muted); }
+
+    /* Inputs */
+    .field { margin-bottom: 22px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 22px; }
+    @media (max-width: 540px) { .field-row { grid-template-columns: 1fr; } }
+    label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 8px; color: var(--text); }
+    label .hint { font-weight: 400; color: var(--text-muted); font-size: 13px; margin-left: 6px; }
+    input[type="text"], input[type="number"], input[type="email"], select, textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+      background: var(--white);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--green-deep);
+      box-shadow: 0 0 0 3px rgba(45,95,63,0.12);
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .input-suffix { position: relative; }
+    .input-suffix input { padding-right: 50px; }
+    .input-suffix span {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 14px; pointer-events: none;
+    }
+
+    /* Chips (multi-select) */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      display: inline-block;
+      padding: 9px 16px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 100px;
+      background: var(--white);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .chip input { display: none; }
+    .chip:has(input:checked) {
+      background: var(--green-deep);
+      border-color: var(--green-deep);
+      color: var(--white);
+    }
+    .chip:hover { border-color: var(--green-soft); }
+
+    /* Plan tier (final step) */
+    .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+    @media (max-width: 800px) { .plans { grid-template-columns: 1fr; } }
+    .plan {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s;
+    }
+    .plan input { position: absolute; opacity: 0; }
+    .plan:has(input:checked) {
+      border-color: var(--green-deep);
+      background: var(--green-tint);
+      box-shadow: 0 6px 20px rgba(45,95,63,0.12);
+    }
+    .plan.featured { border-color: var(--gold); }
+    .plan.featured:has(input:checked) { border-color: var(--green-deep); }
+    .plan-pop {
+      position: absolute; top: -10px; right: 16px;
+      background: var(--gold); color: var(--white);
+      padding: 4px 12px; border-radius: 100px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .plan h3 { font-size: 20px; margin-bottom: 4px; }
+    .plan-tag { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+    .plan-price { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--green-deep); margin-bottom: 14px; line-height: 1; }
+    .plan-price small { font-size: 13px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-weight: 500; }
+    .plan-features { list-style: none; font-size: 13px; }
+    .plan-features li { padding: 4px 0; display: flex; gap: 8px; align-items: flex-start; line-height: 1.4; }
+    .plan-features li::before { content: "✓"; color: var(--green-deep); font-weight: 700; flex-shrink: 0; }
+
+    /* Footer nav */
+    .stepnav {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.04);
+      z-index: 30;
+    }
+    .stepnav-inner {
+      max-width: 720px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    }
+    .btn-primary {
+      background: var(--green-deep); color: var(--white);
+      padding: 14px 28px; border-radius: 10px; font-weight: 600;
+      text-decoration: none; font-size: 15px; border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      font-family: inherit;
+    }
+    .btn-primary:hover:not(:disabled) { background: var(--green-dark); }
+    .btn-primary:active:not(:disabled) { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-ghost {
+      background: transparent; color: var(--text-muted);
+      padding: 14px 20px; border: none; cursor: pointer;
+      font-size: 15px; font-weight: 500; font-family: inherit;
+      transition: color 0.15s;
+    }
+    .btn-ghost:hover { color: var(--green-deep); }
+    .btn-ghost:disabled { visibility: hidden; }
+
+    /* Summary */
+    .summary {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 28px;
+    }
+    .summary h3 { font-family: 'Inter', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--gold-dark); margin-bottom: 14px; font-weight: 700; }
+    .summary-row { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; font-size: 14px; border-bottom: 1px solid var(--border); }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row span:first-child { color: var(--text-muted); }
+    .summary-row span:last-child { font-weight: 600; text-align: right; }
+
+    /* Trust strip on final step */
+    .trust-strip {
+      display: flex; gap: 18px; flex-wrap: wrap;
+      margin-top: 20px; padding: 16px;
+      background: var(--cream); border-radius: 12px;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .trust-strip span::before { content: "✓ "; color: var(--green-deep); font-weight: 700; }
+
+    /* Success screen */
+    .success {
+      text-align: center; padding: 60px 24px;
+      display: none;
+      animation: fadeUp 0.4s ease;
+    }
+    .success.active { display: block; }
+    .success-icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--green-tint);
+      color: var(--green-deep);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px; margin: 0 auto 24px;
+    }
+    .success h2 { font-size: 36px; margin-bottom: 16px; }
+    .success p { font-size: 17px; color: var(--text-muted); max-width: 480px; margin: 0 auto 28px; }
+
+    /* Error message */
+    .error-msg {
+      background: rgba(181,69,59,0.08);
+      color: var(--error);
+      border-left: 3px solid var(--error);
+      padding: 10px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .error-msg.show { display: block; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <a href="nutriscienza.html" class="logo">Nutri<span>Scienza</span></a>
+      <div class="header-help">Hai bisogno di aiuto? <a href="mailto:supporto@nutriscienza.org">Scrivici</a></div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-inner">
+      <div class="progress-meta">
+        <span>Passo <strong id="currentStep">1</strong> di 6</span>
+        <span id="progressPct">17% completato</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <form id="quizForm" novalidate>
+
+      <!-- STEP 1: Obiettivo -->
+      <section class="step active" data-step="1">
+        <div class="step-eyebrow">Il tuo obiettivo</div>
+        <h2>Cosa vuoi ottenere con il tuo piano?</h2>
+        <p class="lead">Scegli l'obiettivo principale. Il piano sarà costruito intorno a questo.</p>
+        <div class="error-msg" id="err-1">Seleziona un obiettivo per continuare.</div>
+
+        <div class="card-grid">
+          <label class="card">
+            <input type="radio" name="goal" value="dimagrire" required>
+            <div class="card-content">
+              <span class="card-icon">⚖️</span>
+              <div class="card-title">Dimagrire</div>
+              <div class="card-desc">Perdere peso in modo sostenibile, mantenendo la massa muscolare.</div>
+            </div>
+          </label>
+          <label class="card">
+            <input type="radio" name="goal" value="mantenere">
+            <div class="card-content">
+              <span class="card-icon">⚖️</span>
+              <div class="card-title">Mantenere il peso</div>
+              <div class="card-desc">Stabilizzare il peso e migliorare la composizione corporea.</div>
+            </div>
+          </label>
+          <label class="card">
+            <input type="radio" name="goal" value="massa">
+            <div class="card-content">
+              <span class="card-icon">💪</span>
+              <div class="card-title">Aumentare la massa</div>
+              <div class="card-desc">Costruire muscolo con un surplus calorico controllato.</div>
+            </div>
+          </label>
+          <label class="card">
+            <input type="radio" name="goal" value="salute">
+            <div class="card-content">
+              <span class="card-icon">🌿</span>
+              <div class="card-title">Migliorare la salute</div>
+              <div class="card-desc">Energia, digestione, equilibrio — senza un focus sul peso.</div>
+            </div>
+          </label>
+        </div>
+      </section>
+
+      <!-- STEP 2: Dati personali -->
+      <section class="step" data-step="2">
+        <div class="step-eyebrow">Parlaci di te</div>
+        <h2>I tuoi dati di base.</h2>
+        <p class="lead">Servono per calcolare il tuo fabbisogno energetico secondo le formule validate (Mifflin-St Jeor).</p>
+        <div class="error-msg" id="err-2">Compila tutti i campi per continuare.</div>
+
+        <div class="field-row">
+          <div>
+            <label>Sesso biologico</label>
+            <select name="sex" required>
+              <option value="">Seleziona...</option>
+              <option value="F">Femmina</option>
+              <option value="M">Maschio</option>
+            </select>
+          </div>
+          <div>
+            <label>Età <span class="hint">(anni)</span></label>
+            <div class="input-suffix">
+              <input type="number" name="age" min="16" max="90" placeholder="32" required>
+              <span>anni</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label>Altezza</label>
+            <div class="input-suffix">
+              <input type="number" name="height" min="120" max="220" placeholder="170" required>
+              <span>cm</span>
+            </div>
+          </div>
+          <div>
+            <label>Peso attuale</label>
+            <div class="input-suffix">
+              <input type="number" name="weight" min="35" max="250" step="0.1" placeholder="68" required>
+              <span>kg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" id="targetWeightField">
+          <label>Peso obiettivo <span class="hint">(opzionale)</span></label>
+          <div class="input-suffix">
+            <input type="number" name="targetWeight" min="35" max="250" step="0.1" placeholder="63">
+            <span>kg</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3: Stile di vita -->
+      <section class="step" data-step="3">
+        <div class="step-eyebrow">Stile di vita</div>
+        <h2>Quanto ti muovi nella tua giornata?</h2>
+        <p class="lead">Questo determina il tuo fabbisogno calorico totale (TDEE), oltre al metabolismo basale.</p>
+        <div class="error-msg" id="err-3">Seleziona il tuo livello di attività e gli allenamenti.</div>
+
+        <div class="field">
+          <label>Livello di attività quotidiana</label>
+          <div class="card-grid cols-1">
+            <label class="card">
+              <input type="radio" name="activity" value="sedentario" required>
+              <div class="card-content">
+                <div class="card-title">Sedentario</div>
+                <div class="card-desc">Lavoro alla scrivania, poco movimento durante la giornata.</div>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="activity" value="leggero">
+              <div class="card-content">
+                <div class="card-title">Leggero</div>
+                <div class="card-desc">Cammino spesso, sto in piedi alcune ore al giorno.</div>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="activity" value="moderato">
+              <div class="card-content">
+                <div class="card-title">Moderato</div>
+                <div class="card-desc">Lavoro fisico leggero o cammino intensamente ogni giorno.</div>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="activity" value="intenso">
+              <div class="card-content">
+                <div class="card-title">Intenso</div>
+                <div class="card-desc">Lavoro fisico pesante o sport quotidiano.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label>Allenamenti a settimana</label>
+            <select name="workouts" required>
+              <option value="">Seleziona...</option>
+              <option value="0">Nessuno</option>
+              <option value="1-2">1-2 volte</option>
+              <option value="3-4">3-4 volte</option>
+              <option value="5-6">5-6 volte</option>
+              <option value="7+">Tutti i giorni</option>
+            </select>
+          </div>
+          <div>
+            <label>Pasti al giorno preferiti</label>
+            <select name="meals" required>
+              <option value="">Seleziona...</option>
+              <option value="3">3 pasti principali</option>
+              <option value="3+1">3 pasti + 1 spuntino</option>
+              <option value="3+2">3 pasti + 2 spuntini</option>
+              <option value="5+">5 o più pasti piccoli</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 4: Preferenze alimentari -->
+      <section class="step" data-step="4">
+        <div class="step-eyebrow">Preferenze alimentari</div>
+        <h2>Come ti piace mangiare?</h2>
+        <p class="lead">Niente diete impossibili da seguire. Costruiamo il piano sulle tue abitudini reali.</p>
+        <div class="error-msg" id="err-4">Seleziona almeno il tipo di alimentazione.</div>
+
+        <div class="field">
+          <label>Tipo di alimentazione</label>
+          <div class="card-grid">
+            <label class="card">
+              <input type="radio" name="diet" value="onnivora" required>
+              <div class="card-content">
+                <div class="card-title">Onnivora</div>
+                <div class="card-desc">Mangio di tutto.</div>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="diet" value="pescetariana">
+              <div class="card-content">
+                <div class="card-title">Pescetariana</div>
+                <div class="card-desc">Pesce sì, carne no.</div>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="diet" value="vegetariana">
+              <div class="card-content">
+                <div class="card-title">Vegetariana</div>
+                <div class="card-desc">Niente carne né pesce.</div>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="diet" value="vegana">
+              <div class="card-content">
+                <div class="card-title">Vegana</div>
+                <div class="card-desc">Solo alimenti di origine vegetale.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Protocollo specifico <span class="hint">(opzionale)</span></label>
+          <select name="protocol">
+            <option value="">Nessuno — alimentazione mediterranea bilanciata</option>
+            <option value="mediterranea">Dieta mediterranea (focus specifico)</option>
+            <option value="cheto">Chetogenica</option>
+            <option value="lowcarb">Low-carb</option>
+            <option value="if16">Digiuno intermittente 16:8</option>
+            <option value="if18">Digiuno intermittente 18:6</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Intolleranze e allergie <span class="hint">(seleziona tutte quelle che ti riguardano)</span></label>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" name="allergies" value="lattosio">Lattosio</label>
+            <label class="chip"><input type="checkbox" name="allergies" value="glutine">Glutine</label>
+            <label class="chip"><input type="checkbox" name="allergies" value="frutta_a_guscio">Frutta a guscio</label>
+            <label class="chip"><input type="checkbox" name="allergies" value="uova">Uova</label>
+            <label class="chip"><input type="checkbox" name="allergies" value="soia">Soia</label>
+            <label class="chip"><input type="checkbox" name="allergies" value="crostacei">Crostacei</label>
+            <label class="chip"><input type="checkbox" name="allergies" value="pesce">Pesce</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Cibi che proprio non vuoi mangiare <span class="hint">(opzionale)</span></label>
+          <textarea name="dislikes" placeholder="Es. cavolfiore, fegato, ricotta..."></textarea>
+        </div>
+      </section>
+
+      <!-- STEP 5: Cucina e abitudini -->
+      <section class="step" data-step="5">
+        <div class="step-eyebrow">Cucina e abitudini</div>
+        <h2>Quanto sei disposto a cucinare?</h2>
+        <p class="lead">Adattiamo le ricette al tuo tempo reale e al tuo budget. Niente piatti impossibili.</p>
+        <div class="error-msg" id="err-5">Compila tutti i campi per continuare.</div>
+
+        <div class="field">
+          <label>Tempo che puoi dedicare alla cucina</label>
+          <div class="card-grid cols-3">
+            <label class="card">
+              <input type="radio" name="cookingTime" value="poco" required>
+              <div class="card-content">
+                <span class="card-icon">⏱️</span>
+                <div class="card-title">Poco</div>
+                <div class="card-desc">Max 15 min a pasto.</div>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="cookingTime" value="medio">
+              <div class="card-content">
+                <span class="card-icon">🍳</span>
+                <div class="card-title">Medio</div>
+                <div class="card-desc">15-30 min, mi organizzo.</div>
+              </div>
+            </label>
+            <label class="card">
+              <input type="radio" name="cookingTime" value="molto">
+              <div class="card-content">
+                <span class="card-icon">👨‍🍳</span>
+                <div class="card-title">Molto</div>
+                <div class="card-desc">Mi piace cucinare bene.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label>Budget settimanale spesa</label>
+            <select name="budget" required>
+              <option value="">Seleziona...</option>
+              <option value="basso">Contenuto (€40-60)</option>
+              <option value="medio">Medio (€60-100)</option>
+              <option value="alto">Senza vincoli (oltre €100)</option>
+            </select>
+          </div>
+          <div>
+            <label>Pasti fuori casa a settimana</label>
+            <select name="mealsOut" required>
+              <option value="">Seleziona...</option>
+              <option value="0">Quasi mai</option>
+              <option value="1-2">1-2</option>
+              <option value="3-5">3-5</option>
+              <option value="6+">6 o più</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 6: Piano + email -->
+      <section class="step" data-step="6">
+        <div class="step-eyebrow">Ultimo passo</div>
+        <h2>Scegli il tuo piano.</h2>
+        <p class="lead">Il PDF arriverà entro 24 ore all'email che ci indichi.</p>
+        <div class="error-msg" id="err-6">Seleziona un piano e inserisci una email valida.</div>
+
+        <div class="plans">
+          <label class="plan">
+            <input type="radio" name="plan" value="base" required>
+            <h3>Piano Base</h3>
+            <p class="plan-tag">7 giorni · una tantum</p>
+            <div class="plan-price">€19 <small>una tantum</small></div>
+            <ul class="plan-features">
+              <li>PDF di 7 giorni</li>
+              <li>Lista della spesa</li>
+              <li>Solo alimentazione</li>
+            </ul>
+          </label>
+
+          <label class="plan featured">
+            <input type="radio" name="plan" value="completo" checked>
+            <span class="plan-pop">Il più scelto</span>
+            <h3>Piano Completo</h3>
+            <p class="plan-tag">4 settimane + allenamento</p>
+            <div class="plan-price">€29 <small>/mese</small></div>
+            <ul class="plan-features">
+              <li>4 settimane a rotazione</li>
+              <li>Programma allenamento</li>
+              <li>Check-in mensile</li>
+              <li>Supporto nutrizionisti</li>
+            </ul>
+          </label>
+
+          <label class="plan">
+            <input type="radio" name="plan" value="coach">
+            <h3>Piano Coach</h3>
+            <p class="plan-tag">12 settimane periodizzate</p>
+            <div class="plan-price">€99 <small>/mese</small></div>
+            <ul class="plan-features">
+              <li>12 settimane periodizzate</li>
+              <li>Protocolli specialistici</li>
+              <li>Check-in settimanali</li>
+              <li>Consulto incluso</li>
+            </ul>
+          </label>
+        </div>
+
+        <div class="field">
+          <label>Il tuo nome</label>
+          <input type="text" name="firstName" placeholder="Giulia" required>
+        </div>
+
+        <div class="field">
+          <label>La tua email <span class="hint">(qui ti invieremo il PDF)</span></label>
+          <input type="email" name="email" placeholder="nome@esempio.it" required>
+        </div>
+
+        <div class="summary">
+          <h3>Riepilogo del tuo profilo</h3>
+          <div class="summary-row"><span>Obiettivo</span><span id="sum-goal">—</span></div>
+          <div class="summary-row"><span>Profilo</span><span id="sum-profile">—</span></div>
+          <div class="summary-row"><span>Attività</span><span id="sum-activity">—</span></div>
+          <div class="summary-row"><span>Alimentazione</span><span id="sum-diet">—</span></div>
+          <div class="summary-row"><span>Allergie / intolleranze</span><span id="sum-allergies">—</span></div>
+          <div class="summary-row"><span>Piano scelto</span><span id="sum-plan">—</span></div>
+        </div>
+
+        <div class="trust-strip">
+          <span>Pagamento sicuro Stripe</span>
+          <span>Annullabile in qualsiasi momento</span>
+          <span>Sviluppato con nutrizionisti certificati</span>
+        </div>
+      </section>
+
+      <!-- SUCCESS -->
+      <section class="success" id="successScreen">
+        <div class="success-icon">✓</div>
+        <h2>Perfetto, <span id="successName">Giulia</span>!</h2>
+        <p>Abbiamo ricevuto le tue informazioni. Ora ti rimandiamo al pagamento sicuro tramite Stripe — appena confermato, il tuo piano <strong id="successPlan">Completo</strong> verrà generato dai nostri nutrizionisti e arriverà alla tua email entro <strong>24 ore</strong>.</p>
+        <a href="nutriscienza.html" class="btn-primary">Torna alla home</a>
+      </section>
+
+    </form>
+  </main>
+
+  <div class="stepnav" id="stepnav">
+    <div class="stepnav-inner">
+      <button type="button" class="btn-ghost" id="btnBack">← Indietro</button>
+      <button type="button" class="btn-primary" id="btnNext">Continua →</button>
+    </div>
+  </div>
+
+  <script>
+    // Punto di accesso del backend. In produzione usa lo stesso dominio o un sottodominio (es. api.nutriscienza.org).
+    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname.startsWith('127.')
+      ? 'http://localhost:8000'
+      : '';  // stesso origin in produzione
+
+    const TOTAL_STEPS = 6;
+    let currentStep = 1;
+
+    // Pre-select plan from ?piano= query param (set by landing page CTA buttons)
+    (function () {
+      const param = new URLSearchParams(window.location.search).get('piano');
+      if (param && ['base', 'completo', 'coach'].includes(param)) {
+        document.querySelectorAll('input[name="plan"]').forEach(function (r) {
+          r.checked = (r.value === param);
+        });
+      }
+    })();
+
+    const $ = (s, ctx = document) => ctx.querySelector(s);
+    const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
+
+    const form = $('#quizForm');
+    const btnNext = $('#btnNext');
+    const btnBack = $('#btnBack');
+    const stepnav = $('#stepnav');
+
+    function updateProgress() {
+      const pct = (currentStep / TOTAL_STEPS) * 100;
+      $('#progressFill').style.width = pct + '%';
+      $('#currentStep').textContent = currentStep;
+      $('#progressPct').textContent = Math.round(pct) + '% completato';
+    }
+
+    function showStep(n) {
+      $$('.step').forEach(s => s.classList.toggle('active', parseInt(s.dataset.step) === n));
+      currentStep = n;
+      btnBack.disabled = n === 1;
+      btnNext.textContent = n === TOTAL_STEPS ? 'Procedi al pagamento →' : 'Continua →';
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function validateStep(n) {
+      $('#err-' + n).classList.remove('show');
+      const stepEl = $(`.step[data-step="${n}"]`);
+      const required = $$('input[required], select[required], textarea[required]', stepEl);
+      let valid = true;
+
+      // For radio groups, check at least one selected
+      const radioGroups = new Set();
+      required.forEach(el => {
+        if (el.type === 'radio') radioGroups.add(el.name);
+      });
+
+      for (const name of radioGroups) {
+        const checked = stepEl.querySelector(`input[name="${name}"]:checked`);
+        if (!checked) valid = false;
+      }
+
+      // For non-radio required, check value
+      required.forEach(el => {
+        if (el.type !== 'radio' && !el.value.trim()) valid = false;
+        if (el.type === 'email' && el.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)) valid = false;
+      });
+
+      if (!valid) {
+        $('#err-' + n).classList.add('show');
+      }
+      return valid;
+    }
+
+    function buildSummary() {
+      const data = new FormData(form);
+      const map = {
+        dimagrire: 'Dimagrimento',
+        mantenere: 'Mantenimento',
+        massa: 'Aumento massa muscolare',
+        salute: 'Salute generale',
+      };
+      $('#sum-goal').textContent = map[data.get('goal')] || '—';
+
+      const sexRaw = data.get('sex');
+      const sex = sexRaw === 'F' ? 'Donna' : sexRaw === 'M' ? 'Uomo' : '';
+      $('#sum-profile').textContent = `${sex ? sex + ', ' : ''}${data.get('age') || '?'} anni · ${data.get('height') || '?'} cm · ${data.get('weight') || '?'} kg`;
+
+      $('#sum-activity').textContent = `${(data.get('activity') || '').replace(/^\w/, c => c.toUpperCase())} · ${data.get('workouts') || '?'} allenamenti/sett`;
+
+      const diet = data.get('diet') ? data.get('diet').replace(/^\w/, c => c.toUpperCase()) : '—';
+      const proto = data.get('protocol');
+      $('#sum-diet').textContent = diet + (proto ? ` · ${proto}` : '');
+
+      const allergies = data.getAll('allergies');
+      $('#sum-allergies').textContent = allergies.length ? allergies.join(', ') : 'Nessuna';
+
+      const planMap = { base: 'Piano Base — €19', completo: 'Piano Completo — €29/mese', coach: 'Piano Coach — €99/mese' };
+      $('#sum-plan').textContent = planMap[data.get('plan')] || '—';
+    }
+
+    btnNext.addEventListener('click', () => {
+      if (!validateStep(currentStep)) return;
+      if (currentStep === TOTAL_STEPS) {
+        // Submit
+        submitForm();
+        return;
+      }
+      const next = currentStep + 1;
+      if (next === TOTAL_STEPS) buildSummary();
+      showStep(next);
+    });
+
+    btnBack.addEventListener('click', () => {
+      if (currentStep > 1) showStep(currentStep - 1);
+    });
+
+    // Rebuild summary live on step 6 changes
+    form.addEventListener('change', () => {
+      if (currentStep === TOTAL_STEPS) buildSummary();
+    });
+
+    async function submitForm() {
+      if (!validateStep(TOTAL_STEPS)) return;
+      const data = new FormData(form);
+
+      // Costruisci il payload secondo lo schema atteso dal backend (Pydantic IntakeRequest)
+      const payload = {
+        goal: data.get('goal'),
+        sex: data.get('sex'),
+        age: parseInt(data.get('age'), 10),
+        height: parseInt(data.get('height'), 10),
+        weight: parseFloat(data.get('weight')),
+        targetWeight: data.get('targetWeight') ? parseFloat(data.get('targetWeight')) : null,
+        activity: data.get('activity'),
+        workouts: data.get('workouts'),
+        meals: data.get('meals'),
+        diet: data.get('diet'),
+        protocol: data.get('protocol') || null,
+        allergies: data.getAll('allergies'),
+        dislikes: data.get('dislikes') || null,
+        cookingTime: data.get('cookingTime'),
+        budget: data.get('budget'),
+        mealsOut: data.get('mealsOut'),
+        plan: data.get('plan'),
+        firstName: data.get('firstName'),
+        email: data.get('email'),
+      };
+
+      btnNext.disabled = true;
+      btnNext.textContent = 'Creazione sessione...';
+      $('#err-' + TOTAL_STEPS).classList.remove('show');
+
+      try {
+        const res = await fetch(`${API_BASE}/api/intake`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          const detail = await res.json().catch(() => ({}));
+          throw new Error(detail.detail || `Errore ${res.status}`);
+        }
+        const result = await res.json();
+        // Redirect a Stripe Checkout
+        window.location.href = result.checkout_url;
+      } catch (e) {
+        const errBox = $('#err-' + TOTAL_STEPS);
+        errBox.textContent = `Non siamo riusciti a creare la sessione di pagamento (${e.message}). Riprova o scrivici a supporto@nutriscienza.org`;
+        errBox.classList.add('show');
+        btnNext.disabled = false;
+        btnNext.textContent = 'Procedi al pagamento →';
+      }
+    }
+
+    // Init
+    updateProgress();
+  </script>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

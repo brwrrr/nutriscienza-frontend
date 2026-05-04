@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriScienza — Il tuo piano alimentare personalizzato, basato sulla scienza</title>
+  <meta name="description" content="Piani alimentari e di allenamento personalizzati, sviluppati con nutrizionisti certificati. Conforme alle linee guida LARN. PDF consegnato via email entro 24 ore.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #2D5F3F;
+      --green-dark: #1A2E22;
+      --green-soft: #4A8264;
+      --cream: #F5F1E8;
+      --cream-light: #FBF9F4;
+      --gold: #C9A66B;
+      --gold-dark: #A88349;
+      --text: #2A2A2A;
+      --text-muted: #6B6B6B;
+      --white: #FFFFFF;
+      --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--cream-light);
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1180px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--text); text-decoration: none; font-size: 15px; font-weight: 500; }
+    .nav-links a:hover { color: var(--green-deep); }
+    .btn-primary {
+      background: var(--green-deep); color: var(--white);
+      padding: 12px 24px; border-radius: 8px; font-weight: 600;
+      text-decoration: none; font-size: 15px; border: none; cursor: pointer;
+      display: inline-block; transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-outline {
+      background: transparent; color: var(--green-deep);
+      border: 1.5px solid var(--green-deep);
+      padding: 12px 24px; border-radius: 8px; font-weight: 600;
+      text-decoration: none; font-size: 15px; cursor: pointer;
+      display: inline-block; transition: background 0.2s;
+    }
+    .btn-outline:hover { background: var(--green-deep); color: white; }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(160deg, var(--cream-light) 0%, var(--cream) 100%);
+      padding: 72px 0 88px;
+      overflow: hidden;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    .hero-text {}
+    .badge {
+      display: inline-block;
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--green-deep);
+      margin-bottom: 24px;
+    }
+    .badge::before { content: "✓ "; color: var(--gold); font-weight: 700; }
+    .hero-text h1 {
+      font-size: clamp(34px, 4vw, 52px);
+      line-height: 1.08;
+      margin-bottom: 20px;
+    }
+    .hero-text h1 em { color: var(--green-deep); font-style: italic; }
+    .hero-text p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      max-width: 520px;
+    }
+    .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+    .hero-trust { font-size: 13px; color: var(--text-muted); }
+    .hero-trust strong { color: var(--text); }
+
+    /* Hero visual */
+    .hero-visual { position: relative; }
+    .hero-img-wrap {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.18);
+      aspect-ratio: 4/5;
+      position: relative;
+    }
+    .hero-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 8s ease;
+    }
+    .hero-img-wrap:hover img { transform: scale(1.04); }
+    .metrics-float {
+      position: absolute;
+      bottom: 28px;
+      left: -36px;
+      background: white;
+      border-radius: 16px;
+      padding: 16px 20px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+      border: 1px solid var(--border);
+      min-width: 210px;
+    }
+    .mf-label {
+      font-size: 11px; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-muted);
+      margin-bottom: 10px; font-weight: 600;
+    }
+    .mf-row {
+      display: flex; gap: 0; flex-direction: column; gap: 6px;
+    }
+    .mf-item {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 13px;
+    }
+    .mf-item .mf-name { color: var(--text-muted); }
+    .mf-item .mf-val { font-weight: 700; color: var(--green-deep); }
+    .mf-bar-wrap { height: 4px; background: var(--border); border-radius: 4px; margin-top: 10px; overflow: hidden; }
+    .mf-bar { height: 100%; background: var(--green-deep); border-radius: 4px; width: 68%; }
+    .mf-bar-caption { font-size: 11px; color: var(--text-muted); margin-top: 5px; }
+
+    .hero-badge-top {
+      position: absolute;
+      top: 24px;
+      right: -16px;
+      background: var(--gold);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Authority strip */
+    .authority {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0;
+    }
+    .authority-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      align-items: center;
+      text-align: center;
+    }
+    .authority-item { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+    .authority-item strong { display: block; color: var(--green-deep); font-size: 16px; margin-bottom: 4px; font-family: 'Playfair Display', serif; letter-spacing: 0.5px; }
+
+    /* Section base */
+    section.block { padding: 96px 0; }
+    .section-header { text-align: center; max-width: 740px; margin: 0 auto 64px; }
+    .section-eyebrow {
+      text-transform: uppercase; letter-spacing: 2px;
+      font-size: 12px; color: var(--gold-dark); font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .section-header h2 { font-size: clamp(30px, 4vw, 44px); margin-bottom: 16px; line-height: 1.15; }
+    .section-header p { font-size: 17px; color: var(--text-muted); }
+
+    /* How it works */
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .step {
+      background: var(--white); border-radius: 16px; padding: 36px 28px;
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .step:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--green-deep); color: var(--white);
+      font-weight: 700; font-size: 18px; margin-bottom: 20px;
+      font-family: 'Playfair Display', serif;
+    }
+    .step h3 { font-size: 22px; margin-bottom: 12px; }
+    .step p { color: var(--text-muted); font-size: 15px; }
+
+    /* ── PDF Preview Section ── */
+    .preview-section {
+      background: var(--cream);
+      padding: 96px 0;
+    }
+    .pdf-window-wrap {
+      position: relative;
+      max-width: 740px;
+      margin: 0 auto;
+    }
+    .pdf-example-badge {
+      position: absolute;
+      top: -16px;
+      right: 32px;
+      background: var(--gold);
+      color: white;
+      padding: 6px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 100px;
+      box-shadow: 0 4px 12px rgba(201,166,107,0.4);
+      z-index: 2;
+    }
+    .pdf-window {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.14);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .pdf-titlebar {
+      background: #EDEAE2;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .pdf-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .pdf-titlebar-name {
+      font-size: 13px; color: var(--text-muted); margin-left: 8px; font-weight: 500;
+    }
+    .pdf-body {
+      background: white;
+      padding: 40px 48px 0;
+    }
+    .pdf-header-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--green-deep);
+    }
+    .pdf-logo-txt {
+      font-family: 'Playfair Display', serif; font-size: 20px;
+      color: var(--green-deep); font-weight: 700;
+    }
+    .pdf-logo-txt span { color: var(--gold); }
+    .pdf-meta { font-size: 11.5px; color: var(--text-muted); text-align: right; line-height: 1.9; }
+    .pdf-title-section { margin-bottom: 24px; }
+    .pdf-name { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--text); margin-bottom: 4px; }
+    .pdf-subtitle { font-size: 13px; color: var(--text-muted); }
+    .pdf-macros {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px; margin-bottom: 28px;
+    }
+    .macro-box {
+      background: var(--cream-light); border-radius: 10px; padding: 14px 10px;
+      border: 1px solid var(--border); text-align: center;
+    }
+    .macro-box .m-val {
+      font-size: 22px; font-weight: 700;
+      color: var(--green-deep); font-family: 'Playfair Display', serif;
+      line-height: 1;
+    }
+    .macro-box .m-unit { font-size: 11px; color: var(--text-muted); margin-top: 1px; font-weight: 600; }
+    .macro-box .m-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+    .pdf-section-title {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
+      color: var(--gold-dark); font-weight: 700; margin-bottom: 10px;
+    }
+    .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13px; }
+    .pdf-table th {
+      background: var(--cream); padding: 8px 12px; text-align: left;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--text-muted); border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+    .pdf-table td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text); }
+    .pdf-table tr:last-child td { border-bottom: none; }
+    .pdf-fade {
+      position: relative;
+      overflow: hidden;
+    }
+    .pdf-fade::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 160px;
+      background: linear-gradient(to bottom, transparent, white);
+      pointer-events: none;
+    }
+    .pdf-cta-row {
+      padding: 24px 48px 36px;
+      text-align: center;
+      background: white;
+    }
+    .pdf-cta-row p {
+      font-size: 14px; color: var(--text-muted); margin-bottom: 16px;
+    }
+    .pdf-unlock-btn {
+      background: var(--green-deep); color: white;
+      padding: 13px 32px; border-radius: 100px;
+      font-weight: 600; font-size: 14px;
+      text-decoration: none; display: inline-block;
+      box-shadow: 0 4px 16px rgba(45,95,63,0.3);
+      transition: background 0.2s;
+    }
+    .pdf-unlock-btn:hover { background: var(--green-dark); }
+
+    /* ── Food strip ── */
+    .food-strip {
+      height: 440px;
+      position: relative;
+      overflow: hidden;
+    }
+    .food-strip img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .food-strip-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(26,46,34,0.78) 0%, rgba(45,95,63,0.42) 100%);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 24px;
+    }
+    .food-strip-inner { }
+    .food-strip-inner h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      color: white; margin-bottom: 14px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .food-strip-inner p {
+      font-size: 18px; color: rgba(255,255,255,0.88);
+      max-width: 580px; margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Pricing */
+    .pricing-bg { background: var(--cream); }
+    .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+    .tier {
+      background: var(--white); border-radius: 20px; padding: 40px 32px;
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      position: relative;
+    }
+    .tier.featured {
+      border: 2px solid var(--green-deep);
+      transform: scale(1.03);
+      box-shadow: 0 16px 48px rgba(45, 95, 63, 0.14);
+    }
+    .tier-badge {
+      position: absolute; top: -14px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold); color: var(--white);
+      padding: 6px 18px; border-radius: 100px;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.6px;
+      text-transform: uppercase; white-space: nowrap;
+    }
+    .tier h3 { font-size: 26px; margin-bottom: 6px; }
+    .tier-tag { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+    .tier-price { font-family: 'Playfair Display', serif; font-size: 48px; color: var(--green-deep); margin-bottom: 4px; line-height: 1; }
+    .tier-price small { font-size: 16px; color: var(--text-muted); font-family: 'Inter', sans-serif; font-weight: 500; }
+    .tier-cadence { color: var(--text-muted); font-size: 13px; margin-bottom: 28px; }
+    .tier-features { list-style: none; margin-bottom: 32px; flex: 1; }
+    .tier-features li {
+      padding: 11px 0; font-size: 14.5px;
+      border-bottom: 1px solid var(--border);
+      display: flex; gap: 12px; align-items: flex-start;
+      line-height: 1.45;
+    }
+    .tier-features li:last-child { border-bottom: none; }
+    .tier-features li::before {
+      content: "✓"; color: var(--green-deep); font-weight: 700;
+      flex-shrink: 0;
+    }
+    .tier .btn-primary, .tier .btn-outline { width: 100%; text-align: center; padding: 14px 24px; }
+
+    /* Authority quote */
+    .quote-block {
+      background: var(--green-dark); color: var(--white);
+      padding: 88px 0; text-align: center;
+      background-image: radial-gradient(circle at 20% 20%, rgba(201,166,107,0.12) 0%, transparent 50%);
+    }
+    .quote-block blockquote {
+      font-family: 'Playfair Display', serif; font-size: clamp(22px, 3vw, 30px);
+      font-style: italic; max-width: 820px; margin: 0 auto 24px;
+      line-height: 1.4;
+    }
+    .quote-block cite {
+      font-style: normal; font-size: 14px;
+      color: var(--gold); letter-spacing: 0.4px;
+    }
+
+    /* Testimonials */
+    .testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testimonial {
+      background: var(--white); border-radius: 16px; padding: 32px;
+      border: 1px solid var(--border);
+    }
+    .testimonial-header {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 18px;
+    }
+    .t-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+    }
+    .t-info .t-name { font-weight: 700; font-size: 14px; color: var(--text); }
+    .t-info .t-meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .stars { color: var(--gold); margin-bottom: 14px; font-size: 16px; letter-spacing: 2px; }
+    .testimonial p { font-size: 15px; color: var(--text); line-height: 1.65; }
+
+    /* FAQ */
+    .faq-bg { background: var(--cream); }
+    .faq { max-width: 760px; margin: 0 auto; }
+    .faq-item {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; margin-bottom: 12px; overflow: hidden;
+    }
+    .faq-q {
+      padding: 20px 24px; font-weight: 600; font-size: 16px;
+      cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+      list-style: none; gap: 16px;
+    }
+    .faq-q::-webkit-details-marker { display: none; }
+    .faq-q::after { content: "+"; color: var(--green-deep); font-size: 26px; font-weight: 300; line-height: 1; }
+    .faq-item[open] .faq-q::after { content: "−"; }
+    .faq-a { padding: 0 24px 22px; color: var(--text-muted); font-size: 15px; }
+
+    /* Final CTA */
+    .final-cta {
+      background: var(--green-deep); color: var(--white);
+      padding: 88px 0; text-align: center;
+    }
+    .final-cta h2 { font-size: clamp(30px, 4vw, 42px); margin-bottom: 16px; color: var(--white); }
+    .final-cta p { font-size: 18px; margin-bottom: 32px; opacity: 0.9; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .final-cta .btn-primary { background: var(--gold); color: var(--green-dark); padding: 16px 36px; font-size: 16px; }
+    .final-cta .btn-primary:hover { background: #B8965E; }
+
+    /* Footer */
+    footer { background: var(--green-dark); color: rgba(255,255,255,0.7); padding: 56px 0 32px; font-size: 14px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+    .footer-grid h4 { color: var(--white); font-family: 'Inter', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .footer-grid ul { list-style: none; }
+    .footer-grid li { margin-bottom: 8px; }
+    .footer-grid a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .footer-grid a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; font-size: 13px; }
+
+    /* ── Responsive ── */
+
+    /* Tablet / large mobile: stack hero, keep food photo */
+    @media (max-width: 960px) {
+      .hero { text-align: center; padding: 52px 0 0; }
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-ctas { justify-content: center; }
+      .hero-trust { text-align: center; }
+      .hero-text p { margin-left: auto; margin-right: auto; }
+
+      /* Hero image: full-bleed below text, 16:9 */
+      .hero-visual { margin: 0 -24px; }
+      .hero-img-wrap {
+        border-radius: 0;
+        aspect-ratio: 16 / 9;
+        box-shadow: none;
+      }
+      /* Hide floating elements that don't work stacked */
+      .metrics-float { display: none; }
+      .hero-badge-top { display: none; }
+    }
+
+    /* Mobile: core layout changes */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .steps, .tiers, .testimonials { grid-template-columns: 1fr; }
+      .tier.featured { transform: none; }
+      section.block { padding: 64px 0; }
+      .preview-section { padding: 64px 0; }
+
+      /* Footer: 2-column on tablet */
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+
+      /* Food strip */
+      .food-strip { height: 320px; }
+
+      /* PDF preview */
+      .pdf-body { padding: 24px 20px 0; }
+      .pdf-macros { grid-template-columns: repeat(2, 1fr); }
+      .pdf-cta-row { padding: 20px 20px 28px; }
+      .pdf-header-row { flex-direction: column; gap: 8px; }
+      .pdf-meta { text-align: left; }
+      /* Make table horizontally scrollable */
+      .pdf-fade { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .pdf-table { min-width: 480px; }
+    }
+
+    /* Small mobile: fine-tune typography and spacing */
+    @media (max-width: 480px) {
+      .hero { padding: 40px 0 0; }
+      .hero-text h1 { font-size: 32px; }
+      .hero-text p { font-size: 16px; }
+
+      /* Stack CTA buttons full-width */
+      .hero-ctas { flex-direction: column; align-items: stretch; gap: 12px; }
+      .hero-ctas .btn-primary,
+      .hero-ctas .btn-outline { text-align: center; }
+
+      /* Tighten sections */
+      section.block { padding: 56px 0; }
+      .preview-section { padding: 56px 0; }
+      .section-header { margin-bottom: 40px; }
+
+      /* Food strip */
+      .food-strip { height: 260px; }
+      .food-strip-inner h2 { font-size: 24px; }
+      .food-strip-inner p { font-size: 15px; }
+
+      /* Testimonials: smaller avatar */
+      .t-avatar { width: 44px; height: 44px; }
+
+      /* PDF window: slight bleed for realism */
+      .pdf-window-wrap { margin: 0 -4px; }
+      .pdf-body { padding: 20px 16px 0; }
+      .pdf-cta-row { padding: 16px 16px 24px; }
+      .pdf-name { font-size: 20px; }
+      .pdf-macros { gap: 8px; }
+      .macro-box .m-val { font-size: 18px; }
+
+      /* Pricing */
+      .tier { padding: 32px 24px; }
+
+      /* Footer: single column */
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .footer-bottom { flex-direction: column; gap: 8px; }
+
+      /* Authority: 2 columns */
+      .authority-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+
+      /* Quote */
+      .quote-block { padding: 60px 0; }
+      .final-cta { padding: 60px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo">Nutri<span>Scienza</span></a>
+      <ul class="nav-links">
+        <li><a href="#come-funziona">Come funziona</a></li>
+        <li><a href="#piani">Piani</a></li>
+        <li><a href="#scienza">La scienza</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#piani" class="btn-primary">Inizia ora</a>
+    </nav>
+  </header>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <div class="badge">Sviluppato con nutrizionisti certificati</div>
+          <h1>Il tuo piano alimentare <em>personalizzato</em>,<br>basato sulla scienza.</h1>
+          <p>Rispondi a poche domande e ricevi via email un piano nutrizionale su misura — calorie, macronutrienti, menù settimanale e lista della spesa. Conforme alle linee guida LARN.</p>
+          <div class="hero-ctas">
+            <a href="#piani" class="btn-primary">Scegli il tuo piano</a>
+            <a href="#come-funziona" class="btn-outline">Come funziona</a>
+          </div>
+          <p class="hero-trust"><strong>Oltre 12.000 italiani</strong> hanno già ricevuto il loro piano · ★ 4,8/5 su Trustpilot</p>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-badge-top">★ 4,8/5 Trustpilot</div>
+          <div class="hero-img-wrap">
+            <img
+              src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85"
+              alt="Piano alimentare personalizzato — cibo sano e colorato"
+              loading="eager"
+            />
+          </div>
+          <div class="metrics-float">
+            <div class="mf-label">Il tuo piano — settimana 1</div>
+            <div class="mf-row">
+              <div class="mf-item">
+                <span class="mf-name">Calorie giornaliere</span>
+                <span class="mf-val">1.850 kcal</span>
+              </div>
+              <div class="mf-item">
+                <span class="mf-name">Proteine</span>
+                <span class="mf-val">138 g</span>
+              </div>
+              <div class="mf-item">
+                <span class="mf-name">Carboidrati</span>
+                <span class="mf-val">210 g</span>
+              </div>
+              <div class="mf-item">
+                <span class="mf-name">Grassi</span>
+                <span class="mf-val">55 g</span>
+              </div>
+            </div>
+            <div class="mf-bar-wrap"><div class="mf-bar"></div></div>
+            <div class="mf-bar-caption">Obiettivo: −0,5 kg/settimana · Progresso: 68%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AUTHORITY STRIP ── -->
+  <section class="authority">
+    <div class="container">
+      <div class="authority-grid">
+        <div class="authority-item"><strong>LARN</strong>Linee guida ufficiali italiane per la nutrizione</div>
+        <div class="authority-item"><strong>SINU</strong>Società Italiana di Nutrizione Umana</div>
+        <div class="authority-item"><strong>CREA</strong>Centro di Ricerca Alimenti e Nutrizione</div>
+        <div class="authority-item"><strong>Ordine dei Biologi</strong>Nutrizionisti iscritti all'Ordine</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COME FUNZIONA ── -->
+  <section class="block" id="come-funziona">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Come funziona</div>
+        <h2>Tre passaggi. Nessuna app da scaricare.</h2>
+        <p>Rispondi al questionario, ricevi il PDF via email, segui il piano. Aggiornato ogni mese sulla base dei tuoi progressi reali.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Rispondi al questionario</h3>
+          <p>Sei minuti. Inserisci dati antropometrici, abitudini, preferenze alimentari, intolleranze e obiettivo: dimagrire, mantenere o aumentare la massa muscolare.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Ricevi il piano via email</h3>
+          <p>Un PDF chiaro e stampabile, con calorie e macronutrienti calcolati secondo formule validate dalla letteratura scientifica (Mifflin-St Jeor, Harris-Benedict).</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Adatta in base ai progressi</h3>
+          <p>Ogni mese rispondi al check-in: il piano si aggiorna automaticamente sui tuoi risultati reali. Niente diete copia-incolla, niente ricette inutili.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PDF PREVIEW ── -->
+  <section class="preview-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Cosa ricevi</div>
+        <h2>Un PDF professionale, fatto su misura per te.</h2>
+        <p>Non un template generico. Ogni piano è calcolato sui tuoi dati reali — peso, altezza, obiettivo, stile di vita — e firmato da un nutrizionista certificato.</p>
+      </div>
+      <div class="pdf-window-wrap">
+        <div class="pdf-example-badge">Esempio reale</div>
+        <div class="pdf-window">
+          <div class="pdf-titlebar">
+            <div class="pdf-dot" style="background:#FF5F57;"></div>
+            <div class="pdf-dot" style="background:#FEBC2E;"></div>
+            <div class="pdf-dot" style="background:#28C840;"></div>
+            <span class="pdf-titlebar-name">piano_nutrizionale_giulia_m_settimana1.pdf</span>
+          </div>
+          <div class="pdf-body">
+            <div class="pdf-header-row">
+              <div class="pdf-logo-txt">Nutri<span>Scienza</span></div>
+              <div class="pdf-meta">
+                Piano: <strong>Piano Completo</strong><br>
+                Generato da NutriScienza AI<br>
+                Data: Maggio 2026 · Settimana 1/4
+              </div>
+            </div>
+            <div class="pdf-title-section">
+              <div class="pdf-name">Piano di Giulia M.</div>
+              <div class="pdf-subtitle">Obiettivo: dimagrimento progressivo · −0,5 kg/settimana · Dieta mediterranea</div>
+            </div>
+            <div class="pdf-macros">
+              <div class="macro-box">
+                <div class="m-val">1.850</div>
+                <div class="m-unit">kcal/giorno</div>
+                <div class="m-label">Calorie</div>
+              </div>
+              <div class="macro-box">
+                <div class="m-val">138g</div>
+                <div class="m-unit">30%</div>
+                <div class="m-label">Proteine</div>
+              </div>
+              <div class="macro-box">
+                <div class="m-val">210g</div>
+                <div class="m-unit">45%</div>
+                <div class="m-label">Carboidrati</div>
+              </div>
+              <div class="macro-box">
+                <div class="m-val">55g</div>
+                <div class="m-unit">27%</div>
+                <div class="m-label">Grassi</div>
+              </div>
+            </div>
+            <div class="pdf-fade">
+              <div class="pdf-section-title">Menù settimanale — Lunedì</div>
+              <table class="pdf-table">
+                <thead>
+                  <tr>
+                    <th>Pasto</th>
+                    <th>Alimento</th>
+                    <th>Quantità</th>
+                    <th>Calorie</th>
+                    <th>Proteine</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Colazione</strong></td>
+                    <td>Yogurt greco + mirtilli + fiocchi d'avena</td>
+                    <td>150g + 80g + 40g</td>
+                    <td>320 kcal</td>
+                    <td>22g</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Spuntino</strong></td>
+                    <td>Mandorle + mela</td>
+                    <td>20g + 150g</td>
+                    <td>195 kcal</td>
+                    <td>5g</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pranzo</strong></td>
+                    <td>Pasta integrale al pomodoro + petto di pollo</td>
+                    <td>80g + 120g</td>
+                    <td>540 kcal</td>
+                    <td>48g</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Merenda</strong></td>
+                    <td>Ricotta + frutta di stagione</td>
+                    <td>100g + 100g</td>
+                    <td>180 kcal</td>
+                    <td>12g</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Cena</strong></td>
+                    <td>Salmone al forno + verdure grigliate + riso</td>
+                    <td>150g + 200g + 60g</td>
+                    <td>615 kcal</td>
+                    <td>51g</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="pdf-section-title" style="margin-top: 8px;">Lista della spesa · settimana 1</div>
+              <table class="pdf-table">
+                <thead>
+                  <tr><th>Categoria</th><th>Prodotto</th><th>Quantità</th><th>Note</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>Proteine</strong></td><td>Petto di pollo</td><td>600g</td><td>Fresco o surgelato</td></tr>
+                  <tr><td></td><td>Salmone</td><td>400g</td><td>Atlantico o norvegese</td></tr>
+                  <tr><td><strong>Carboidrati</strong></td><td>Pasta integrale</td><td>500g</td><td>Marca a scelta</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="pdf-cta-row">
+            <p>Il documento completo include 7 giorni di menù, lista della spesa e note scientifiche sui macronutrienti.</p>
+            <a href="#piani" class="pdf-unlock-btn">Ottieni il tuo piano completo →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRICING ── -->
+  <section class="block pricing-bg" id="piani">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">I piani</div>
+        <h2>Scegli il livello di accompagnamento.</h2>
+        <p>Tutti i piani includono il calcolo personalizzato di calorie e macronutrienti, la lista della spesa e la consegna via email entro 24 ore.</p>
+      </div>
+      <div class="tiers">
+
+        <div class="tier">
+          <h3>Piano Base</h3>
+          <p class="tier-tag">Per iniziare in modo intelligente</p>
+          <div class="tier-price">€19 <small>una tantum</small></div>
+          <p class="tier-cadence">Pagamento singolo · nessun abbonamento</p>
+          <ul class="tier-features">
+            <li>PDF personalizzato di 7 giorni</li>
+            <li>Calcolo calorie e macronutrienti secondo LARN</li>
+            <li>Menù completo: colazione, pranzo, cena, spuntini</li>
+            <li>Lista della spesa settimanale</li>
+            <li>Consigli nutrizionali essenziali</li>
+            <li>Consegna via email entro 24 ore</li>
+          </ul>
+          <a href="questionario.html?piano=base" class="btn-outline">Acquista Piano Base</a>
+        </div>
+
+        <div class="tier featured">
+          <div class="tier-badge">Il più scelto</div>
+          <h3>Piano Completo</h3>
+          <p class="tier-tag">Alimentazione + allenamento, ogni mese rinnovato</p>
+          <div class="tier-price">€29 <small>/mese</small></div>
+          <p class="tier-cadence">Annullabile in qualsiasi momento</p>
+          <ul class="tier-features">
+            <li>Piano alimentare di 4 settimane a rotazione</li>
+            <li><strong>Programma di allenamento personalizzato</strong> in base all'obiettivo</li>
+            <li>Ricette varie e bilanciate, 100% mediterranee</li>
+            <li>Liste della spesa settimanali</li>
+            <li>Check-in mensile e ricalibrazione del piano</li>
+            <li>Email di supporto da nutrizionisti certificati</li>
+            <li>Approccio scientificamente validato</li>
+          </ul>
+          <a href="questionario.html?piano=completo" class="btn-primary">Inizia il Piano Completo</a>
+        </div>
+
+        <div class="tier">
+          <h3>Piano Coach</h3>
+          <p class="tier-tag">Per chi vuole risultati seri</p>
+          <div class="tier-price">€99 <small>/mese</small></div>
+          <p class="tier-cadence">Consigliato dai nostri nutrizionisti</p>
+          <ul class="tier-features">
+            <li>Tutto del Piano Completo</li>
+            <li>Programma periodizzato di 12 settimane (dieta + allenamento)</li>
+            <li>Protocolli specialistici: chetogenica, vegana, sportiva, IF</li>
+            <li>Guida agli integratori basata su evidenze scientifiche</li>
+            <li>Check-in settimanali con adattamento del piano</li>
+            <li>Supporto prioritario via email (risposta in 24 ore)</li>
+            <li>Consulto iniziale con nutrizionista incluso</li>
+          </ul>
+          <a href="questionario.html?piano=coach" class="btn-outline">Inizia il Piano Coach</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AUTHORITY QUOTE ── -->
+  <section class="quote-block" id="scienza">
+    <div class="container">
+      <blockquote>"Un piano alimentare funziona solo se è personalizzato sui dati reali della persona e calibrato nel tempo. Questa è la differenza tra una dieta scaricata da internet e un metodo serio."</blockquote>
+      <cite>— Metodo NutriScienza · Basato sulle linee guida LARN / SINU</cite>
+    </div>
+  </section>
+
+  <!-- ── FOOD STRIP ── -->
+  <div class="food-strip">
+    <img
+      src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1600&q=85"
+      alt="Cibo sano e colorato — cucina mediterranea"
+      loading="lazy"
+    />
+    <div class="food-strip-overlay">
+      <div class="food-strip-inner">
+        <h2>Mangiare bene non significa rinunciare.</h2>
+        <p>I nostri piani includono pasta, pane, dolci nel weekend — bilanciati sui tuoi obiettivi. La dieta mediterranea che funziona davvero.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TESTIMONIALS ── -->
+  <section class="block">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Chi ci ha provato</div>
+        <h2>Risultati veri, in tempi ragionevoli.</h2>
+      </div>
+      <div class="testimonials">
+
+        <div class="testimonial">
+          <div class="testimonial-header">
+            <img
+              class="t-avatar"
+              src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=120&q=80"
+              alt="Giulia M."
+            />
+            <div class="t-info">
+              <div class="t-name">Giulia M., 34 anni</div>
+              <div class="t-meta">Milano · Piano Completo</div>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>"Ho provato decine di diete trovate online. Questa è la prima che mi è sembrata fatta davvero per me — calorie, orari, perfino la pasta della domenica. In 3 mesi ho perso 8 chili senza sentirmi a dieta."</p>
+        </div>
+
+        <div class="testimonial">
+          <div class="testimonial-header">
+            <img
+              class="t-avatar"
+              src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80"
+              alt="Marco R."
+            />
+            <div class="t-info">
+              <div class="t-name">Marco R., 41 anni</div>
+              <div class="t-meta">Roma · Piano Coach</div>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>"Da ex-rugbista ho sempre fatto fatica con la nutrizione sportiva. Il Piano Coach mi ha dato un protocollo periodizzato che ha senso. Forza in palestra +15% in 10 settimane."</p>
+        </div>
+
+        <div class="testimonial">
+          <div class="testimonial-header">
+            <img
+              class="t-avatar"
+              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=120&q=80"
+              alt="Francesca L."
+            />
+            <div class="t-info">
+              <div class="t-name">Francesca L., 28 anni</div>
+              <div class="t-meta">Bologna · Piano Base</div>
+            </div>
+          </div>
+          <div class="stars">★★★★★</div>
+          <p>"Volevo solo capire quante calorie mangiare. Il Piano Base è arrivato in poche ore, chiaro, senza fronzoli. Lista della spesa inclusa. Ottimo rapporto qualità-prezzo."</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="block faq-bg" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Domande frequenti</div>
+        <h2>Le risposte che cerchi.</h2>
+      </div>
+      <div class="faq">
+        <details class="faq-item">
+          <summary class="faq-q">I piani sono davvero validati da nutrizionisti?</summary>
+          <div class="faq-a">Sì. Tutti i nostri protocolli sono sviluppati e revisionati da biologi nutrizionisti iscritti all'Ordine, conformi alle linee guida LARN della Società Italiana di Nutrizione Umana (SINU). Ogni piano segue criteri scientifici riconosciuti per il calcolo del fabbisogno energetico e la ripartizione dei macronutrienti.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">In quanto tempo ricevo il PDF?</summary>
+          <div class="faq-a">Entro 24 ore dall'invio del questionario, direttamente all'indirizzo email che ci hai indicato. Spesso lo riceverai in poche ore.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Posso annullare l'abbonamento quando voglio?</summary>
+          <div class="faq-a">Sì, in qualsiasi momento, dal tuo account. Nessun vincolo, nessun costo nascosto. Mantieni l'accesso al piano in corso fino alla fine del ciclo già pagato.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Va bene anche per intolleranze, allergie o diete particolari?</summary>
+          <div class="faq-a">Certo. Nel questionario puoi indicare intolleranze (lattosio, glutine), preferenze (vegetariano, vegano, pescetariano) e protocolli specifici (chetogenica, mediterranea, IF) — il piano sarà costruito coerentemente con i tuoi vincoli.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Sostituisce il parere di un medico?</summary>
+          <div class="faq-a">No. NutriScienza fornisce piani nutrizionali educativi basati su linee guida riconosciute, e non sostituisce visite mediche, dietologiche o terapie personalizzate per condizioni patologiche. In presenza di patologie consulta sempre il tuo medico curante.</div>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-q">Posso pagare con bonifico o solo con carta?</summary>
+          <div class="faq-a">Accettiamo carte di credito/debito, Apple Pay, Google Pay e PayPal. Il pagamento è gestito tramite Stripe, criptato e sicuro al 100%.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FINAL CTA ── -->
+  <section class="final-cta">
+    <div class="container">
+      <h2>Inizia oggi. Il primo PDF arriva entro 24 ore.</h2>
+      <p>Sei minuti di questionario. Un piano serio, basato sulla scienza, costruito sui tuoi numeri.</p>
+      <a href="#piani" class="btn-primary">Scegli il tuo piano</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="logo" style="color: white; margin-bottom: 12px; display: inline-block;">Nutri<span>Scienza</span></a>
+          <p style="max-width: 340px; margin-top: 8px;">Piani alimentari personalizzati, basati sulla scienza, sviluppati con nutrizionisti certificati. Conformi alle linee guida LARN.</p>
+        </div>
+        <div>
+          <h4>Prodotto</h4>
+          <ul>
+            <li><a href="#piani">Piani</a></li>
+            <li><a href="#come-funziona">Come funziona</a></li>
+            <li><a href="#scienza">La scienza</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Azienda</h4>
+          <ul>
+            <li><a href="#scienza">Chi siamo</a></li>
+            <li><a href="mailto:supporto@nutriscienza.org">Contatti</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Legale</h4>
+          <ul>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="termini-e-condizioni.html">Termini e condizioni</a></li>
+            <li><a href="cookie-policy.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 NutriScienza</span>
+        <span>Made in Italy · Scientificamente validato</span>
+      </div>
+    </div>
+  </footer>
+<script src="cookie-banner.js"></script>
+</body>
+</html>

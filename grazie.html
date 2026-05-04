@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriScienza — Grazie! Il tuo piano sta arrivando</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #2D5F3F;
+      --green-dark: #1A2E22;
+      --green-soft: #4A8264;
+      --green-tint: #E8F0EB;
+      --cream: #F5F1E8;
+      --cream-light: #FBF9F4;
+      --gold: #C9A66B;
+      --text: #2A2A2A;
+      --text-muted: #6B6B6B;
+      --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background: var(--cream-light);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+
+    header {
+      background: white; border-bottom: 1px solid var(--border); padding: 18px 24px;
+    }
+    .nav { max-width: 980px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+
+    main {
+      flex: 1;
+      max-width: 640px; margin: 0 auto; padding: 80px 24px;
+      text-align: center;
+    }
+
+    .check-circle {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: var(--green-tint); color: var(--green-deep);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 32px;
+      animation: pop 0.5s cubic-bezier(0.18, 1.25, 0.6, 1);
+    }
+    .check-circle svg { width: 44px; height: 44px; stroke: var(--green-deep); stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    @keyframes pop { 0% { transform: scale(0.4); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+    .eyebrow {
+      text-transform: uppercase; letter-spacing: 2px;
+      font-size: 12px; color: var(--gold); font-weight: 700;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: clamp(32px, 5vw, 44px); margin-bottom: 18px; line-height: 1.15; }
+    .lead {
+      font-size: 18px; color: var(--text-muted);
+      max-width: 520px; margin: 0 auto 36px;
+    }
+
+    .timeline {
+      background: white; border: 1px solid var(--border); border-radius: 16px;
+      padding: 28px 32px; margin: 32px 0; text-align: left;
+    }
+    .timeline h2 {
+      font-family: 'Inter', sans-serif; font-size: 13px; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--gold); font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .step {
+      display: flex; gap: 16px; padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step-icon {
+      flex-shrink: 0;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--green-tint);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--green-deep); font-weight: 700; font-size: 14px;
+    }
+    .step.done .step-icon { background: var(--green-deep); color: white; }
+    .step.active .step-icon {
+      background: white; border: 2px solid var(--green-deep); color: var(--green-deep);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(45,95,63,0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(45,95,63,0); }
+    }
+    .step-content { flex: 1; }
+    .step-content strong { display: block; color: var(--text); font-size: 15px; margin-bottom: 2px; }
+    .step-content span { color: var(--text-muted); font-size: 14px; }
+
+    .info-card {
+      background: var(--cream); border-left: 3px solid var(--gold);
+      padding: 18px 22px; border-radius: 0 8px 8px 0;
+      text-align: left; margin: 24px 0; font-size: 14px; line-height: 1.6;
+    }
+    .info-card strong { color: var(--green-deep); }
+
+    .ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+    .btn-primary {
+      background: var(--green-deep); color: white;
+      padding: 14px 28px; border-radius: 10px;
+      font-weight: 600; text-decoration: none; font-size: 15px;
+    }
+    .btn-outline {
+      background: transparent; color: var(--green-deep);
+      border: 1.5px solid var(--green-deep);
+      padding: 14px 28px; border-radius: 10px;
+      font-weight: 600; text-decoration: none; font-size: 15px;
+    }
+
+    footer {
+      background: var(--green-dark); color: rgba(255,255,255,0.7);
+      padding: 24px; text-align: center; font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav">
+      <a href="nutriscienza.html" class="logo">Nutri<span>Scienza</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="check-circle" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg>
+    </div>
+    <div class="eyebrow">Pagamento confermato</div>
+    <h1>Grazie! Stiamo preparando il tuo piano.</h1>
+    <p class="lead">Il tuo nutrizionista virtuale sta personalizzando il piano sui tuoi numeri reali. Riceverai il PDF via email entro <strong>24 ore</strong>, ma di solito arriva in pochi minuti.</p>
+
+    <div class="timeline">
+      <h2>Cosa succede adesso</h2>
+      <div class="step done">
+        <div class="step-icon">✓</div>
+        <div class="step-content">
+          <strong>Pagamento ricevuto</strong>
+          <span>Conferma Stripe arrivata. Una ricevuta è già nella tua email.</span>
+        </div>
+      </div>
+      <div class="step active">
+        <div class="step-icon">2</div>
+        <div class="step-content">
+          <strong>Generazione del piano</strong>
+          <span>Calcoliamo calorie e macro, poi costruiamo il menù delle 7 giornate.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">3</div>
+        <div class="step-content">
+          <strong>Email con il PDF</strong>
+          <span>Riceverai il piano personalizzato in allegato all'indirizzo che hai indicato.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <strong>Non vedi l'email entro 30 minuti?</strong><br>
+      Controlla la cartella Spam / Promozioni. Se non c'è, scrivici a <a href="mailto:supporto@nutriscienza.org" style="color: var(--green-deep);">supporto@nutriscienza.org</a> indicando il numero d'ordine — lo trovi nella ricevuta Stripe.
+    </div>
+
+    <div class="ctas">
+      <a href="nutriscienza.html" class="btn-outline">Torna alla home</a>
+      <a href="mailto:supporto@nutriscienza.org" class="btn-primary">Contatta il supporto</a>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 NutriScienza S.r.l. · Conforme alle linee guida LARN
+  </footer>
+
+  <script>
+    // ── Polling live dello stato ordine ────────────────────────────────────────
+    const params    = new URLSearchParams(window.location.search);
+    const orderId   = params.get('order_id');
+    const sessionId = params.get('session_id');
+
+    // Mostra riferimento ordine per il supporto
+    if (orderId || sessionId) {
+      const ref = orderId || sessionId;
+      const small = document.createElement('p');
+      small.style.cssText = 'font-size:11px;color:var(--text-muted);margin-top:24px;font-family:monospace;';
+      small.textContent = 'Riferimento ordine: ' + ref.slice(0, 24) + '…';
+      document.querySelector('main').appendChild(small);
+    }
+
+    // Mappa stato backend → indice step completato (0-based, -1 = errore)
+    const STATUS_STEP = {
+      'pending_payment': 0,
+      'paid':            1,
+      'generating':      1,
+      'sent':            3,   // tutti e 3 completati
+      'failed':         -1,
+    };
+
+    function applyStep(completedUpTo) {
+      document.querySelectorAll('.step').forEach(function(el, i) {
+        el.classList.remove('done', 'active');
+        const icon = el.querySelector('.step-icon');
+        if (i < completedUpTo) {
+          el.classList.add('done');
+          icon.textContent = '✓';
+        } else if (i === completedUpTo) {
+          el.classList.add('active');
+          icon.textContent = String(i + 1);
+        } else {
+          icon.textContent = String(i + 1);
+        }
+      });
+    }
+
+    function showError() {
+      const errBox = document.createElement('div');
+      errBox.className = 'info-card';
+      errBox.style.cssText += 'border-left-color:#C44;';
+      errBox.innerHTML = '<strong style="color:#C44;">Si è verificato un problema nella generazione.</strong><br>' +
+        'Non preoccuparti — il pagamento è andato a buon fine. ' +
+        'Scrivi a <a href="mailto:supporto@nutriscienza.org" style="color:var(--green-deep);">supporto@nutriscienza.org</a> ' +
+        'con il riferimento ordine indicato qui sotto e riceverai il piano manualmente entro pochi minuti.';
+      document.querySelector('.timeline').insertAdjacentElement('afterend', errBox);
+    }
+
+    let pollTimer;
+    let attempts = 0;
+    const MAX_ATTEMPTS = 40;  // 40 × 4 s = ~2,5 min poi si ferma
+
+    function poll() {
+      if (attempts++ >= MAX_ATTEMPTS) { clearInterval(pollTimer); return; }
+
+      fetch('/api/orders/' + orderId)
+        .then(function(r) { return r.ok ? r.json() : null; })
+        .then(function(data) {
+          if (!data) return;
+          var step = (STATUS_STEP[data.status] !== undefined) ? STATUS_STEP[data.status] : 0;
+          if (step === -1) {
+            clearInterval(pollTimer);
+            applyStep(0);
+            showError();
+            return;
+          }
+          applyStep(step);
+          if (data.status === 'sent') {
+            clearInterval(pollTimer);
+            var step3 = document.querySelectorAll('.step')[2];
+            if (step3) step3.querySelector('span').textContent = 'Email inviata! Controlla la casella (anche spam).';
+          }
+        })
+        .catch(function() { /* silenzio — riprova al prossimo tick */ });
+    }
+
+    if (orderId) {
+      applyStep(1);       // pagamento già confermato, mostra step 2 attivo
+      poll();
+      pollTimer = setInterval(poll, 4000);
+    }
+  </script>
+  <script src="cookie-banner.js"></script>
+</body>
+</html>

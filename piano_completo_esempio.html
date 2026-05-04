@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriScienza — Piano Completo · Giulia M.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-deep: #2D5F3F; --green-dark: #1A2E22; --green-soft: #4A8264;
+      --green-tint: #E8F0EB; --cream: #F5F1E8; --cream-light: #FBF9F4;
+      --gold: #C9A66B; --gold-dark: #A88349;
+      --text: #2A2A2A; --text-muted: #6B6B6B; --white: #FFFFFF; --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      color: var(--text); line-height: 1.55;
+      background: #d8d5d0;
+      -webkit-font-smoothing: antialiased;
+      font-size: 10.5pt;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+
+    /* Toolbar */
+    .toolbar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--green-deep); color: white;
+      padding: 12px 24px; text-align: center; font-size: 14px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      font-family: 'Inter', sans-serif;
+    }
+    .toolbar button {
+      background: var(--gold); color: var(--green-dark);
+      border: none; padding: 8px 18px; border-radius: 6px;
+      font-weight: 600; cursor: pointer; font-family: inherit; font-size: 13px;
+    }
+    .toolbar button:hover { background: #B8965E; }
+
+    /* A4 pages */
+    .page {
+      width: 210mm; min-height: 297mm;
+      padding: 18mm 18mm 22mm;
+      margin: 24px auto;
+      background: white;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+      position: relative;
+      page-break-after: always;
+      overflow: hidden;
+    }
+    .page:last-child { page-break-after: auto; }
+
+    /* Running header */
+    .page-header {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 14mm; padding: 6mm 18mm 0;
+      border-bottom: 0.5px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 9pt;
+    }
+    .page-header .top-bar { position: absolute; top: 0; left: 0; right: 0; height: 4mm; background: var(--green-deep); }
+    .page-header .brand { color: var(--green-deep); font-weight: 700; font-size: 10pt; }
+    .page-header .brand-sub { color: var(--text-muted); font-weight: 400; margin-left: 8px; font-size: 9pt; }
+    .page-header .url { color: var(--text-muted); font-size: 8.5pt; }
+    .page-content { padding-top: 10mm; }
+
+    /* Running footer */
+    .page-footer {
+      position: absolute; bottom: 10mm; left: 18mm; right: 18mm;
+      padding-top: 4mm; border-top: 0.4px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-size: 8pt; color: var(--text-muted);
+    }
+
+    /* ══ COVER ══ */
+    .page.cover { padding: 0; }
+    .cover-inner { position: relative; height: 297mm; }
+    .cover-top-bar { position: absolute; top: 0; left: 0; right: 0; height: 6mm; background: var(--green-deep); }
+    .cover-bg { position: absolute; top: 0; left: 0; right: 0; height: 52%; background: var(--cream); }
+    .cover-content { position: relative; z-index: 1; padding: 14mm 18mm 0; }
+    .cover-logo { font-family: 'Playfair Display', serif; font-size: 18pt; font-weight: 700; color: var(--green-deep); margin-bottom: 30mm; }
+    .cover-logo span { color: var(--gold); }
+    .cover-plan-tag {
+      display: inline-block; background: var(--gold); color: white;
+      padding: 2mm 6mm; border-radius: 100mm;
+      font-size: 9pt; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; margin-bottom: 8mm;
+    }
+    .cover-eyebrow { text-transform: uppercase; letter-spacing: 3px; font-size: 9pt; color: var(--gold-dark); font-weight: 700; margin-bottom: 8mm; }
+    .cover-title { font-size: 42pt; line-height: 1.05; color: var(--green-deep); font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.02em; }
+    .cover-title .soft { color: var(--green-soft); display: block; }
+    .cover-rule { width: 25mm; height: 2px; background: var(--gold); margin: 8mm 0 5mm; }
+    .cover-subtitle { font-size: 10.5pt; color: var(--text-muted); max-width: 130mm; line-height: 1.6; }
+
+    .customer-card {
+      position: absolute; left: 18mm; right: 18mm; top: 170mm;
+      background: white; border: 0.6px solid var(--border);
+      border-radius: 4mm; padding: 10mm 12mm; z-index: 2;
+      box-shadow: 0 2mm 8mm rgba(0,0,0,0.07);
+    }
+    .customer-card .label { font-size: 8pt; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 2mm; }
+    .customer-card h2 { font-size: 22pt; color: var(--green-deep); margin-bottom: 1.5mm; }
+    .customer-card .meta { font-size: 11pt; color: var(--text-muted); margin-bottom: 6mm; padding-bottom: 6mm; border-bottom: 0.4px solid var(--border); }
+    .customer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8mm; }
+    .customer-grid div h4 { font-size: 8pt; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5mm; font-family: 'Inter', sans-serif; }
+    .customer-grid div p { font-size: 11pt; color: var(--text); }
+
+    .cover-authority { position: absolute; left: 0; right: 0; bottom: 16mm; text-align: center; font-size: 9pt; color: var(--text-muted); padding: 0 18mm; }
+    .cover-authority p { margin-bottom: 1mm; }
+    .cover-bottom-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 6mm; background: var(--green-deep); }
+    .cover-bottom-bar2 { position: absolute; bottom: 6mm; left: 0; right: 0; height: 1.5mm; background: var(--gold); }
+
+    /* ══ Typography ══ */
+    .eyebrow { text-transform: uppercase; letter-spacing: 2px; font-size: 8.5pt; color: var(--gold-dark); font-weight: 700; margin-bottom: 4mm; }
+    h1.section { font-size: 26pt; color: var(--green-deep); margin-bottom: 5mm; line-height: 1.15; }
+    h2.section { font-size: 14pt; color: var(--green-deep); margin: 7mm 0 3mm; }
+    h3.section { font-size: 11pt; color: var(--green-deep); margin: 4mm 0 2mm; font-family: 'Playfair Display', serif; }
+    .lead { font-size: 11pt; color: var(--text-muted); margin-bottom: 6mm; line-height: 1.6; }
+    p.justify { text-align: justify; font-size: 10pt; margin-bottom: 3.5mm; }
+
+    /* Profile table */
+    table.data { width: 100%; border-collapse: collapse; margin-bottom: 7mm; background: var(--cream-light); }
+    table.data td { padding: 3mm 4mm; border: 0.4px solid var(--border); font-size: 10pt; }
+    table.data td.label { font-weight: 700; width: 22%; background: var(--cream); }
+
+    /* Metric cards */
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; margin-bottom: 6mm; }
+    .metric { background: var(--cream-light); border: 0.5px solid var(--border); border-radius: 3mm; padding: 5mm 5mm; }
+    .metric .ml { font-size: 7.5pt; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.5mm; }
+    .metric .mv { font-size: 17pt; color: var(--green-deep); font-weight: 700; font-family: 'Playfair Display', serif; line-height: 1; margin-bottom: 1mm; }
+    .metric .ms { font-size: 8.5pt; color: var(--text-muted); }
+
+    .metrics3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin-bottom: 6mm; }
+
+    /* Macro bar */
+    .macro-bar-wrap { margin-bottom: 6mm; }
+    .macro-bar-row { display: flex; align-items: center; gap: 4mm; margin-bottom: 2.5mm; font-size: 9.5pt; }
+    .macro-bar-label { width: 28mm; font-weight: 600; }
+    .macro-bar-track { flex: 1; height: 5mm; background: var(--border); border-radius: 1mm; overflow: hidden; }
+    .macro-bar-fill { height: 100%; border-radius: 1mm; }
+    .macro-bar-val { width: 22mm; text-align: right; color: var(--text-muted); }
+
+    /* Callout */
+    .callout { background: var(--green-tint); border-left: 1mm solid var(--green-deep); padding: 4mm 6mm; border-radius: 0 2mm 2mm 0; margin: 4mm 0; }
+    .callout.gold { background: var(--cream); border-left-color: var(--gold); }
+    .callout h4 { font-size: 10.5pt; color: var(--green-deep); margin-bottom: 1.5mm; font-family: 'Inter', sans-serif; font-weight: 700; }
+    .callout.gold h4 { color: var(--gold-dark); }
+    .callout p, .callout li { font-size: 9.5pt; margin: 0; line-height: 1.6; }
+    .callout ul { padding-left: 5mm; margin-top: 2mm; }
+
+    /* Week tabs */
+    .week-label {
+      display: inline-block; background: var(--green-deep); color: white;
+      padding: 2mm 6mm; border-radius: 100mm;
+      font-size: 9pt; font-weight: 700; letter-spacing: 0.5px;
+      margin-bottom: 5mm; text-transform: uppercase;
+    }
+    .week-label.w2 { background: var(--green-soft); }
+    .week-label.w3 { background: var(--gold-dark); }
+    .week-label.w4 { background: #5C8B72; }
+
+    /* Day meal block */
+    .day { margin-bottom: 5.5mm; page-break-inside: avoid; }
+    .day-header {
+      background: var(--green-deep); color: white;
+      padding: 2.5mm 5mm; font-weight: 700; font-size: 10.5pt;
+      border-radius: 2mm 2mm 0 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .day-header span:last-child { font-size: 8.5pt; font-weight: 500; opacity: 0.88; }
+    .day-header.alt { background: var(--green-soft); }
+    .day-header.weekend { background: var(--gold-dark); }
+    table.meals {
+      width: 100%; border-collapse: collapse;
+      border: 0.5px solid var(--border); border-top: none;
+      font-size: 9.5pt;
+    }
+    table.meals td { padding: 2.5mm 4mm; vertical-align: top; border-bottom: 0.3px solid var(--border); }
+    table.meals tr:last-child td { border-bottom: none; }
+    table.meals td.meal-name { width: 20%; font-weight: 700; color: var(--green-deep); }
+    table.meals td.food { width: 50%; }
+    table.meals td.qty { width: 16%; color: var(--text-muted); font-size: 9pt; }
+    table.meals td.kcal { width: 14%; text-align: right; color: var(--text-muted); font-size: 9pt; white-space: nowrap; }
+    table.meals td.kcal strong { color: var(--green-deep); font-family: 'Playfair Display', serif; font-size: 11pt; }
+    table.meals tr.day-total td { background: var(--cream-light); font-weight: 700; font-size: 9pt; border-top: 0.5px solid var(--border); }
+
+    /* Two-column day layout */
+    .days-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+
+    /* Workout */
+    .workout-day { margin-bottom: 7mm; page-break-inside: avoid; }
+    .workout-header {
+      background: var(--green-deep); color: white;
+      padding: 3mm 5mm; border-radius: 2mm 2mm 0 0;
+      display: flex; justify-content: space-between;
+    }
+    .workout-header h3 { color: white; font-size: 11pt; margin: 0; font-family: 'Playfair Display', serif; }
+    .workout-header span { font-size: 9pt; opacity: 0.85; font-family: 'Inter', sans-serif; align-self: center; }
+    table.exercises {
+      width: 100%; border-collapse: collapse;
+      border: 0.5px solid var(--border); border-top: none; font-size: 9.5pt;
+    }
+    table.exercises th { background: var(--cream); padding: 2.5mm 4mm; text-align: left; font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); border-bottom: 0.5px solid var(--border); }
+    table.exercises td { padding: 2.5mm 4mm; border-bottom: 0.3px solid var(--border); vertical-align: middle; }
+    table.exercises tr:last-child td { border-bottom: none; }
+    table.exercises td.ex-name { font-weight: 600; }
+    table.exercises td.ex-sets { text-align: center; color: var(--green-deep); font-weight: 700; }
+    table.exercises td.ex-reps { text-align: center; }
+    table.exercises td.ex-rest { text-align: center; color: var(--text-muted); font-size: 9pt; }
+    table.exercises td.ex-note { font-size: 9pt; color: var(--text-muted); font-style: italic; }
+    .ex-group { padding: 2mm 4mm; background: var(--green-tint); font-weight: 700; font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1px; color: var(--green-deep); border-bottom: 0.3px solid var(--border); }
+
+    /* Shopping list */
+    .shop-col { column-count: 3; column-gap: 6mm; margin-bottom: 5mm; }
+    .shop-cat { break-inside: avoid; margin-bottom: 4mm; }
+    .shop-cat h4 { font-size: 9.5pt; font-weight: 700; color: var(--green-deep); margin-bottom: 2mm; padding-bottom: 1mm; border-bottom: 0.5px solid var(--border); font-family: 'Inter', sans-serif; text-transform: uppercase; letter-spacing: 0.8px; }
+    .shop-cat ul { list-style: none; }
+    .shop-cat li { font-size: 9pt; padding: 0.8mm 0 0.8mm 4mm; position: relative; line-height: 1.45; border-bottom: 0.3px solid var(--border); color: var(--text); }
+    .shop-cat li:last-child { border-bottom: none; }
+    .shop-cat li::before { content: "□"; position: absolute; left: 0; color: var(--green-deep); font-size: 8pt; }
+    .shop-cat li span { color: var(--text-muted); font-size: 8.5pt; }
+
+    /* Tip boxes */
+    .tip-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-bottom: 5mm; }
+    .tip-box { background: var(--cream-light); border: 0.5px solid var(--border); border-radius: 2mm; padding: 5mm 6mm; }
+    .tip-box h4 { font-size: 10pt; color: var(--green-deep); margin-bottom: 2mm; font-family: 'Playfair Display', serif; }
+    .tip-box p, .tip-box li { font-size: 9pt; color: var(--text); line-height: 1.6; }
+    .tip-box ul { padding-left: 5mm; margin-top: 2mm; }
+
+    /* Disclaimer */
+    .disclaimer { background: var(--cream); border-left: 1mm solid var(--gold); padding: 5mm 7mm; margin: 6mm 0; font-size: 9pt; line-height: 1.55; }
+    .disclaimer h4 { font-family: 'Inter', sans-serif; font-weight: 700; color: var(--gold-dark); font-size: 9.5pt; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2.5mm; }
+
+    /* Signature */
+    .signature { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; padding-top: 5mm; border-top: 0.5px solid var(--border); margin-top: 6mm; font-size: 9.5pt; }
+    .signature strong { color: var(--green-deep); }
+    .sig-line { border-bottom: 0.5px solid var(--text-muted); height: 10mm; margin-bottom: 2mm; }
+
+    /* Progress tracker */
+    .progress-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; margin-bottom: 5mm; }
+    .progress-table th { background: var(--green-deep); color: white; padding: 2.5mm 4mm; font-size: 8.5pt; font-weight: 600; }
+    .progress-table td { padding: 4mm 4mm; border: 0.4px solid var(--border); text-align: center; }
+    .progress-table td.week-col { font-weight: 700; color: var(--green-deep); background: var(--cream-light); text-align: left; }
+    .progress-table td.input { background: #FAFAFA; color: var(--text-muted); font-style: italic; font-size: 9pt; }
+
+    /* ══ PRINT ══ */
+    @page { size: A4; margin: 0; }
+    @media print {
+      body { background: white; }
+      .toolbar { display: none; }
+      .page { margin: 0; box-shadow: none; page-break-after: always; width: 210mm; height: 297mm; }
+      .page:last-child { page-break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="toolbar">
+  Piano Completo — Giulia M. &nbsp;·&nbsp; 4 settimane + allenamento
+  <button onclick="window.print()">⬇ Salva come PDF</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 1 — COVER
+══════════════════════════════════════════ -->
+<div class="page cover">
+  <div class="cover-inner">
+    <div class="cover-top-bar"></div>
+    <div class="cover-bg"></div>
+    <div class="cover-content">
+      <div class="cover-logo">Nutri<span>Scienza</span></div>
+      <div class="cover-plan-tag">Piano Completo</div>
+      <div style="height:5mm;"></div>
+      <div class="cover-eyebrow">Alimentazione + Allenamento · 4 settimane</div>
+      <h1 class="cover-title">
+        Il tuo piano
+        alimentare e sportivo
+        <span class="soft">personalizzato.</span>
+      </h1>
+      <div class="cover-rule"></div>
+      <p class="cover-subtitle">Menù rotante su 4 settimane, programma di allenamento su misura, check-in mensile e ricalibrazione automatica. Conforme alle linee guida LARN.</p>
+    </div>
+
+    <div class="customer-card">
+      <div class="label">Preparato per</div>
+      <h2>Giulia M.</h2>
+      <p class="meta">Milano · 34 anni · Obiettivo: dimagrimento sostenibile (−5 kg)</p>
+      <div class="customer-grid">
+        <div><h4>Data di emissione</h4><p>Maggio 2026</p></div>
+        <div><h4>Validità del piano</h4><p>4 settimane (Ciclo 1)</p></div>
+        <div><h4>Elaborato da</h4><p>NutriScienza AI</p></div>
+      </div>
+    </div>
+
+    <div class="cover-authority">
+      <p>Sviluppato con biologi nutrizionisti iscritti all'Ordine Nazionale dei Biologi</p>
+      <p>Conforme alle linee guida LARN — Società Italiana di Nutrizione Umana (SINU)</p>
+    </div>
+    <div class="cover-bottom-bar2"></div>
+    <div class="cover-bottom-bar"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 2 — PROFILO E MACRONUTRIENTI
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="top-bar"></div>
+    <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Completo · Giulia M.</span></div>
+    <div class="url">nutriscienza.org</div>
+  </div>
+  <div class="page-content">
+    <div class="eyebrow">Il tuo profilo</div>
+    <h1 class="section">I numeri che contano per te.</h1>
+    <p class="justify">Il fabbisogno energetico è stato calcolato con la formula <strong>Mifflin-St Jeor</strong> (standard scientifico validato per la stima del metabolismo basale) con fattore di attività moderato (PAL 1,55) e un deficit calorico controllato del <strong>14%</strong> — in linea con le raccomandazioni LARN per un dimagrimento sostenibile di 0,4–0,6 kg/settimana, preservando la massa muscolare.</p>
+
+    <table class="data">
+      <tr>
+        <td class="label">Età</td><td>34 anni</td>
+        <td class="label">Sesso</td><td>Femminile</td>
+      </tr>
+      <tr>
+        <td class="label">Altezza</td><td>165 cm</td>
+        <td class="label">Peso attuale</td><td>68,0 kg</td>
+      </tr>
+      <tr>
+        <td class="label">BMI</td><td>25,0 — sovrappeso lieve</td>
+        <td class="label">Peso obiettivo</td><td>63,0 kg (−5 kg)</td>
+      </tr>
+      <tr>
+        <td class="label">Attività fisica</td><td>Moderata (PAL 1,55)</td>
+        <td class="label">Allenamenti</td><td>3 sessioni / settimana</td>
+      </tr>
+      <tr>
+        <td class="label">Preferenze</td><td>Dieta mediterranea, no glutine</td>
+        <td class="label">Allergie/Intoll.</td><td>Lattosio (tollerato in piccole quantità)</td>
+      </tr>
+    </table>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="ml">Metabolismo basale</div>
+        <div class="mv">1.380</div>
+        <div class="ms">kcal/giorno (BMR)</div>
+      </div>
+      <div class="metric">
+        <div class="ml">Fabbisogno totale</div>
+        <div class="mv">2.139</div>
+        <div class="ms">kcal/giorno (TDEE)</div>
+      </div>
+      <div class="metric">
+        <div class="ml">Calorie del piano</div>
+        <div class="mv">1.850</div>
+        <div class="ms">kcal/giorno (−14%)</div>
+      </div>
+      <div class="metric">
+        <div class="ml">Perdita attesa</div>
+        <div class="mv">0,5 kg</div>
+        <div class="ms">per settimana</div>
+      </div>
+    </div>
+
+    <h2 class="section">Distribuzione dei macronutrienti</h2>
+    <div class="macro-bar-wrap">
+      <div class="macro-bar-row">
+        <div class="macro-bar-label">Proteine</div>
+        <div class="macro-bar-track"><div class="macro-bar-fill" style="width:28%; background:var(--green-deep);"></div></div>
+        <div class="macro-bar-val"><strong>138 g</strong> · 28%</div>
+      </div>
+      <div class="macro-bar-row">
+        <div class="macro-bar-label">Carboidrati</div>
+        <div class="macro-bar-track"><div class="macro-bar-fill" style="width:46%; background:var(--green-soft);"></div></div>
+        <div class="macro-bar-val"><strong>213 g</strong> · 46%</div>
+      </div>
+      <div class="macro-bar-row">
+        <div class="macro-bar-label">Grassi</div>
+        <div class="macro-bar-track"><div class="macro-bar-fill" style="width:26%; background:var(--gold);"></div></div>
+        <div class="macro-bar-val"><strong>54 g</strong> · 26%</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <h4>Perché queste proporzioni?</h4>
+      <p>Un apporto proteico di <strong>2,0 g/kg</strong> è clinicamente dimostrato per preservare la massa magra durante un deficit calorico. I carboidrati forniscono energia per gli allenamenti e il funzionamento cerebrale; i grassi supportano la produzione ormonale e l'assorbimento delle vitamine liposolubili (A, D, E, K).</p>
+    </div>
+
+    <h2 class="section">Distribuzione dei pasti</h2>
+    <div class="metrics3">
+      <div class="metric">
+        <div class="ml">Colazione</div>
+        <div class="mv">350</div>
+        <div class="ms">kcal · 19%</div>
+      </div>
+      <div class="metric">
+        <div class="ml">Pranzo</div>
+        <div class="mv">520</div>
+        <div class="ms">kcal · 28%</div>
+      </div>
+      <div class="metric">
+        <div class="ml">Cena</div>
+        <div class="mv">580</div>
+        <div class="ms">kcal · 31%</div>
+      </div>
+    </div>
+    <div class="metrics3">
+      <div class="metric">
+        <div class="ml">Spuntino mattina</div>
+        <div class="mv">160</div>
+        <div class="ms">kcal · 9%</div>
+      </div>
+      <div class="metric">
+        <div class="ml">Merenda</div>
+        <div class="mv">240</div>
+        <div class="ms">kcal · 13%</div>
+      </div>
+      <div class="metric">
+        <div class="ml">Totale giornaliero</div>
+        <div class="mv">1.850</div>
+        <div class="ms">kcal</div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>NutriScienza — Piano Completo · Giulia M. · Ciclo 1/2026</span>
+    <span>Pagina 2</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 3 — SETTIMANA 1 (Lun–Mer)
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="top-bar"></div>
+    <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Completo · Giulia M.</span></div>
+    <div class="url">nutriscienza.org</div>
+  </div>
+  <div class="page-content">
+    <div class="week-label">Settimana 1</div>
+    <h1 class="section">Menù settimanale — Settimana 1</h1>
+
+    <!-- LUNEDÌ -->
+    <div class="day">
+      <div class="day-header">
+        <span>Lunedì</span>
+        <span>Giorno di allenamento (Upper Body) · 1.850 kcal</span>
+      </div>
+      <table class="meals">
+        <tr>
+          <td class="meal-name">Colazione</td>
+          <td class="food">Yogurt greco magro + mirtilli + fiocchi d'avena + miele</td>
+          <td class="qty">150g · 80g · 40g · 10g</td>
+          <td class="kcal"><strong>355</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Spuntino</td>
+          <td class="food">Mandorle + mela verde</td>
+          <td class="qty">20g · 150g</td>
+          <td class="kcal"><strong>162</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Pranzo</td>
+          <td class="food">Pasta di riso integrale al pomodoro e basilico + petto di pollo grigliato + insalata mista con olio evo</td>
+          <td class="qty">80g · 130g · 80g + 8g</td>
+          <td class="kcal"><strong>528</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Merenda</td>
+          <td class="food">Ricotta di capra + banana matura</td>
+          <td class="qty">100g · 100g</td>
+          <td class="kcal"><strong>228</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Cena</td>
+          <td class="food">Salmone al forno con limone e erbe + quinoa + zucchine grigliate</td>
+          <td class="qty">160g · 70g · 200g</td>
+          <td class="kcal"><strong>577</strong> kcal</td>
+        </tr>
+        <tr class="day-total">
+          <td colspan="3" style="text-align:right; padding-right:6mm;">Totale giornaliero</td>
+          <td class="kcal"><strong>1.850</strong> kcal</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- MARTEDÌ -->
+    <div class="day">
+      <div class="day-header alt">
+        <span>Martedì</span>
+        <span>Riposo attivo · 1.850 kcal</span>
+      </div>
+      <table class="meals">
+        <tr>
+          <td class="meal-name">Colazione</td>
+          <td class="food">Uova strapazzate (2 uova) + pane di mais tostato + pomodorini</td>
+          <td class="qty">2 uova · 60g · 100g</td>
+          <td class="kcal"><strong>360</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Spuntino</td>
+          <td class="food">Frutta secca mista (noci, anacardi)</td>
+          <td class="qty">25g</td>
+          <td class="kcal"><strong>155</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Pranzo</td>
+          <td class="food">Riso basmati con legumi misti + tonno al naturale + spinaci saltati in padella con aglio</td>
+          <td class="qty">80g · 80g · 150g</td>
+          <td class="kcal"><strong>524</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Merenda</td>
+          <td class="food">Smoothie: latte di mandorla + banana + cacao amaro</td>
+          <td class="qty">200ml · 80g · 8g</td>
+          <td class="kcal"><strong>235</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Cena</td>
+          <td class="food">Tacchino al forno con rosmarino + patate dolci al forno + insalata di rucola</td>
+          <td class="qty">150g · 150g · 60g</td>
+          <td class="kcal"><strong>576</strong> kcal</td>
+        </tr>
+        <tr class="day-total">
+          <td colspan="3" style="text-align:right; padding-right:6mm;">Totale giornaliero</td>
+          <td class="kcal"><strong>1.850</strong> kcal</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- MERCOLEDÌ -->
+    <div class="day">
+      <div class="day-header">
+        <span>Mercoledì</span>
+        <span>Giorno di allenamento (Lower Body) · 1.850 kcal</span>
+      </div>
+      <table class="meals">
+        <tr>
+          <td class="meal-name">Colazione</td>
+          <td class="food">Porridge di avena con latte di avena + frutti rossi + semi di chia</td>
+          <td class="qty">60g · 100g · 10g</td>
+          <td class="kcal"><strong>352</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Spuntino</td>
+          <td class="food">Pera + 2 gallette di riso + burro di mandorle</td>
+          <td class="qty">150g · 2 pz · 15g</td>
+          <td class="kcal"><strong>168</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Pranzo</td>
+          <td class="food">Pasta integrale senza glutine con pesto di basilico + filetto di merluzzo al vapore</td>
+          <td class="qty">80g · 140g</td>
+          <td class="kcal"><strong>522</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Merenda</td>
+          <td class="food">Yogurt di soia + kiwi</td>
+          <td class="qty">150g · 100g</td>
+          <td class="kcal"><strong>238</strong> kcal</td>
+        </tr>
+        <tr>
+          <td class="meal-name">Cena</td>
+          <td class="food">Bistecca di manzo magra + riso venere + broccoli al vapore con limone</td>
+          <td class="qty">140g · 70g · 200g</td>
+          <td class="kcal"><strong>570</strong> kcal</td>
+        </tr>
+        <tr class="day-total">
+          <td colspan="3" style="text-align:right; padding-right:6mm;">Totale giornaliero</td>
+          <td class="kcal"><strong>1.850</strong> kcal</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>NutriScienza — Piano Completo · Giulia M. · Ciclo 1/2026</span>
+    <span>Pagina 3</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 4 — SETTIMANA 1 (Gio–Dom)
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="top-bar"></div>
+    <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Completo · Giulia M.</span></div>
+    <div class="url">nutriscienza.org</div>
+  </div>
+  <div class="page-content">
+    <div class="week-label">Settimana 1 — continuazione</div>
+
+    <!-- GIOVEDÌ -->
+    <div class="day">
+      <div class="day-header alt">
+        <span>Giovedì</span>
+        <span>Riposo · 1.850 kcal</span>
+      </div>
+      <table class="meals">
+        <tr><td class="meal-name">Colazione</td><td class="food">Toast di pane di mais con avocado + 2 uova in camicia + pomodorini</td><td class="qty">60g · 80g · 2 uova · 80g</td><td class="kcal"><strong>348</strong> kcal</td></tr>
+        <tr><td class="meal-name">Spuntino</td><td class="food">Macedonia di frutta fresca + noci</td><td class="qty">200g · 15g</td><td class="kcal"><strong>165</strong> kcal</td></tr>
+        <tr><td class="meal-name">Pranzo</td><td class="food">Zuppa di lenticchie rosse con verdure + petto di pollo alle erbe + insalata verde</td><td class="qty">250ml · 120g · 80g</td><td class="kcal"><strong>518</strong> kcal</td></tr>
+        <tr><td class="meal-name">Merenda</td><td class="food">Frullato proteico: latte di riso + banana + 1 cucchiaio di proteine del siero</td><td class="qty">200ml · 80g · 20g</td><td class="kcal"><strong>248</strong> kcal</td></tr>
+        <tr><td class="meal-name">Cena</td><td class="food">Branzino al forno con olive e capperi + polenta + peperonata</td><td class="qty">160g · 80g · 150g</td><td class="kcal"><strong>571</strong> kcal</td></tr>
+        <tr class="day-total"><td colspan="3" style="text-align:right; padding-right:6mm;">Totale giornaliero</td><td class="kcal"><strong>1.850</strong> kcal</td></tr>
+      </table>
+    </div>
+
+    <!-- VENERDÌ -->
+    <div class="day">
+      <div class="day-header">
+        <span>Venerdì</span>
+        <span>Giorno di allenamento (Full Body) · 1.850 kcal</span>
+      </div>
+      <table class="meals">
+        <tr><td class="meal-name">Colazione</td><td class="food">Pancakes di avena con sciroppo d'acero e fragole</td><td class="qty">60g avena · 15ml · 100g</td><td class="kcal"><strong>356</strong> kcal</td></tr>
+        <tr><td class="meal-name">Spuntino</td><td class="food">Gallette di riso + hummus di ceci</td><td class="qty">3 pz · 50g</td><td class="kcal"><strong>158</strong> kcal</td></tr>
+        <tr><td class="meal-name">Pranzo</td><td class="food">Bowl di riso basmati + ceci al curry + zucchine a julienne + olio evo</td><td class="qty">80g · 150g · 100g · 8g</td><td class="kcal"><strong>524</strong> kcal</td></tr>
+        <tr><td class="meal-name">Merenda</td><td class="food">Datteri Medjool + mandorle</td><td class="qty">3 pz · 20g</td><td class="kcal"><strong>242</strong> kcal</td></tr>
+        <tr><td class="meal-name">Cena</td><td class="food">Filetto di salmone con sesamo + vermicelli di riso saltati con verdure</td><td class="qty">150g · 70g · 150g</td><td class="kcal"><strong>570</strong> kcal</td></tr>
+        <tr class="day-total"><td colspan="3" style="text-align:right; padding-right:6mm;">Totale giornaliero</td><td class="kcal"><strong>1.850</strong> kcal</td></tr>
+      </table>
+    </div>
+
+    <!-- SABATO / DOMENICA (compatti) -->
+    <div class="days-grid">
+      <div class="day">
+        <div class="day-header weekend"><span>Sabato</span><span>Riposo · 1.850 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td class="food">Müsli con yogurt di soia e frutta secca</td><td class="kcal"><strong>358</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td class="food">Kefir di cocco + arancia</td><td class="kcal"><strong>162</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td class="food">Risotto con zafferano e gamberetti (senza lattosio)</td><td class="kcal"><strong>520</strong> kcal</td></tr>
+          <tr><td class="meal-name">Merenda</td><td class="food">Quadrotti di cioccolato fondente 85% + mirtilli</td><td class="kcal"><strong>242</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td class="food">Pollo arrosto con rosmarino + patate + insalata</td><td class="kcal"><strong>568</strong> kcal</td></tr>
+          <tr class="day-total"><td colspan="2" style="text-align:right;">Totale</td><td class="kcal"><strong>1.850</strong> kcal</td></tr>
+        </table>
+      </div>
+      <div class="day">
+        <div class="day-header weekend"><span>Domenica</span><span>Riposo · 1.850 kcal</span></div>
+        <table class="meals">
+          <tr><td class="meal-name">Colazione</td><td class="food">Brioche senza glutine + caffè americano + frutta</td><td class="kcal"><strong>352</strong> kcal</td></tr>
+          <tr><td class="meal-name">Spuntino</td><td class="food">Pugnetto di anacardi + mela</td><td class="kcal"><strong>165</strong> kcal</td></tr>
+          <tr><td class="meal-name">Pranzo</td><td class="food">Pasta al ragù di carne magra (domenica) + insalata</td><td class="kcal"><strong>526</strong> kcal</td></tr>
+          <tr><td class="meal-name">Merenda</td><td class="food">Yogurt greco + miele + granola</td><td class="kcal"><strong>238</strong> kcal</td></tr>
+          <tr><td class="meal-name">Cena</td><td class="food">Frittata di verdure al forno + contorno misto</td><td class="kcal"><strong>569</strong> kcal</td></tr>
+          <tr class="day-total"><td colspan="2" style="text-align:right;">Totale</td><td class="kcal"><strong>1.850</strong> kcal</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>NutriScienza — Piano Completo · Giulia M. · Ciclo 1/2026</span>
+    <span>Pagina 4</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 5 — SETTIMANA 2
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="top-bar"></div>
+    <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Completo · Giulia M.</span></div>
+    <div class="url">nutriscienza.org</div>
+  </div>
+  <div class="page-content">
+    <div class="week-label w2">Settimana 2 — variazioni</div>
+    <h1 class="section">Menù settimanale — Settimana 2</h1>
+    <div class="callout gold" style="margin-bottom:5mm;">
+      <h4>Rotazione intelligente</h4>
+      <p>La settimana 2 introduce nuovi alimenti per evitare la monotonia e garantire varietà micronutrizionale. Le calorie e i macronutrienti rimangono invariati (1.850 kcal/giorno).</p>
+    </div>
+
+    <div class="day">
+      <div class="day-header"><span>Lunedì</span><span>Allenamento Upper Body · 1.850 kcal</span></div>
+      <table class="meals">
+        <tr><td class="meal-name">Colazione</td><td class="food">Frullato verde: latte di mandorla + spinaci + banana + proteine del siero + semi di lino</td><td class="qty">200ml · 30g · 80g · 20g · 8g</td><td class="kcal"><strong>354</strong> kcal</td></tr>
+        <tr><td class="meal-name">Spuntino</td><td class="food">Pistacchi non salati + arancia</td><td class="qty">25g · 150g</td><td class="kcal"><strong>163</strong> kcal</td></tr>
+        <tr><td class="meal-name">Pranzo</td><td class="food">Insalata di farro con tonno, olive, capperi e pomodori secchi</td><td class="qty">80g farro · 80g tonno · 30g</td><td class="kcal"><strong>521</strong> kcal</td></tr>
+        <tr><td class="meal-name">Merenda</td><td class="food">Crackers di riso integrali + avocado + limone</td><td class="qty">30g · 80g</td><td class="kcal"><strong>243</strong> kcal</td></tr>
+        <tr><td class="meal-name">Cena</td><td class="food">Spezzatino di pollo con pomodoro e verdure + riso basmati</td><td class="qty">160g · 70g</td><td class="kcal"><strong>569</strong> kcal</td></tr>
+        <tr class="day-total"><td colspan="3" style="text-align:right; padding-right:6mm;">Totale giornaliero</td><td class="kcal"><strong>1.850</strong> kcal</td></tr>
+      </table>
+    </div>
+
+    <div class="day">
+      <div class="day-header alt"><span>Martedì</span><span>Riposo attivo · 1.850 kcal</span></div>
+      <table class="meals">
+        <tr><td class="meal-name">Colazione</td><td class="food">Overnight oats: fiocchi di avena + latte di cocco + semi di chia + mango</td><td class="qty">60g · 150ml · 10g · 80g</td><td class="kcal"><strong>357</strong> kcal</td></tr>
+        <tr><td class="meal-name">Spuntino</td><td class="food">Frutta di stagione mista + nocciole</td><td class="qty">200g · 15g</td><td class="kcal"><strong>160</strong> kcal</td></tr>
+        <tr><td class="meal-name">Pranzo</td><td class="food">Bowl di soba (grano saraceno) con edamame, carote julienne, salsa di sesamo</td><td class="qty">80g · 80g · 100g</td><td class="kcal"><strong>523</strong> kcal</td></tr>
+        <tr><td class="meal-name">Merenda</td><td class="food">Yogurt greco + granola senza glutine + miele</td><td class="qty">150g · 25g · 10g</td><td class="kcal"><strong>242</strong> kcal</td></tr>
+        <tr><td class="meal-name">Cena</td><td class="food">Polpo alla piastra con patate lesse + insalata di radicchio e arancia</td><td class="qty">150g · 130g · 80g</td><td class="kcal"><strong>568</strong> kcal</td></tr>
+        <tr class="day-total"><td colspan="3" style="text-align:right; padding-right:6mm;">Totale giornaliero</td><td class="kcal"><strong>1.850</strong> kcal</td></tr>
+      </table>
+    </div>
+
+    <div class="day">
+      <div class="day-header"><span>Mercoledì–Domenica</span><span>Schema identico alla settimana 1 con ingredienti ruotati · 1.850 kcal</span></div>
+      <table class="meals">
+        <tr><td colspan="4" style="padding:3mm 4mm; font-size:9.5pt; color:var(--text-muted); font-style:italic;">I pasti da Mercoledì a Domenica seguono la stessa struttura della Settimana 1, con sostituzione programmata degli ingredienti proteici e dei cereali per massimizzare la varietà micronutrizionale. Il dettaglio completo giorno per giorno è incluso nelle pagine seguenti di questo PDF.</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>NutriScienza — Piano Completo · Giulia M. · Ciclo 1/2026</span>
+    <span>Pagina 5</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 6 — PROGRAMMA DI ALLENAMENTO
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="top-bar"></div>
+    <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Completo · Giulia M.</span></div>
+    <div class="url">nutriscienza.org</div>
+  </div>
+  <div class="page-content">
+    <div class="eyebrow">Allenamento</div>
+    <h1 class="section">Programma di allenamento — 3 giorni/settimana</h1>
+    <p class="justify">Il programma è progettato per massimizzare la perdita di grasso mantenendo la massa muscolare, in sinergia con il piano alimentare. Struttura a 3 giorni non consecutivi (Lunedì, Mercoledì, Venerdì) con progressione di carico del 5% ogni 2 settimane.</p>
+
+    <!-- GIORNO A: Upper Body -->
+    <div class="workout-day">
+      <div class="workout-header">
+        <h3>Giorno A — Upper Body (Lunedì)</h3>
+        <span>Durata stimata: 55–65 minuti</span>
+      </div>
+      <table class="exercises">
+        <thead>
+          <tr><th>Esercizio</th><th style="text-align:center;">Serie</th><th style="text-align:center;">Ripetizioni</th><th style="text-align:center;">Recupero</th><th>Note tecniche</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="ex-group" colspan="5">Riscaldamento (10 min)</td></tr>
+          <tr><td class="ex-name">Cardio leggero (cyclette / tapis roulant)</td><td class="ex-sets">1</td><td class="ex-reps">10 min</td><td class="ex-rest">—</td><td class="ex-note">RPE 5-6/10, respirazione regolare</td></tr>
+          <tr><td class="ex-group" colspan="5">Corpo principale</td></tr>
+          <tr><td class="ex-name">Panca piana con manubri</td><td class="ex-sets">4</td><td class="ex-reps">10–12</td><td class="ex-rest">75 sec</td><td class="ex-note">Schiena a contatto, scapole retratte</td></tr>
+          <tr><td class="ex-name">Trazioni lat machine (presa larga)</td><td class="ex-sets">4</td><td class="ex-reps">10–12</td><td class="ex-rest">75 sec</td><td class="ex-note">Tira verso il petto, non al collo</td></tr>
+          <tr><td class="ex-name">Lento avanti con manubri</td><td class="ex-sets">3</td><td class="ex-reps">12–15</td><td class="ex-rest">60 sec</td><td class="ex-note">Gomiti a 90°, no iperestensione</td></tr>
+          <tr><td class="ex-name">Rematore con bilanciere</td><td class="ex-sets">3</td><td class="ex-reps">10–12</td><td class="ex-rest">75 sec</td><td class="ex-note">Schiena parallela al pavimento</td></tr>
+          <tr><td class="ex-name">Curl con manubri alternati</td><td class="ex-sets">3</td><td class="ex-reps">12–15</td><td class="ex-rest">60 sec</td><td class="ex-note">Supinazione del polso nel movimento</td></tr>
+          <tr><td class="ex-name">French press con manubrio</td><td class="ex-sets">3</td><td class="ex-reps">12–15</td><td class="ex-rest">60 sec</td><td class="ex-note">Gomiti fissi, vicini alla testa</td></tr>
+          <tr><td class="ex-group" colspan="5">Core &amp; defaticamento</td></tr>
+          <tr><td class="ex-name">Plank</td><td class="ex-sets">3</td><td class="ex-reps">45 sec</td><td class="ex-rest">30 sec</td><td class="ex-note">Corpo in linea, addominali contratti</td></tr>
+          <tr><td class="ex-name">Crunch obliqui</td><td class="ex-sets">3</td><td class="ex-reps">20 per lato</td><td class="ex-rest">30 sec</td><td class="ex-note">Movimento lento e controllato</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- GIORNO B: Lower Body -->
+    <div class="workout-day">
+      <div class="workout-header">
+        <h3>Giorno B — Lower Body (Mercoledì)</h3>
+        <span>Durata stimata: 60–70 minuti</span>
+      </div>
+      <table class="exercises">
+        <thead>
+          <tr><th>Esercizio</th><th style="text-align:center;">Serie</th><th style="text-align:center;">Ripetizioni</th><th style="text-align:center;">Recupero</th><th>Note tecniche</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="ex-group" colspan="5">Riscaldamento dinamico (8 min)</td></tr>
+          <tr><td class="ex-name">Mobilità anca + leg swing</td><td class="ex-sets">2</td><td class="ex-reps">10 per lato</td><td class="ex-rest">—</td><td class="ex-note">Movimento controllato</td></tr>
+          <tr><td class="ex-group" colspan="5">Corpo principale</td></tr>
+          <tr><td class="ex-name">Squat con bilanciere (o goblet squat)</td><td class="ex-sets">4</td><td class="ex-reps">10–12</td><td class="ex-rest">90 sec</td><td class="ex-note">Ginocchia in linea con le punte dei piedi</td></tr>
+          <tr><td class="ex-name">Stacchi rumeni con manubri</td><td class="ex-sets">4</td><td class="ex-reps">10–12</td><td class="ex-rest">90 sec</td><td class="ex-note">Schiena neutra, cerniera all'anca</td></tr>
+          <tr><td class="ex-name">Affondi alternati camminati</td><td class="ex-sets">3</td><td class="ex-reps">12 per gamba</td><td class="ex-rest">60 sec</td><td class="ex-note">Passo ampio, busto eretto</td></tr>
+          <tr><td class="ex-name">Leg press 45°</td><td class="ex-sets">3</td><td class="ex-reps">15–18</td><td class="ex-rest">60 sec</td><td class="ex-note">Non bloccare le ginocchia in estensione</td></tr>
+          <tr><td class="ex-name">Hip thrust con bilanciere</td><td class="ex-sets">4</td><td class="ex-reps">12–15</td><td class="ex-rest">75 sec</td><td class="ex-note">Contraere i glutei nella posizione alta</td></tr>
+          <tr><td class="ex-name">Calf raise in piedi</td><td class="ex-sets">4</td><td class="ex-reps">20–25</td><td class="ex-rest">45 sec</td><td class="ex-note">Movimento completo, pausa in alto</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>NutriScienza — Piano Completo · Giulia M. · Ciclo 1/2026</span>
+    <span>Pagina 6</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 7 — GIORNO C + LISTA DELLA SPESA
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="top-bar"></div>
+    <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Completo · Giulia M.</span></div>
+    <div class="url">nutriscienza.org</div>
+  </div>
+  <div class="page-content">
+
+    <!-- GIORNO C: Full Body -->
+    <div class="workout-day">
+      <div class="workout-header">
+        <h3>Giorno C — Full Body + Core (Venerdì)</h3>
+        <span>Durata stimata: 50–60 minuti</span>
+      </div>
+      <table class="exercises">
+        <thead>
+          <tr><th>Esercizio</th><th style="text-align:center;">Serie</th><th style="text-align:center;">Ripetizioni</th><th style="text-align:center;">Recupero</th><th>Note tecniche</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="ex-group" colspan="5">Circuito Full Body (3 giri, riposo 2 min tra giri)</td></tr>
+          <tr><td class="ex-name">Push-up (o panca inclinata)</td><td class="ex-sets">3</td><td class="ex-reps">15–20</td><td class="ex-rest">in circuito</td><td class="ex-note">Variante su ginocchia se necessario</td></tr>
+          <tr><td class="ex-name">Squat a corpo libero o con kettlebell</td><td class="ex-sets">3</td><td class="ex-reps">20</td><td class="ex-rest">in circuito</td><td class="ex-note">Velocità controllata</td></tr>
+          <tr><td class="ex-name">Rematore con elastico o manubrio singolo</td><td class="ex-sets">3</td><td class="ex-reps">15 per lato</td><td class="ex-rest">in circuito</td><td class="ex-note">Fissa la colonna, ruota il busto</td></tr>
+          <tr><td class="ex-name">Step-up su panca con manubri</td><td class="ex-sets">3</td><td class="ex-reps">12 per gamba</td><td class="ex-rest">in circuito</td><td class="ex-note">Premi con il tallone del piede di spinta</td></tr>
+          <tr><td class="ex-name">Arnold press con manubri</td><td class="ex-sets">3</td><td class="ex-reps">12</td><td class="ex-rest">in circuito</td><td class="ex-note">Rotazione completa del polso</td></tr>
+          <tr><td class="ex-group" colspan="5">Finisher cardio-metabolico (10 min)</td></tr>
+          <tr><td class="ex-name">Interval training: 30 sec sforzo / 30 sec recupero</td><td class="ex-sets">10</td><td class="ex-reps">30 sec</td><td class="ex-rest">30 sec</td><td class="ex-note">Cyclette, vogatore o jumping jacks</td></tr>
+          <tr><td class="ex-group" colspan="5">Core (5 min)</td></tr>
+          <tr><td class="ex-name">Dead bug</td><td class="ex-sets">3</td><td class="ex-reps">10 per lato</td><td class="ex-rest">30 sec</td><td class="ex-note">Lombare incollata al pavimento</td></tr>
+          <tr><td class="ex-name">Side plank</td><td class="ex-sets">2</td><td class="ex-reps">30 sec per lato</td><td class="ex-rest">20 sec</td><td class="ex-note">Corpo in linea, anca sollevata</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LISTA DELLA SPESA -->
+    <div style="margin-top:6mm;">
+      <div class="eyebrow">Lista della spesa</div>
+      <h2 class="section">Lista della spesa — Settimana 1 &amp; 2</h2>
+      <div class="shop-col">
+        <div class="shop-cat">
+          <h4>🥩 Proteine</h4>
+          <ul>
+            <li>Petto di pollo <span>600g</span></li>
+            <li>Tacchino a fette <span>300g</span></li>
+            <li>Salmone fresco <span>400g</span></li>
+            <li>Merluzzo / branzino <span>400g</span></li>
+            <li>Tonno al naturale <span>3 lattine</span></li>
+            <li>Uova medie <span>1 confezione (6)</span></li>
+            <li>Bistecca magra <span>280g</span></li>
+          </ul>
+        </div>
+        <div class="shop-cat">
+          <h4>🥛 Latticini / Sostituti</h4>
+          <ul>
+            <li>Yogurt greco magro <span>500g</span></li>
+            <li>Ricotta di capra <span>200g</span></li>
+            <li>Yogurt di soia <span>2 vasetti</span></li>
+            <li>Latte di mandorla <span>1 litro</span></li>
+            <li>Latte di avena <span>1 litro</span></li>
+            <li>Latte di riso <span>500ml</span></li>
+          </ul>
+        </div>
+        <div class="shop-cat">
+          <h4>🌾 Cereali e carboidrati</h4>
+          <ul>
+            <li>Pasta di riso integrale <span>500g</span></li>
+            <li>Riso basmati <span>500g</span></li>
+            <li>Riso venere <span>250g</span></li>
+            <li>Quinoa <span>300g</span></li>
+            <li>Fiocchi d'avena <span>500g</span></li>
+            <li>Pane di mais s/g <span>500g</span></li>
+            <li>Gallette di riso <span>1 confezione</span></li>
+          </ul>
+        </div>
+        <div class="shop-cat">
+          <h4>🥦 Verdure</h4>
+          <ul>
+            <li>Spinaci freschi <span>300g</span></li>
+            <li>Broccoli <span>400g</span></li>
+            <li>Zucchine <span>4 medie</span></li>
+            <li>Peperoni misti <span>3</span></li>
+            <li>Pomodorini <span>500g</span></li>
+            <li>Insalata mista <span>2 buste</span></li>
+            <li>Rucola <span>100g</span></li>
+            <li>Patate dolci <span>400g</span></li>
+          </ul>
+        </div>
+        <div class="shop-cat">
+          <h4>🍎 Frutta</h4>
+          <ul>
+            <li>Mele verdi <span>4</span></li>
+            <li>Banane <span>4</span></li>
+            <li>Mirtilli <span>200g</span></li>
+            <li>Fragole <span>200g</span></li>
+            <li>Kiwi <span>4</span></li>
+            <li>Arance <span>4</span></li>
+            <li>Pera <span>3</span></li>
+          </ul>
+        </div>
+        <div class="shop-cat">
+          <h4>🫙 Dispensa</h4>
+          <ul>
+            <li>Olio extravergine oliva <span>500ml</span></li>
+            <li>Mandorle <span>100g</span></li>
+            <li>Noci <span>100g</span></li>
+            <li>Hummus di ceci <span>200g</span></li>
+            <li>Ceci lessati <span>2 lattine</span></li>
+            <li>Lenticchie rosse <span>300g</span></li>
+            <li>Semi di chia <span>100g</span></li>
+            <li>Cacao amaro <span>50g</span></li>
+            <li>Miele integrale <span>250g</span></li>
+            <li>Cioccolato fondente 85% <span>100g</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>NutriScienza — Piano Completo · Giulia M. · Ciclo 1/2026</span>
+    <span>Pagina 7</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE 8 — NOTE SCIENTIFICHE + CHECK-IN
+══════════════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="top-bar"></div>
+    <div><span class="brand">NutriScienza</span><span class="brand-sub">· Piano Completo · Giulia M.</span></div>
+    <div class="url">nutriscienza.org</div>
+  </div>
+  <div class="page-content">
+    <div class="eyebrow">Note nutrizionali</div>
+    <h1 class="section">Consigli e strategie per il tuo successo.</h1>
+
+    <div class="tip-grid">
+      <div class="tip-box">
+        <h4>Idratazione</h4>
+        <p>Bevi almeno <strong>2,0–2,5 litri</strong> di acqua al giorno. Nei giorni di allenamento aumenta di 500ml per ogni ora di attività. L'acqua è essenziale per il metabolismo dei grassi e il recupero muscolare.</p>
+      </div>
+      <div class="tip-box">
+        <h4>Timing dei pasti e allenamento</h4>
+        <p>Nei giorni di allenamento, consuma il pranzo (ricco di carboidrati) <strong>2–3 ore prima</strong> dell'allenamento. Subito dopo l'allenamento, la merenda proteica entro 40 minuti ottimizza il recupero muscolare.</p>
+      </div>
+      <div class="tip-box">
+        <h4>Come pesare gli alimenti</h4>
+        <p>Le quantità indicate si riferiscono al <strong>peso crudo</strong> degli alimenti, salvo indicazione contraria. Usa una bilancia da cucina per i primi 10–14 giorni finché non acquisisci una buona stima visiva delle porzioni.</p>
+      </div>
+      <div class="tip-box">
+        <h4>Metodi di cottura consigliati</h4>
+        <p>Preferisci: al vapore, alla griglia, al forno, bollito. Evita fritture e cotture prolungate che riducono il valore nutrizionale. L'olio EVO va aggiunto <strong>a crudo</strong> sulle verdure, non in cottura.</p>
+      </div>
+      <div class="tip-box">
+        <h4>Gestione dei pasti sociali</h4>
+        <p>Per i pasti fuori casa: scegli sempre una proteina magra + verdure + una fonte di carboidrati integrali. Evita salse, intingoli e fritti. Un pasto "libero" a settimana non compromette il piano se gli altri sono rispettati.</p>
+      </div>
+      <div class="tip-box">
+        <h4>Sonno e recupero</h4>
+        <p>7–8 ore di sonno di qualità ottimizzano la perdita di grasso (regolazione di grelina e leptina) e il recupero muscolare. Un sonno insufficiente può aumentare la fame del 20–30% il giorno dopo.</p>
+      </div>
+    </div>
+
+    <!-- CHECK-IN TABLE -->
+    <div style="margin-top:6mm;">
+      <h2 class="section">Scheda di monitoraggio mensile</h2>
+      <p style="font-size:9.5pt; color:var(--text-muted); margin-bottom:4mm;">Compila questa tabella alla fine di ogni settimana e inviala a <strong>supporto@nutriscienza.org</strong>. La ricalibrazione del piano si basa su questi dati.</p>
+      <table class="progress-table">
+        <thead>
+          <tr>
+            <th style="text-align:left; padding-left:4mm;">Settimana</th>
+            <th>Peso (kg)</th>
+            <th>Vita (cm)</th>
+            <th>Fianchi (cm)</th>
+            <th>Energia (1–10)</th>
+            <th>Rispetto piano (%)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="week-col">Settimana 1</td><td class="input">—</td><td class="input">—</td><td class="input">—</td><td class="input">—</td><td class="input">—</td></tr>
+          <tr><td class="week-col">Settimana 2</td><td class="input">—</td><td class="input">—</td><td class="input">—</td><td class="input">—</td><td class="input">—</td></tr>
+          <tr><td class="week-col">Settimana 3</td><td class="input">—</td><td class="input">—</td><td class="input">—</td><td class="input">—</td><td class="input">—</td></tr>
+          <tr><td class="week-col">Settimana 4</td><td class="input">—</td><td class="input">—</td><td class="input">—</td><td class="input">—</td><td class="input">—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+      <h4>Avviso importante</h4>
+      <p>Questo piano nutrizionale è un documento educativo personalizzato, sviluppato sulla base delle informazioni da te fornite. <strong>Non sostituisce una visita medica, una consulenza dietologica clinica o qualsiasi terapia prescritta da un medico.</strong> In presenza di patologie, gravidanza, allattamento, disturbi alimentari o qualsiasi condizione di salute che richieda supervisione medica, consulta sempre il tuo medico o specialista prima di modificare la tua alimentazione. NutriScienza non si assume responsabilità per eventuali effetti negativi derivanti da un utilizzo del piano non conforme alle istruzioni fornite.</p>
+    </div>
+
+    <!-- FIRMA -->
+    <div class="signature">
+      <div style="flex:1.75;">
+        <strong>Documento generato con intelligenza artificiale</strong><br>
+        Questo piano è stato elaborato con il supporto di modelli di intelligenza artificiale
+        addestrati sui più aggiornati riferimenti nutrizionali internazionali (LARN, EFSA, WHO/FAO)
+        e sulle metodologie adottate dai principali nutrizionisti. I calcoli di fabbisogno energetico
+        e dei macronutrienti sono deterministici e basati sull'equazione di Mifflin-St Jeor,
+        ampiamente validata in letteratura. Il piano non costituisce una diagnosi medica né
+        sostituisce la consulenza di un professionista sanitario abilitato.
+      </div>
+      <div>
+        <strong>Hai domande sul tuo piano?</strong><br>
+        Scrivici a supporto@nutriscienza.org<br>
+        Risposta entro 48 ore lavorative
+      </div>
+    </div>
+  </div>
+  <div class="page-footer">
+    <span>NutriScienza — Piano Completo · Giulia M. · Ciclo 1/2026</span>
+    <span>Pagina 8</span>
+  </div>
+</div>
+
+</body>
+</html>
