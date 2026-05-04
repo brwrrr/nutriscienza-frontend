@@ -148,6 +148,11 @@
   </footer>
 
   <script>
+    // Backend URL — frontend e backend sono su domini Render distinti.
+    const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname.startsWith('127.'))
+      ? 'http://localhost:8000'
+      : 'https://nutriscienza-api.onrender.com';
+
     const token = new URLSearchParams(window.location.search).get('token');
 
     const stateLoading = document.getElementById('state-loading');
@@ -164,7 +169,7 @@
       showState('invalid');
     } else {
       // Carica profilo subscriber
-      fetch('/api/checkin/' + token)
+      fetch(API_BASE + '/api/checkin/' + token)
         .then(function(r) { return r.ok ? r.json() : null; })
         .then(function(data) {
           if (!data) { showState('invalid'); return; }
@@ -188,7 +193,7 @@
       btn.textContent = 'Aggiornamento…';
       errMsg.style.display = 'none';
 
-      fetch('/api/checkin/' + token, {
+      fetch(API_BASE + '/api/checkin/' + token, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ weight: weight }),

@@ -703,10 +703,10 @@
   </div>
 
   <script>
-    // Punto di accesso del backend. In produzione usa lo stesso dominio o un sottodominio (es. api.nutriscienza.org).
-    const API_BASE = window.location.hostname === 'localhost' || window.location.hostname.startsWith('127.')
+    // Punto di accesso del backend. Frontend e backend sono su domini Render distinti.
+    const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname.startsWith('127.'))
       ? 'http://localhost:8000'
-      : '';  // stesso origin in produzione
+      : 'https://nutriscienza-api.onrender.com';
 
     const TOTAL_STEPS = 6;
     let currentStep = 1;
