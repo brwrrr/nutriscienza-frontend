@@ -238,7 +238,7 @@
 
     let pollTimer;
     let attempts = 0;
-    const MAX_ATTEMPTS = 40;  // 40 × 4 s = ~2,5 min poi si ferma
+    const MAX_ATTEMPTS = 75;  // 75 × 4 s = ~5 min — copre il Coach (12 settimane + workout)
 
     function poll() {
       if (attempts++ >= MAX_ATTEMPTS) { clearInterval(pollTimer); return; }
