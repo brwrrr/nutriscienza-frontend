@@ -35,6 +35,8 @@
     .btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; cursor: pointer; border: none; font-weight: 600; }
     .btn-retry { background: var(--orange); color: white; }
     .btn-retry:hover { opacity: .88; }
+    .btn-download { background: var(--green); color: white; margin-right: 4px; }
+    .btn-download:hover { opacity: .88; }
     #login-error { font-size: 13px; color: var(--red); margin-top: 8px; }
 
     /* ── Layout ── */
@@ -405,6 +407,10 @@
         if (rows.length === 0) { document.getElementById('orders-body').innerHTML = '<tr><td colspan="7" class="empty">Nessun ordine trovato.</td></tr>'; return; }
         const html = rows.map(function(o) {
           const canRetry = ['failed','paid','generating'].includes(o.status);
+          const canDownload = o.status === 'sent';
+          const downloadBtn = canDownload
+            ? '<button class="btn-sm btn-download" onclick="downloadPdf(\'' + o.id + '\')">📄 PDF</button>'
+            : '';
           const retryBtn = canRetry
             ? '<button class="btn-sm btn-retry" onclick="retryOrder(\'' + o.id + '\')">↻ Retry</button>'
             : '';
@@ -415,7 +421,7 @@
             + '<td><span class="badge-status ' + badgeClass(o.status) + '">' + o.status + '</span></td>'
             + '<td style="white-space:nowrap;">' + fmtDate(o.created_at) + '</td>'
             + '<td style="white-space:nowrap;">' + fmtDate(o.updated_at) + '</td>'
-            + '<td>' + retryBtn + '</td>'
+            + '<td style="white-space:nowrap;">' + downloadBtn + retryBtn + '</td>'
             + '</tr>';
         }).join('');
         document.getElementById('orders-body').innerHTML = html;
@@ -432,6 +438,36 @@
       .then(function(data) {
         if (data.queued) { alert('Pipeline riavviata. Ricarica tra qualche minuto.'); loadOrders(); }
         else { alert('Errore: ' + (data.detail || JSON.stringify(data))); }
+      });
+  }
+
+  function downloadPdf(orderId) {
+    // Fetch con Bearer token, poi forza il download lato browser via blob.
+    fetch(API_BASE + '/api/admin/orders/' + orderId + '/pdf', {
+      headers: { 'Authorization': 'Bearer ' + apiKey }
+    })
+      .then(function(r) {
+        if (!r.ok) {
+          return r.json().then(function(j) { throw new Error(j.detail || ('HTTP ' + r.status)); });
+        }
+        // Estrai il filename dall'header Content-Disposition se presente
+        const disp = r.headers.get('Content-Disposition') || '';
+        const match = disp.match(/filename="?([^"]+)"?/);
+        const filename = match ? match[1] : ('NutriScienza-' + orderId + '.pdf');
+        return r.blob().then(function(blob) { return { blob: blob, filename: filename }; });
+      })
+      .then(function(result) {
+        const url = URL.createObjectURL(result.blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = result.filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+      })
+      .catch(function(e) {
+        alert('Errore download: ' + e.message);
       });
   }
 
