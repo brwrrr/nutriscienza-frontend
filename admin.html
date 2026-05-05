@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NutriScienza — Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
   <style>
     :root {
       --green: #2D5F3F; --green-dark: #1A2E22; --green-tint: #E8F0EB;
@@ -80,6 +81,30 @@
     .refresh-btn:hover { opacity: .8; }
     .panel { display: none; }
     .panel.active { display: block; }
+
+    /* ── Dashboard ── */
+    .period-toggle { display: inline-flex; gap: 0; background: white; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 18px; }
+    .period-btn { background: transparent; border: none; padding: 9px 18px; font-size: 13px; font-weight: 600; color: var(--muted); cursor: pointer; border-right: 1px solid var(--border); }
+    .period-btn:last-child { border-right: none; }
+    .period-btn.active { background: var(--green); color: white; }
+    .period-btn:hover:not(.active) { background: var(--green-tint); color: var(--green); }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .kpi-sub { font-size: 12px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
+    .dashboard-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    @media (max-width: 800px) { .dashboard-row { grid-template-columns: 1fr; } }
+    .dashboard-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+    .dashboard-card-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted); font-weight: 700; margin-bottom: 14px; }
+
+    .tx-row { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); align-items: center; font-size: 13px; }
+    .tx-row:last-child { border-bottom: none; }
+    .tx-plan { font-weight: 700; color: var(--green); text-transform: capitalize; }
+    .tx-email { color: var(--text); font-size: 12px; }
+    .tx-amount { font-weight: 700; color: var(--text); white-space: nowrap; }
+    .tx-date { color: var(--muted); font-size: 11px; white-space: nowrap; }
+
+    .empty-tx { text-align: center; padding: 26px; color: var(--muted); font-size: 13px; }
   </style>
 </head>
 <body>
@@ -104,22 +129,62 @@
   </header>
 
   <div class="container">
-    <!-- Stats -->
-    <div class="stats" id="stats-grid">
-      <div class="stat-card"><div class="label">Ordini totali</div><div class="value" id="stat-total">—</div></div>
-      <div class="stat-card"><div class="label">Inviati</div><div class="value" id="stat-sent" style="color:#065F46;">—</div></div>
-      <div class="stat-card"><div class="label">Falliti</div><div class="value" id="stat-failed" style="color:var(--red);">—</div></div>
-      <div class="stat-card"><div class="label">Subscriber attivi</div><div class="value" id="stat-subscribers">—</div></div>
-    </div>
-
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('orders', this)">Ordini</button>
+      <button class="tab active" onclick="switchTab('dashboard', this)">Dashboard</button>
+      <button class="tab" onclick="switchTab('orders', this)">Ordini</button>
       <button class="tab" onclick="switchTab('subscribers', this)">Subscriber</button>
     </div>
 
+    <!-- Dashboard -->
+    <div id="panel-dashboard" class="panel active">
+      <div class="period-toggle" role="tablist">
+        <button class="period-btn active" data-period="today" onclick="switchPeriod('today', this)">Oggi</button>
+        <button class="period-btn" data-period="week" onclick="switchPeriod('week', this)">Settimana</button>
+        <button class="period-btn" data-period="month" onclick="switchPeriod('month', this)">Mese</button>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="stat-card">
+          <div class="label">Ricavi</div>
+          <div class="value" id="kpi-revenue">€ —</div>
+          <div class="kpi-sub" id="kpi-orders">— transazioni</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Costi (API + Stripe)</div>
+          <div class="value" id="kpi-cost" style="color:var(--orange);">€ —</div>
+          <div class="kpi-sub" id="kpi-cost-breakdown">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Profitto netto</div>
+          <div class="value" id="kpi-profit" style="color:#065F46;">€ —</div>
+          <div class="kpi-sub" id="kpi-margin">— margine</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Subscriber attivi</div>
+          <div class="value" id="kpi-subs">—</div>
+          <div class="kpi-sub" id="kpi-mrr">€ — MRR</div>
+        </div>
+      </div>
+
+      <div class="dashboard-row">
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Distribuzione tier (lifetime)</div>
+          <div style="position:relative; height:280px;">
+            <canvas id="planDonut"></canvas>
+          </div>
+        </div>
+        <div class="dashboard-card">
+          <div class="dashboard-card-title">Ultime transazioni</div>
+          <div id="latest-tx"><div class="empty-tx">Caricamento…</div></div>
+        </div>
+      </div>
+
+      <button class="refresh-btn" onclick="loadDashboard()">↻ Aggiorna dashboard</button>
+    </div>
+
     <!-- Ordini -->
-    <div id="panel-orders" class="panel active">
+    <div id="panel-orders" class="panel">
       <button class="refresh-btn" onclick="loadOrders()">↻ Aggiorna</button>
       <div class="table-wrap">
         <table>
@@ -167,7 +232,7 @@
 
   function doLogin() {
     apiKey = document.getElementById('api-key-input').value.trim();
-    fetch(API_BASE + '/api/admin/stats', { headers: headers() })
+    fetch(API_BASE + '/api/admin/dashboard', { headers: headers() })
       .then(function(r) {
         if (!r.ok) throw new Error('401');
         return r.json();
@@ -176,8 +241,7 @@
         sessionStorage.setItem('ns_admin_key', apiKey);
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app').style.display = 'block';
-        applyStats(data);
-        loadOrders();
+        applyDashboard(data);
       })
       .catch(function() {
         document.getElementById('login-error').textContent = 'API Key non valida.';
@@ -195,23 +259,130 @@
 
   // Auto-login se key salvata
   if (apiKey) {
-    fetch(API_BASE + '/api/admin/stats', { headers: headers() })
+    fetch(API_BASE + '/api/admin/dashboard', { headers: headers() })
       .then(function(r) { return r.ok ? r.json() : null; })
       .then(function(data) {
         if (!data) { sessionStorage.removeItem('ns_admin_key'); return; }
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app').style.display = 'block';
-        applyStats(data);
-        loadOrders();
+        applyDashboard(data);
       });
   }
 
-  function applyStats(data) {
-    const byStatus = data.orders_by_status || {};
-    const total = Object.values(byStatus).reduce(function(a, b) { return a + b; }, 0);
-    document.getElementById('stat-total').textContent  = total;
-    document.getElementById('stat-sent').textContent   = byStatus['sent'] || 0;
-    document.getElementById('stat-failed').textContent = byStatus['failed'] || 0;
+  // ── Dashboard ─────────────────────────────────────────────────────────────
+  let currentPeriod = 'today';
+  let donutChart = null;
+  let dashboardCache = null;
+
+  function fmtEuro(cents) {
+    return '€ ' + (cents / 100).toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function loadDashboard() {
+    fetch(API_BASE + '/api/admin/dashboard', { headers: headers() })
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (!data) return;
+        applyDashboard(data);
+      });
+  }
+
+  function applyDashboard(data) {
+    dashboardCache = data;
+    renderPeriod(currentPeriod);
+    renderDonut(data.plan_distribution_lifetime || {});
+    renderTransactions(data.latest_transactions || []);
+    renderSubscribers(data.active_subscribers_by_plan || {}, data.pricing_cents || {});
+  }
+
+  function switchPeriod(period, btn) {
+    currentPeriod = period;
+    document.querySelectorAll('.period-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    if (dashboardCache) renderPeriod(period);
+  }
+
+  function renderPeriod(period) {
+    if (!dashboardCache) return;
+    const p = dashboardCache[period] || {};
+    const revenue = p.revenue_cents || 0;
+    const cost = p.total_cost_cents || 0;
+    const profit = p.profit_cents || 0;
+    const apiCost = p.api_cost_cents || 0;
+    const stripeFee = p.stripe_fee_cents || 0;
+
+    document.getElementById('kpi-revenue').textContent = fmtEuro(revenue);
+    document.getElementById('kpi-orders').textContent = (p.count || 0) + ' transazion' + ((p.count === 1) ? 'e' : 'i');
+    document.getElementById('kpi-cost').textContent = fmtEuro(cost);
+    document.getElementById('kpi-cost-breakdown').textContent =
+      'API ' + fmtEuro(apiCost) + ' · Stripe ' + fmtEuro(stripeFee);
+    document.getElementById('kpi-profit').textContent = fmtEuro(profit);
+    const margin = revenue > 0 ? Math.round((profit / revenue) * 100) : 0;
+    document.getElementById('kpi-margin').textContent = margin + '% margine';
+  }
+
+  function renderSubscribers(byPlan, pricing) {
+    const total = Object.values(byPlan).reduce(function(a, b) { return a + b; }, 0);
+    document.getElementById('kpi-subs').textContent = total;
+    // MRR stimato: completo + coach contribuiscono mensilmente
+    let mrr = 0;
+    if (byPlan['completo']) mrr += byPlan['completo'] * (pricing['completo'] || 0);
+    if (byPlan['coach'])    mrr += byPlan['coach']    * (pricing['coach']    || 0);
+    document.getElementById('kpi-mrr').textContent = fmtEuro(mrr) + ' MRR';
+  }
+
+  function renderDonut(distribution) {
+    const labels = ['Base', 'Completo', 'Coach'];
+    const data = [
+      distribution['base']     || 0,
+      distribution['completo'] || 0,
+      distribution['coach']    || 0,
+    ];
+    const colors = ['#C9A66B', '#2D5F3F', '#1A2E22'];
+    const ctx = document.getElementById('planDonut').getContext('2d');
+    if (donutChart) donutChart.destroy();
+    donutChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{ data: data, backgroundColor: colors, borderWidth: 0 }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { family: 'Inter', size: 12 }, padding: 14 } },
+          tooltip: {
+            callbacks: {
+              label: function(ctx) {
+                const total = ctx.dataset.data.reduce(function(a, b) { return a + b; }, 0);
+                const pct = total > 0 ? Math.round((ctx.parsed / total) * 100) : 0;
+                return ctx.label + ': ' + ctx.parsed + ' (' + pct + '%)';
+              }
+            }
+          }
+        },
+        cutout: '65%',
+      },
+    });
+  }
+
+  function renderTransactions(txs) {
+    const container = document.getElementById('latest-tx');
+    if (!txs.length) {
+      container.innerHTML = '<div class="empty-tx">Nessuna transazione.</div>';
+      return;
+    }
+    container.innerHTML = txs.map(function(t) {
+      return '<div class="tx-row">' +
+        '<div>' +
+          '<div class="tx-plan">' + t.plan + '</div>' +
+          '<div class="tx-email">' + t.email + '</div>' +
+        '</div>' +
+        '<div class="tx-amount">' + fmtEuro(t.amount_cents) + '</div>' +
+        '<div class="tx-date">' + fmtDate(t.date) + '</div>' +
+      '</div>';
+    }).join('');
   }
 
   function badgeClass(status) {
@@ -270,9 +441,6 @@
       .then(function(rows) {
         if (!Array.isArray(rows)) { document.getElementById('subs-body').innerHTML = '<tr><td colspan="7" class="empty">Errore.</td></tr>'; return; }
         if (rows.length === 0) { document.getElementById('subs-body').innerHTML = '<tr><td colspan="7" class="empty">Nessun subscriber.</td></tr>'; return; }
-        // update stat
-        const active = rows.filter(function(r) { return r.subscription_status === 'active'; }).length;
-        document.getElementById('stat-subscribers').textContent = active;
         const html = rows.map(function(s) {
           return '<tr>'
             + '<td>' + s.email + '</td>'
@@ -293,6 +461,7 @@
     document.querySelectorAll('.panel').forEach(function(p) { p.classList.remove('active'); });
     el.classList.add('active');
     document.getElementById('panel-' + name).classList.add('active');
+    if (name === 'dashboard') loadDashboard();
     if (name === 'orders') loadOrders();
     if (name === 'subscribers') loadSubscribers();
   }
