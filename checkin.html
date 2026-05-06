@@ -85,6 +85,16 @@
 
     .error-msg { font-size: 13px; color: #C44; margin-top: 10px; display: none; }
 
+    .manage-section {
+      margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--border);
+      font-size: 13px; color: var(--text-muted); text-align: center;
+    }
+    .manage-section a {
+      color: var(--green-deep); font-weight: 600; text-decoration: none;
+      border-bottom: 1px solid var(--green-deep); cursor: pointer;
+    }
+    .manage-section a:hover { opacity: .75; }
+
     #state-invalid { display: none; }
     #state-invalid .invalid-msg {
       background: var(--cream); border-left: 3px solid var(--gold);
@@ -140,6 +150,12 @@
         <h2>Peso aggiornato!</h2>
         <p>Il prossimo piano mensile utilizzerà il nuovo valore. Riceverai l'email entro il rinnovo del tuo abbonamento.</p>
       </div>
+
+      <!-- Visibile solo per piani in abbonamento (completo/coach) -->
+      <div class="manage-section" id="manage-section" style="display:none;">
+        Vuoi annullare o aggiornare la carta?
+        <a id="manage-link" href="#" role="button">Gestisci il tuo abbonamento →</a>
+      </div>
     </div>
   </main>
 
@@ -178,10 +194,40 @@
           document.getElementById('current-weight-info').innerHTML =
             'Peso registrato: <strong>' + data.current_weight + ' kg</strong> · Mese ' + data.plan_month;
           document.getElementById('weight').value = data.current_weight;
+          // Mostra "Gestisci abbonamento" solo per piani ricorrenti
+          if (data.plan === 'completo' || data.plan === 'coach') {
+            document.getElementById('manage-section').style.display = 'block';
+          }
           showState('form');
         })
         .catch(function() { showState('invalid'); });
     }
+
+    // Click su "Gestisci abbonamento" → richiede portal URL e redirect
+    document.getElementById('manage-link').addEventListener('click', function(e) {
+      e.preventDefault();
+      var link = e.currentTarget;
+      var originalText = link.textContent;
+      link.textContent = 'Apertura portale…';
+      link.style.pointerEvents = 'none';
+      fetch(API_BASE + '/api/billing-portal/' + token, { method: 'POST' })
+        .then(function(r) {
+          if (!r.ok) return r.json().then(function(d){ throw new Error(d.detail || 'Errore'); });
+          return r.json();
+        })
+        .then(function(data) {
+          if (data && data.url) {
+            window.location.href = data.url;
+          } else {
+            throw new Error('Risposta non valida');
+          }
+        })
+        .catch(function(err) {
+          link.textContent = originalText;
+          link.style.pointerEvents = '';
+          alert('Impossibile aprire il portale: ' + err.message);
+        });
+    });
 
     document.getElementById('checkin-form').addEventListener('submit', function(e) {
       e.preventDefault();

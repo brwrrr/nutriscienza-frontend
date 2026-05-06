@@ -74,7 +74,7 @@
     .s-paid      { background: #DBEAFE; color: #1E40AF; }
     .s-failed    { background: #FEE2E2; color: #991B1B; }
     .s-active    { background: #D1FAE5; color: #065F46; }
-    .s-cancelled { background: #F3F4F6; color: #6B7280; }
+    .s-cancelled { background: #FEE2E2; color: var(--red); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
     .s-past_due  { background: #FEE2E2; color: #991B1B; }
     .s-pending_payment { background: #F3F4F6; color: #6B7280; }
 
@@ -136,6 +136,7 @@
       <button class="tab active" onclick="switchTab('dashboard', this)">Dashboard</button>
       <button class="tab" onclick="switchTab('orders', this)">Ordini</button>
       <button class="tab" onclick="switchTab('subscribers', this)">Subscriber</button>
+      <button class="tab" onclick="switchTab('affiliates', this)">Affiliati</button>
     </div>
 
     <!-- Dashboard -->
@@ -214,6 +215,65 @@
           </thead>
           <tbody id="subs-body"><tr><td colspan="7" class="empty">Caricamento…</td></tr></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Affiliati -->
+    <div id="panel-affiliates" class="panel">
+      <div style="display:flex; gap:8px; align-items:center; margin-bottom:16px; flex-wrap:wrap;">
+        <button class="refresh-btn" style="margin-bottom:0;" onclick="loadAffiliates()">↻ Aggiorna</button>
+        <button class="btn-sm" style="background:var(--green); color:white;" onclick="openCreateAffiliate()">+ Crea affiliato</button>
+        <button class="btn-sm" style="background:var(--gold); color:white;" onclick="approveMatured()">✓ Promuovi commissioni mature</button>
+      </div>
+
+      <!-- KPI affiliati -->
+      <div class="kpi-grid" style="margin-bottom:18px;">
+        <div class="stat-card">
+          <div class="label">Affiliati attivi</div>
+          <div class="value" id="aff-kpi-active">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Referrals totali</div>
+          <div class="value" id="aff-kpi-referrals">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Da pagare (approved)</div>
+          <div class="value" style="color:var(--orange);" id="aff-kpi-approved">€ —</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Commissioni lifetime</div>
+          <div class="value" style="color:#065F46;" id="aff-kpi-lifetime">€ —</div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th><th>Email</th><th>Codice ref</th>
+              <th>Comm. %</th><th>Stato</th>
+              <th>Refs</th><th>Pending</th><th>Approved</th><th>Pagati</th><th>Lifetime</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+          <tbody id="aff-body"><tr><td colspan="11" class="empty">Caricamento…</td></tr></tbody>
+        </table>
+      </div>
+
+      <!-- Modale creazione affiliato -->
+      <div id="aff-create-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center;">
+        <div style="background:white; border-radius:14px; padding:26px; width:380px; max-width:92vw;">
+          <h3 style="font-size:17px; color:var(--green); margin-bottom:14px;">Nuovo affiliato</h3>
+          <input id="aff-new-name"  placeholder="Nome"             style="width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px; margin-bottom:10px; font-size:14px;">
+          <input id="aff-new-email" placeholder="Email"            style="width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px; margin-bottom:10px; font-size:14px;">
+          <input id="aff-new-code"  placeholder="Codice (opzionale)" style="width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px; margin-bottom:10px; font-size:14px;">
+          <input id="aff-new-rate"  placeholder="Commissione % (es. 30)" type="number" min="0" max="100" step="1" value="30" style="width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px; margin-bottom:14px; font-size:14px;">
+          <div style="display:flex; gap:8px;">
+            <button class="btn-sm" style="background:#E5E0D3; color:var(--text); flex:1; padding:10px;" onclick="closeCreateAffiliate()">Annulla</button>
+            <button class="btn-sm" style="background:var(--green); color:white; flex:1; padding:10px;" onclick="submitCreateAffiliate()">Crea</button>
+          </div>
+          <div id="aff-create-err" style="color:var(--red); font-size:12px; margin-top:10px;"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -500,6 +560,212 @@
     if (name === 'dashboard') loadDashboard();
     if (name === 'orders') loadOrders();
     if (name === 'subscribers') loadSubscribers();
+    if (name === 'affiliates') loadAffiliates();
+  }
+
+  // ── Affiliati ─────────────────────────────────────────────────────────────
+  function loadAffiliates() {
+    fetch(API_BASE + '/api/admin/affiliates', { headers: headers() })
+      .then(function(r) { return r.json(); })
+      .then(function(rows) {
+        if (!Array.isArray(rows)) {
+          document.getElementById('aff-body').innerHTML =
+            '<tr><td colspan="11" class="empty">Errore caricamento.</td></tr>';
+          return;
+        }
+        if (rows.length === 0) {
+          document.getElementById('aff-body').innerHTML =
+            '<tr><td colspan="11" class="empty">Nessun affiliato. Clicca “+ Crea affiliato”.</td></tr>';
+          document.getElementById('aff-kpi-active').textContent    = '0';
+          document.getElementById('aff-kpi-referrals').textContent = '0';
+          document.getElementById('aff-kpi-approved').textContent  = fmtEuro(0);
+          document.getElementById('aff-kpi-lifetime').textContent  = fmtEuro(0);
+          return;
+        }
+
+        // KPI roll-up
+        var totActive = 0, totRefs = 0, totApproved = 0, totLifetime = 0;
+        rows.forEach(function(a) {
+          if (a.status === 'active') totActive++;
+          totRefs     += a.referrals_count       || 0;
+          totApproved += a.approved_cents        || 0;
+          totLifetime += a.lifetime_earned_cents || 0;
+        });
+        document.getElementById('aff-kpi-active').textContent    = totActive;
+        document.getElementById('aff-kpi-referrals').textContent = totRefs;
+        document.getElementById('aff-kpi-approved').textContent  = fmtEuro(totApproved);
+        document.getElementById('aff-kpi-lifetime').textContent  = fmtEuro(totLifetime);
+
+        var html = rows.map(function(a) {
+          var pct = Math.round((a.commission_rate || 0) * 1000) / 10; // es. 30.0
+          var statusOptions = ['active', 'paused', 'banned'].map(function(s) {
+            return '<option value="' + s + '"' + (s === a.status ? ' selected' : '') + '>' + s + '</option>';
+          }).join('');
+          return '<tr>'
+            + '<td><strong>' + escapeHtml(a.name) + '</strong></td>'
+            + '<td style="font-size:12px;">' + escapeHtml(a.email) + '</td>'
+            + '<td><code style="background:var(--green-tint); padding:2px 6px; border-radius:4px; font-size:11px;">' + escapeHtml(a.ref_code) + '</code></td>'
+            + '<td style="white-space:nowrap;">'
+              + '<input type="number" min="0" max="100" step="1" value="' + pct + '" '
+              + 'data-aff-id="' + a.id + '" data-current="' + pct + '" '
+              + 'onchange="updateCommissionRate(this)" '
+              + 'style="width:64px; padding:4px 6px; border:1.5px solid var(--border); border-radius:6px; font-size:13px; text-align:right;"> %'
+            + '</td>'
+            + '<td>'
+              + '<select data-aff-id="' + a.id + '" onchange="updateAffStatus(this)" '
+              + 'style="padding:4px 6px; border:1.5px solid var(--border); border-radius:6px; font-size:12px; font-weight:600;">'
+              + statusOptions
+              + '</select>'
+            + '</td>'
+            + '<td style="text-align:center;">' + (a.referrals_count || 0) + '</td>'
+            + '<td>' + fmtEuro(a.pending_cents  || 0) + '</td>'
+            + '<td style="color:var(--orange); font-weight:700;">' + fmtEuro(a.approved_cents || 0) + '</td>'
+            + '<td>' + fmtEuro(a.paid_cents     || 0) + '</td>'
+            + '<td style="font-weight:700;">' + fmtEuro(a.lifetime_earned_cents || 0) + '</td>'
+            + '<td style="white-space:nowrap;">'
+              + '<button class="btn-sm btn-download" onclick="copyPortalLink(\'' + a.id + '\')">🔗 Portal</button>'
+            + '</td>'
+            + '</tr>';
+        }).join('');
+        document.getElementById('aff-body').innerHTML = html;
+      })
+      .catch(function() {
+        document.getElementById('aff-body').innerHTML =
+          '<tr><td colspan="11" class="empty">Errore di rete.</td></tr>';
+      });
+  }
+
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function updateCommissionRate(input) {
+    var affId   = input.getAttribute('data-aff-id');
+    var current = parseFloat(input.getAttribute('data-current'));
+    var newPct  = parseFloat(input.value);
+    if (isNaN(newPct) || newPct < 0 || newPct > 100) {
+      alert('Inserisci un valore tra 0 e 100.');
+      input.value = current;
+      return;
+    }
+    if (!confirm('Aggiornare la commissione a ' + newPct + '%? (le commissioni già registrate non cambiano)')) {
+      input.value = current;
+      return;
+    }
+    var rate = +(newPct / 100).toFixed(4);
+    fetch(API_BASE + '/api/admin/affiliates/' + affId + '/commission-rate', {
+      method: 'POST', headers: headers(), body: JSON.stringify({ commission_rate: rate })
+    })
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function() {
+        input.setAttribute('data-current', String(newPct));
+      })
+      .catch(function(e) {
+        alert('Errore aggiornamento: ' + e.message);
+        input.value = current;
+      });
+  }
+
+  function updateAffStatus(sel) {
+    var affId = sel.getAttribute('data-aff-id');
+    var status = sel.value;
+    fetch(API_BASE + '/api/admin/affiliates/' + affId + '/status?status=' + encodeURIComponent(status), {
+      method: 'POST', headers: headers()
+    })
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .catch(function(e) {
+        alert('Errore: ' + e.message);
+        loadAffiliates();
+      });
+  }
+
+  function copyPortalLink(affId) {
+    // Recupera i dati per ottenere il portal_token, ma list_affiliates non lo restituisce.
+    // Soluzione: chiediamo all'admin di aprire la creazione iniziale (dove il link è restituito)
+    // o di ricreare il token tramite il backend. In assenza, costruiamo un link diretto via
+    // ref_code che porta alla landing — l'affiliato accederà al portal con il token via email.
+    // Per ora mostriamo il referral URL (utile da condividere ai clienti).
+    fetch(API_BASE + '/api/admin/affiliates', { headers: headers() })
+      .then(function(r) { return r.json(); })
+      .then(function(rows) {
+        var a = (rows || []).find(function(x) { return x.id === affId; });
+        if (!a) { alert('Affiliato non trovato.'); return; }
+        var origin = (window.location.hostname === 'localhost' || window.location.hostname.startsWith('127.'))
+          ? window.location.origin
+          : 'https://nutriscienza.org';
+        var url = origin + '/?ref=' + encodeURIComponent(a.ref_code);
+        // Fallback se navigator.clipboard non disponibile
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function() {
+            alert('Referral URL copiato:\n' + url);
+          }, function() { window.prompt('Copia il referral URL:', url); });
+        } else {
+          window.prompt('Copia il referral URL:', url);
+        }
+      });
+  }
+
+  function openCreateAffiliate()  {
+    document.getElementById('aff-create-err').textContent = '';
+    document.getElementById('aff-create-modal').style.display = 'flex';
+  }
+  function closeCreateAffiliate() {
+    document.getElementById('aff-create-modal').style.display = 'none';
+  }
+
+  function submitCreateAffiliate() {
+    var name  = document.getElementById('aff-new-name').value.trim();
+    var email = document.getElementById('aff-new-email').value.trim();
+    var code  = document.getElementById('aff-new-code').value.trim();
+    var pct   = parseFloat(document.getElementById('aff-new-rate').value);
+    var errBox = document.getElementById('aff-create-err');
+    errBox.textContent = '';
+    if (!name || !email) { errBox.textContent = 'Nome ed email sono obbligatori.'; return; }
+    if (isNaN(pct) || pct < 0 || pct > 100) { errBox.textContent = 'Commissione % non valida.'; return; }
+
+    var body = {
+      name: name, email: email,
+      commission_rate: +(pct / 100).toFixed(4),
+      payout_method: 'manual'
+    };
+    if (code) body.custom_code = code;
+
+    fetch(API_BASE + '/api/admin/affiliates', {
+      method: 'POST', headers: headers(), body: JSON.stringify(body)
+    })
+      .then(function(r) {
+        if (!r.ok) return r.json().then(function(j) { throw new Error(j.detail || ('HTTP ' + r.status)); });
+        return r.json();
+      })
+      .then(function(data) {
+        var portal = data.portal_login_url || '(nessun link)';
+        alert('Affiliato creato.\n\nLink portal (invialo all\'affiliato):\n' + portal);
+        closeCreateAffiliate();
+        document.getElementById('aff-new-name').value  = '';
+        document.getElementById('aff-new-email').value = '';
+        document.getElementById('aff-new-code').value  = '';
+        document.getElementById('aff-new-rate').value  = '30';
+        loadAffiliates();
+      })
+      .catch(function(e) {
+        errBox.textContent = e.message;
+      });
+  }
+
+  function approveMatured() {
+    if (!confirm('Promuovere a “approved” tutte le commissioni pending col periodo di refund concluso?')) return;
+    fetch(API_BASE + '/api/admin/affiliates/approve-matured', {
+      method: 'POST', headers: headers()
+    })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        alert('Commissioni promosse: ' + (data.approved || 0));
+        loadAffiliates();
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
   }
 </script>
 </body>
