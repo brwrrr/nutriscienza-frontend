@@ -639,7 +639,7 @@
               <li>4 settimane a rotazione</li>
               <li>Programma allenamento</li>
               <li>Check-in mensile</li>
-              <li>Supporto nutrizionisti</li>
+              <li>Supporto via email entro 48 ore</li>
             </ul>
           </label>
 
@@ -680,7 +680,7 @@
         <div class="trust-strip">
           <span>Pagamento sicuro Stripe</span>
           <span>Annullabile in qualsiasi momento</span>
-          <span>Sviluppato con nutrizionisti certificati</span>
+          <span>Metodologia conforme LARN/SINU</span>
         </div>
       </section>
 
@@ -688,7 +688,7 @@
       <section class="success" id="successScreen">
         <div class="success-icon">✓</div>
         <h2>Perfetto, <span id="successName">Giulia</span>!</h2>
-        <p>Abbiamo ricevuto le tue informazioni. Ora ti rimandiamo al pagamento sicuro tramite Stripe — appena confermato, il tuo piano <strong id="successPlan">Completo</strong> verrà generato dai nostri nutrizionisti e arriverà alla tua email entro <strong>24 ore</strong>.</p>
+        <p>Abbiamo ricevuto le tue informazioni. Ora ti rimandiamo al pagamento sicuro tramite Stripe — appena confermato, il tuo piano <strong id="successPlan">Completo</strong> verrà generato dal sistema NutriScienza e arriverà alla tua email entro <strong>24 ore</strong>.</p>
         <a href="index.html" class="btn-primary">Torna alla home</a>
       </section>
 
@@ -847,6 +847,8 @@
         plan: data.get('plan'),
         firstName: data.get('firstName'),
         email: data.get('email'),
+        // Affiliate tracker — null se nessun ref valido in localStorage
+        affiliateRef: (window.NSAffiliate && window.NSAffiliate.getRef()) || null,
       };
 
       btnNext.disabled = true;
@@ -879,5 +881,6 @@
     updateProgress();
   </script>
 <script src="cookie-banner.js"></script>
+<script src="affiliate-tracker.js" defer></script>
 </body>
 </html>

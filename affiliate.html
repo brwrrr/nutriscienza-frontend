@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<title>Dashboard Affiliati — NutriScienza</title>
+<style>
+  :root {
+    --bg: #f7f6f2;
+    --ink: #11221b;
+    --muted: #5b6b62;
+    --accent: #2f6b4f;
+    --accent-soft: #e6efe9;
+    --line: #dcdcd6;
+    --warn: #b86b34;
+    --ok: #2f6b4f;
+    --bad: #9b2929;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 32px 20px 80px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 28px; }
+  header h1 { margin: 0; font-size: 22px; font-weight: 600; }
+  header .who { color: var(--muted); font-size: 14px; }
+  .card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .card h2 { margin: 0 0 12px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .stat .v { font-size: 26px; font-weight: 600; }
+  .stat .l { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .ref-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .ref-row input {
+    flex: 1; min-width: 240px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 14px;
+    background: var(--accent-soft);
+  }
+  button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  button:hover { opacity: 0.92; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 600; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .pill.pending { background: #fff3e0; color: var(--warn); }
+  .pill.approved { background: var(--accent-soft); color: var(--accent); }
+  .pill.paid { background: #e8f0e8; color: #2a4d34; }
+  .pill.reversed { background: #fae5e5; color: var(--bad); }
+  .empty { color: var(--muted); padding: 24px; text-align: center; font-size: 14px; }
+  .err { background: #fae5e5; color: var(--bad); padding: 16px; border-radius: 8px; }
+  .small { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>NutriScienza — Dashboard Affiliati</h1>
+    <div class="who" id="who">Caricamento…</div>
+  </header>
+
+  <div id="err" class="err" style="display:none"></div>
+  <div id="content" style="display:none">
+
+    <div class="card">
+      <h2>Il tuo link</h2>
+      <div class="ref-row">
+        <input id="refUrl" readonly />
+        <button onclick="copyRef()">Copia</button>
+      </div>
+      <div class="small" style="margin-top:8px">
+        Codice: <strong id="refCode"></strong> · Commissione: <strong id="rate"></strong>
+        · 30 giorni di hold prima del pagamento (per coprire eventuali rimborsi)
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Riepilogo</h2>
+      <div class="grid">
+        <div class="stat"><div class="v" id="sPending">€0,00</div><div class="l">In attesa</div></div>
+        <div class="stat"><div class="v" id="sApproved">€0,00</div><div class="l">Pronto al pagamento</div></div>
+        <div class="stat"><div class="v" id="sPaid">€0,00</div><div class="l">Pagato</div></div>
+        <div class="stat"><div class="v" id="sRefs">0</div><div class="l">Clienti referral</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Commissioni (ultime 200)</h2>
+      <div id="commTable"></div>
+    </div>
+
+    <div class="card">
+      <h2>Storico pagamenti</h2>
+      <div id="payTable"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(location.search);
+const token = params.get('t');
+const API = (window.NUTRISCIENZA_API_BASE || '');
+
+function fmt(cents, currency='eur') {
+  const v = (cents || 0) / 100;
+  return new Intl.NumberFormat('it-IT', { style:'currency', currency:currency.toUpperCase() }).format(v);
+}
+function dt(s) { if (!s) return '—'; const d = new Date(s); return d.toLocaleDateString('it-IT'); }
+
+async function fetchJson(path) {
+  const r = await fetch(`${API}${path}${path.includes('?') ? '&' : '?'}t=${encodeURIComponent(token)}`);
+  if (!r.ok) {
+    const txt = await r.text().catch(() => '');
+    throw new Error(`${r.status}: ${txt || r.statusText}`);
+  }
+  return r.json();
+}
+
+async function load() {
+  if (!token) {
+    showErr('Link non valido. Contatta supporto@nutriscienza.org per ricevere il tuo link di accesso.');
+    return;
+  }
+  try {
+    const me = await fetchJson('/api/affiliate/me');
+    document.getElementById('who').textContent = `${me.name} · ${me.email}`;
+    document.getElementById('refUrl').value = me.referral_url;
+    document.getElementById('refCode').textContent = me.ref_code;
+    document.getElementById('rate').textContent = `${(me.commission_rate * 100).toFixed(0)}%`;
+    document.getElementById('sPending').textContent = fmt(me.stats.pending_cents);
+    document.getElementById('sApproved').textContent = fmt(me.stats.approved_cents);
+    document.getElementById('sPaid').textContent = fmt(me.stats.paid_cents);
+    document.getElementById('sRefs').textContent = me.stats.referrals_count;
+
+    const comms = await fetchJson('/api/affiliate/commissions');
+    renderCommissions(comms);
+
+    const payouts = await fetchJson('/api/affiliate/payouts');
+    renderPayouts(payouts);
+
+    document.getElementById('content').style.display = '';
+  } catch (e) {
+    showErr(`Impossibile caricare la dashboard: ${e.message}`);
+  }
+}
+
+function renderCommissions(rows) {
+  const el = document.getElementById('commTable');
+  if (!rows.length) { el.innerHTML = '<div class="empty">Ancora nessuna commissione. Condividi il tuo link!</div>'; return; }
+  let h = '<table><thead><tr><th>Data</th><th>Piano</th><th>Lordo</th><th>Commissione</th><th>Stato</th><th>Pagabile dal</th></tr></thead><tbody>';
+  for (const r of rows) {
+    h += `<tr>
+      <td>${dt(r.earned_at)}</td>
+      <td>${r.plan}</td>
+      <td>${fmt(r.gross_amount_cents, r.currency)}</td>
+      <td><strong>${fmt(r.commission_amount_cents, r.currency)}</strong></td>
+      <td><span class="pill ${r.status}">${r.status}</span></td>
+      <td class="small">${dt(r.payable_at)}</td>
+    </tr>`;
+  }
+  h += '</tbody></table>';
+  el.innerHTML = h;
+}
+
+function renderPayouts(rows) {
+  const el = document.getElementById('payTable');
+  if (!rows.length) { el.innerHTML = '<div class="empty">Nessun pagamento ancora effettuato.</div>'; return; }
+  let h = '<table><thead><tr><th>Data</th><th>Importo</th><th>Metodo</th><th>Riferimento</th></tr></thead><tbody>';
+  for (const r of rows) {
+    h += `<tr>
+      <td>${dt(r.paid_at)}</td>
+      <td><strong>${fmt(r.amount_cents, r.currency)}</strong></td>
+      <td>${r.method}</td>
+      <td class="small">${r.external_ref || '—'}</td>
+    </tr>`;
+  }
+  h += '</tbody></table>';
+  el.innerHTML = h;
+}
+
+function copyRef() {
+  const inp = document.getElementById('refUrl');
+  inp.select();
+  navigator.clipboard.writeText(inp.value);
+}
+
+function showErr(msg) {
+  const e = document.getElementById('err');
+  e.textContent = msg;
+  e.style.display = '';
+  document.getElementById('who').textContent = '';
+}
+
+load();
+</script>
+</body>
+</html>

@@ -183,9 +183,9 @@ def cover_page(canv, doc):
     canv.setFont('Helvetica', 9)
     canv.setFillColor(TEXT_MUTED)
     canv.drawCentredString(width/2, 3.2*cm,
-        "Sviluppato con biologi nutrizionisti iscritti all'Ordine")
+        "Metodologia conforme alle linee guida LARN — Società Italiana di Nutrizione Umana (SINU)")
     canv.drawCentredString(width/2, 2.7*cm,
-        "Conforme alle linee guida LARN — Società Italiana di Nutrizione Umana")
+        "Calcoli energetici basati sull'equazione Mifflin-St Jeor (1990)")
 
     # Bottom accent
     canv.setFillColor(GREEN_DEEP)
@@ -613,7 +613,7 @@ for category, items in shopping:
 story.append(PageBreak())
 
 # === PAGE: Note + disclaimer ===
-story.append(Paragraph("NOTE DEL NUTRIZIONISTA", EYEBROW))
+story.append(Paragraph("NOTE METODOLOGICHE DEL PIANO", EYEBROW))
 story.append(Paragraph("Cinque consigli che fanno la differenza.", H1))
 
 tips = [
@@ -671,12 +671,12 @@ sig = Table([[
     Paragraph(
         "<b>Documento generato con intelligenza artificiale</b><br/>"
         "Questo piano è stato elaborato con il supporto di modelli di intelligenza "
-        "artificiale addestrati sui più aggiornati riferimenti nutrizionali internazionali "
-        "(LARN, EFSA, WHO/FAO) e sulle metodologie adottate dai principali nutrizionisti. "
+        "artificiale a partire da riferimenti nutrizionali pubblici e tracciabili: "
+        "linee guida LARN/SINU (IV revisione, 2014), riferimenti EFSA e WHO/FAO. "
         "I calcoli di fabbisogno energetico e dei macronutrienti sono deterministici e "
-        "basati sull'equazione di Mifflin-St Jeor, ampiamente validata in letteratura. "
+        "basati sull'equazione di Mifflin-St Jeor (1990), ampiamente validata in letteratura. "
         "Il piano non costituisce una diagnosi medica né sostituisce la consulenza "
-        "di un professionista sanitario abilitato.",
+        "di un medico, di un dietologo o di un biologo nutrizionista.",
         SMALL),
     Paragraph("<b>Hai domande sul tuo piano?</b><br/>"
               "Scrivici a supporto@nutriscienza.org<br/>"
