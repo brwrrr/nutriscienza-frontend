@@ -121,7 +121,13 @@
 <script>
 const params = new URLSearchParams(location.search);
 const token = params.get('t');
-const API = (window.NUTRISCIENZA_API_BASE || '');
+// Same resolution as admin.html: localhost in dev, Render API host in prod.
+// Falls back to same-origin only when NUTRISCIENZA_API_BASE is explicitly set,
+// otherwise the static host (e.g. nutriscienza.org) returns 404 on /api/*.
+const API = (window.NUTRISCIENZA_API_BASE
+  || ((window.location.hostname === 'localhost' || window.location.hostname.startsWith('127.'))
+      ? 'http://localhost:8000'
+      : 'https://nutriscienza-api.onrender.com'));
 
 function fmt(cents, currency='eur') {
   const v = (cents || 0) / 100;
