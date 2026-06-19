@@ -210,10 +210,10 @@
           <thead>
             <tr>
               <th>Email</th><th>Nome</th><th>Piano</th><th>Stato</th>
-              <th>Mese</th><th>Prossimo piano</th><th>Creato</th>
+              <th>Mese</th><th>Prossimo piano</th><th>Creato</th><th>Azioni</th>
             </tr>
           </thead>
-          <tbody id="subs-body"><tr><td colspan="7" class="empty">Caricamento…</td></tr></tbody>
+          <tbody id="subs-body"><tr><td colspan="8" class="empty">Caricamento…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -535,9 +535,13 @@
     fetch(API_BASE + '/api/admin/subscribers', { headers: headers() })
       .then(function(r) { return r.json(); })
       .then(function(rows) {
-        if (!Array.isArray(rows)) { document.getElementById('subs-body').innerHTML = '<tr><td colspan="7" class="empty">Errore.</td></tr>'; return; }
-        if (rows.length === 0) { document.getElementById('subs-body').innerHTML = '<tr><td colspan="7" class="empty">Nessun subscriber.</td></tr>'; return; }
+        if (!Array.isArray(rows)) { document.getElementById('subs-body').innerHTML = '<tr><td colspan="8" class="empty">Errore.</td></tr>'; return; }
+        if (rows.length === 0) { document.getElementById('subs-body').innerHTML = '<tr><td colspan="8" class="empty">Nessun subscriber.</td></tr>'; return; }
         const html = rows.map(function(s) {
+          const canSend = (s.plan === 'completo' || s.plan === 'coach');
+          const action = canSend
+            ? '<button class="btn-sm" style="background:var(--green); color:white;" onclick="sendPlan(\'' + s.id + '\', \'' + s.email + '\')">✉️ Invia piano</button>'
+            : '<span style="color:var(--muted); font-size:12px;">—</span>';
           return '<tr>'
             + '<td>' + s.email + '</td>'
             + '<td>' + s.first_name + '</td>'
@@ -546,10 +550,22 @@
             + '<td style="text-align:center;">' + s.plan_month + '</td>'
             + '<td style="white-space:nowrap;">' + fmtDate(s.next_plan_due_at) + '</td>'
             + '<td style="white-space:nowrap;">' + fmtDate(s.created_at) + '</td>'
+            + '<td>' + action + '</td>'
             + '</tr>';
         }).join('');
         document.getElementById('subs-body').innerHTML = html;
       });
+  }
+
+  function sendPlan(subId, email) {
+    if (!confirm('Generare e inviare il piano del mese successivo a ' + email + ' adesso?\n\nUsa questa funzione se un rinnovo non è stato consegnato in automatico.')) return;
+    fetch(API_BASE + '/api/admin/subscribers/' + subId + '/send-plan', { method: 'POST', headers: headers() })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.queued) { alert('Invio avviato per ' + (data.email || email) + '.\nIl piano arriva tra qualche minuto (generazione + email).'); loadSubscribers(); }
+        else { alert('Errore: ' + (data.detail || JSON.stringify(data))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
   }
 
   function switchTab(name, el) {
