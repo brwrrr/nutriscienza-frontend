@@ -540,7 +540,8 @@
         const html = rows.map(function(s) {
           const canSend = (s.plan === 'completo' || s.plan === 'coach');
           const action = canSend
-            ? '<button class="btn-sm" style="background:var(--green); color:white;" onclick="sendPlan(\'' + s.id + '\', \'' + s.email + '\')">✉️ Invia piano</button>'
+            ? '<button class="btn-sm" style="background:var(--green); color:white;" onclick="requestCheckin(\'' + s.id + '\', \'' + s.email + '\')">📩 Richiedi check-in</button> '
+              + '<button class="btn-sm" style="background:#9A7B33; color:white;" onclick="sendPlan(\'' + s.id + '\', \'' + s.email + '\')">⚡ Forza invio</button>'
             : '<span style="color:var(--muted); font-size:12px;">—</span>';
           return '<tr>'
             + '<td>' + s.email + '</td>'
@@ -557,12 +558,23 @@
       });
   }
 
+  function requestCheckin(subId, email) {
+    if (!confirm('Inviare l\'email di check-in a ' + email + '?\n\nIl cliente riceverà il link per aggiornare i dati. Il piano verrà generato SOLO dopo che completa il check-in (flusso normale del rinnovo).')) return;
+    fetch(API_BASE + '/api/admin/subscribers/' + subId + '/request-checkin', { method: 'POST', headers: headers() })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data.queued) { alert('Email di check-in inviata a ' + (data.email || email) + '.\nIl piano si genererà al completamento del check-in.'); loadSubscribers(); }
+        else { alert('Errore: ' + (data.detail || JSON.stringify(data))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
+  }
+
   function sendPlan(subId, email) {
-    if (!confirm('Generare e inviare il piano del mese successivo a ' + email + ' adesso?\n\nUsa questa funzione se un rinnovo non è stato consegnato in automatico.')) return;
+    if (!confirm('FORZA INVIO — genera e invia subito il piano a ' + email + ', SENZA check-in.\n\nIl peso usato sarà l\'ultimo salvato e il piano NON includerà la riga di progresso personalizzata.\n\nUsa questo solo come rete di sicurezza se un rinnovo non è stato consegnato. Per il flusso normale usa "Richiedi check-in".')) return;
     fetch(API_BASE + '/api/admin/subscribers/' + subId + '/send-plan', { method: 'POST', headers: headers() })
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        if (data.queued) { alert('Invio avviato per ' + (data.email || email) + '.\nIl piano arriva tra qualche minuto (generazione + email).'); loadSubscribers(); }
+        if (data.queued) { alert('Invio forzato avviato per ' + (data.email || email) + '.\nIl piano arriva tra qualche minuto (generazione + email).'); loadSubscribers(); }
         else { alert('Errore: ' + (data.detail || JSON.stringify(data))); }
       })
       .catch(function(e) { alert('Errore: ' + e.message); });
