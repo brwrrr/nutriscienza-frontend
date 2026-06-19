@@ -130,7 +130,7 @@
     <div id="state-form" class="card" style="display:none;">
       <div class="eyebrow">Check-in mensile</div>
       <h1 id="greeting">Aggiorna il tuo profilo</h1>
-      <p class="lead">Il piano del prossimo mese verrà generato usando il peso che ci comunichi qui.</p>
+      <p class="lead" id="lead-text">Il piano del prossimo mese verrà generato usando il peso che ci comunichi qui.</p>
 
       <div class="current-weight" id="current-weight-info"></div>
 
@@ -147,8 +147,8 @@
         <div class="check-circle">
           <svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg>
         </div>
-        <h2>Peso aggiornato!</h2>
-        <p>Il prossimo piano mensile utilizzerà il nuovo valore. Riceverai l'email entro il rinnovo del tuo abbonamento.</p>
+        <h2 id="success-title">Check-in completato!</h2>
+        <p id="success-text">Il prossimo piano mensile utilizzerà il nuovo valore.</p>
       </div>
 
       <!-- Visibile solo per piani in abbonamento (completo/coach) -->
@@ -189,8 +189,19 @@
         .then(function(r) { return r.ok ? r.json() : null; })
         .then(function(data) {
           if (!data) { showState('invalid'); return; }
-          document.getElementById('greeting').textContent =
-            'Ciao ' + data.first_name + ', aggiorna il tuo profilo';
+          var submitBtn = document.getElementById('submit-btn');
+          if (data.awaiting_checkin) {
+            // Il rinnovo è stato pagato: il piano è in attesa del check-in.
+            document.getElementById('greeting').textContent =
+              'Ciao ' + data.first_name + ', sblocca il tuo piano';
+            document.getElementById('lead-text').textContent =
+              'Hai pagato il rinnovo: completa il check-in e generiamo subito il tuo piano del mese ' +
+              data.pending_plan_month + '.';
+            submitBtn.textContent = 'Completa il check-in →';
+          } else {
+            document.getElementById('greeting').textContent =
+              'Ciao ' + data.first_name + ', aggiorna il tuo profilo';
+          }
           document.getElementById('current-weight-info').innerHTML =
             'Peso registrato: <strong>' + data.current_weight + ' kg</strong> · Mese ' + data.plan_month;
           document.getElementById('weight').value = data.current_weight;
@@ -247,6 +258,14 @@
         .then(function(r) { return r.json(); })
         .then(function(data) {
           if (data.success) {
+            if (data.plan_pending) {
+              document.getElementById('success-title').textContent = 'Check-in completato!';
+            } else {
+              document.getElementById('success-title').textContent = 'Peso aggiornato!';
+            }
+            if (data.message) {
+              document.getElementById('success-text').textContent = data.message;
+            }
             document.getElementById('checkin-form').style.display = 'none';
             document.getElementById('success-box').style.display = 'block';
           } else {
@@ -255,7 +274,7 @@
         })
         .catch(function(err) {
           btn.disabled = false;
-          btn.textContent = 'Aggiorna il mio peso →';
+          btn.textContent = 'Completa il check-in →';
           errMsg.textContent = 'Si è verificato un errore: ' + err.message;
           errMsg.style.display = 'block';
         });
