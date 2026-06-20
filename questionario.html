@@ -851,6 +851,17 @@
         affiliateRef: (window.NSAffiliate && window.NSAffiliate.getRef()) || null,
       };
 
+      // Attribuzione traffico (first-touch) — per sapere dove investire in promo.
+      // Best-effort: non deve mai bloccare il checkout.
+      try {
+        var tr = (window.NSTraffic && window.NSTraffic.get()) || {};
+        payload.utmSource = tr.utmSource || null;
+        payload.utmMedium = tr.utmMedium || null;
+        payload.utmCampaign = tr.utmCampaign || null;
+        payload.referrer = tr.referrer || null;
+        payload.landingPage = tr.landingPage || null;
+      } catch (e) { /* ignore */ }
+
       btnNext.disabled = true;
       btnNext.textContent = 'Creazione sessione...';
       $('#err-' + TOTAL_STEPS).classList.remove('show');
@@ -882,5 +893,6 @@
   </script>
 <script src="cookie-banner.js"></script>
 <script src="affiliate-tracker.js" defer></script>
+<script src="traffic-tracker.js" defer></script>
 </body>
 </html>

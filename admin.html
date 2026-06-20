@@ -37,6 +37,30 @@
     .btn-retry:hover { opacity: .88; }
     .btn-download { background: var(--green); color: white; margin-right: 4px; }
     .btn-download:hover { opacity: .88; }
+    .btn-delete { background: var(--red); color: white; margin-left: 4px; }
+    .btn-delete:hover { opacity: .88; }
+
+    /* ── Search input ── */
+    .search-input { width: 320px; max-width: 100%; padding: 9px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; margin-bottom: 16px; }
+    .search-input:focus { outline: none; border-color: var(--green); }
+    .clickable-row { cursor: pointer; }
+
+    /* ── Modal (cliente) ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 30px 16px; }
+    .modal-overlay.show { display: flex; }
+    .modal-card { background: white; border-radius: 14px; padding: 26px; width: 720px; max-width: 96vw; }
+    .modal-card h2 { font-size: 20px; color: var(--green); margin-bottom: 2px; }
+    .modal-card .sub { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
+    .modal-close { float: right; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--muted); line-height: 1; }
+    .section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.1px; color: var(--muted); font-weight: 700; margin: 18px 0 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+    .field-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px 16px; }
+    .field { display: flex; flex-direction: column; gap: 3px; }
+    .field label { font-size: 10px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); font-weight: 700; }
+    .field input, .field select { padding: 7px 9px; border: 1.5px solid var(--border); border-radius: 6px; font-size: 13px; }
+    .field input:focus { outline: none; border-color: var(--green); }
+    .pill { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; background: var(--green-tint); color: var(--green); }
+    .danger-zone { margin-top: 22px; border: 1px solid #F3C2C2; background: #FDF3F3; border-radius: 10px; padding: 14px 16px; }
+    .danger-zone .section-title { color: var(--red); border: none; margin: 0 0 8px; }
     #login-error { font-size: 13px; color: var(--red); margin-top: 8px; }
 
     /* ── Layout ── */
@@ -135,8 +159,10 @@
     <div class="tabs">
       <button class="tab active" onclick="switchTab('dashboard', this)">Dashboard</button>
       <button class="tab" onclick="switchTab('orders', this)">Ordini</button>
+      <button class="tab" onclick="switchTab('customers', this)">Clienti</button>
       <button class="tab" onclick="switchTab('subscribers', this)">Subscriber</button>
       <button class="tab" onclick="switchTab('affiliates', this)">Affiliati</button>
+      <button class="tab" onclick="switchTab('traffic', this)">Traffico</button>
     </div>
 
     <!-- Dashboard -->
@@ -276,6 +302,77 @@
         </div>
       </div>
     </div>
+
+    <!-- Clienti -->
+    <div id="panel-customers" class="panel">
+      <input type="text" class="search-input" id="cust-search" placeholder="Cerca per nome o email…" oninput="filterCustomers()">
+      <button class="refresh-btn" style="margin-left:8px;" onclick="loadCustomers()">↻ Aggiorna</button>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th><th>Email</th><th>Piani</th><th>Ordini</th>
+              <th>Pagati</th><th>Speso (acq.)</th><th>Abbonamento</th><th>Ultima attività</th>
+            </tr>
+          </thead>
+          <tbody id="cust-body"><tr><td colspan="8" class="empty">Caricamento…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Traffico -->
+    <div id="panel-traffic" class="panel">
+      <button class="refresh-btn" onclick="loadTraffic()">↻ Aggiorna</button>
+      <div class="kpi-grid" style="margin-bottom:18px;">
+        <div class="stat-card">
+          <div class="label">Visite questionario</div>
+          <div class="value" id="tr-kpi-signups">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Conversioni pagate</div>
+          <div class="value" style="color:#065F46;" id="tr-kpi-paid">—</div>
+          <div class="kpi-sub" id="tr-kpi-cr">— conversione</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Ricavo acquisizione</div>
+          <div class="value" id="tr-kpi-revenue">€ —</div>
+          <div class="kpi-sub">primo pagamento (no rinnovi)</div>
+        </div>
+      </div>
+
+      <div class="dashboard-card-title">Per sorgente / campagna — ordina per ricavo</div>
+      <div class="table-wrap" style="margin-bottom:24px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Sorgente</th><th>Medium</th><th>Campagna</th>
+              <th>Visite</th><th>Pagati</th><th>Conv.%</th><th>Ricavo acq.</th>
+            </tr>
+          </thead>
+          <tbody id="tr-source-body"><tr><td colspan="7" class="empty">Caricamento…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="dashboard-card-title">Referrer (traffico senza tag UTM)</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Referrer</th><th>Visite</th><th>Pagati</th><th>Ricavo acq.</th></tr>
+          </thead>
+          <tbody id="tr-ref-body"><tr><td colspan="4" class="empty">Caricamento…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modale profilo cliente -->
+<div id="cust-modal" class="modal-overlay" onclick="if(event.target===this)closeCustomer()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeCustomer()">×</button>
+    <h2 id="cm-name">—</h2>
+    <div class="sub" id="cm-email">—</div>
+    <div id="cm-body"><div class="empty">Caricamento…</div></div>
   </div>
 </div>
 
@@ -474,6 +571,7 @@
           const retryBtn = canRetry
             ? '<button class="btn-sm btn-retry" onclick="retryOrder(\'' + o.id + '\')">↻ Retry</button>'
             : '';
+          const deleteBtn = '<button class="btn-sm btn-delete" onclick="deleteOrder(\'' + o.id + '\')">🗑</button>';
           return '<tr>'
             + '<td style="font-family:monospace;font-size:11px;">' + o.id + '</td>'
             + '<td><strong>' + o.plan_chosen + '</strong></td>'
@@ -481,7 +579,7 @@
             + '<td><span class="badge-status ' + badgeClass(o.status) + '">' + o.status + '</span></td>'
             + '<td style="white-space:nowrap;">' + fmtDate(o.created_at) + '</td>'
             + '<td style="white-space:nowrap;">' + fmtDate(o.updated_at) + '</td>'
-            + '<td style="white-space:nowrap;">' + downloadBtn + retryBtn + '</td>'
+            + '<td style="white-space:nowrap;">' + downloadBtn + retryBtn + deleteBtn + '</td>'
             + '</tr>';
         }).join('');
         document.getElementById('orders-body').innerHTML = html;
@@ -587,8 +685,277 @@
     document.getElementById('panel-' + name).classList.add('active');
     if (name === 'dashboard') loadDashboard();
     if (name === 'orders') loadOrders();
+    if (name === 'customers') loadCustomers();
     if (name === 'subscribers') loadSubscribers();
     if (name === 'affiliates') loadAffiliates();
+    if (name === 'traffic') loadTraffic();
+  }
+
+  // ── Delete ordine ──────────────────────────────────────────────────────────
+  function deleteOrder(orderId) {
+    if (!confirm('Eliminare definitivamente l\'ordine ' + orderId + '?\n\nRimuove anche il PDF dal disco. Operazione irreversibile.')) return;
+    fetch(API_BASE + '/api/admin/orders/' + orderId, { method: 'DELETE', headers: headers() })
+      .then(function(r) { return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res) {
+        if (res.ok && res.j.deleted) { loadOrders(); }
+        else { alert('Errore: ' + (res.j.detail || JSON.stringify(res.j))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
+  }
+
+  // ── Delete affiliato ───────────────────────────────────────────────────────
+  function deleteAffiliate(affId, name) {
+    if (!confirm('Eliminare l\'affiliato "' + name + '"?\n\nCancella anche TUTTE le sue commissioni e payout dal sistema. Irreversibile.\nNon storna bonifici reali già pagati.')) return;
+    fetch(API_BASE + '/api/admin/affiliates/' + affId, { method: 'DELETE', headers: headers() })
+      .then(function(r) { return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res) {
+        if (res.ok && res.j.deleted) {
+          alert('Affiliato eliminato.\nCommissioni rimosse: ' + (res.j.commissions_deleted||0) + ' · Payout: ' + (res.j.payouts_deleted||0));
+          loadAffiliates();
+        } else { alert('Errore: ' + (res.j.detail || JSON.stringify(res.j))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
+  }
+
+  // ── Clienti ────────────────────────────────────────────────────────────────
+  var customersCache = [];
+
+  function loadCustomers() {
+    document.getElementById('cust-body').innerHTML = '<tr><td colspan="8" class="empty">Caricamento…</td></tr>';
+    fetch(API_BASE + '/api/admin/customers', { headers: headers() })
+      .then(function(r) { return r.json(); })
+      .then(function(rows) {
+        if (!Array.isArray(rows)) { document.getElementById('cust-body').innerHTML = '<tr><td colspan="8" class="empty">Errore.</td></tr>'; return; }
+        customersCache = rows;
+        renderCustomers(rows);
+      })
+      .catch(function() { document.getElementById('cust-body').innerHTML = '<tr><td colspan="8" class="empty">Errore di rete.</td></tr>'; });
+  }
+
+  function filterCustomers() {
+    var q = document.getElementById('cust-search').value.toLowerCase().trim();
+    if (!q) { renderCustomers(customersCache); return; }
+    renderCustomers(customersCache.filter(function(c) {
+      return (c.email || '').toLowerCase().indexOf(q) >= 0 || (c.first_name || '').toLowerCase().indexOf(q) >= 0;
+    }));
+  }
+
+  function renderCustomers(rows) {
+    if (!rows.length) { document.getElementById('cust-body').innerHTML = '<tr><td colspan="8" class="empty">Nessun cliente.</td></tr>'; return; }
+    document.getElementById('cust-body').innerHTML = rows.map(function(c) {
+      var subBadge = c.subscription_status
+        ? '<span class="badge-status ' + badgeClass(c.subscription_status) + '">' + c.subscription_status + '</span>'
+        : '<span style="color:var(--muted);">—</span>';
+      var safeEmail = encodeURIComponent(c.email);
+      return '<tr class="clickable-row" onclick="openCustomer(\'' + safeEmail + '\')">'
+        + '<td><strong>' + escapeHtml(c.first_name || '—') + '</strong></td>'
+        + '<td>' + escapeHtml(c.email) + '</td>'
+        + '<td>' + (c.plans || []).join(', ') + '</td>'
+        + '<td style="text-align:center;">' + c.orders_count + '</td>'
+        + '<td style="text-align:center;">' + c.paid_count + '</td>'
+        + '<td>' + fmtEuro(c.acquisition_spent_cents || 0) + '</td>'
+        + '<td>' + subBadge + '</td>'
+        + '<td style="white-space:nowrap;">' + fmtDate(c.last_activity) + '</td>'
+        + '</tr>';
+    }).join('');
+  }
+
+  // Mappa dei campi intake → label leggibile (anagrafica + antropometrici)
+  var FIELD_LABELS = {
+    firstName: 'Nome', email: 'Email', goal: 'Obiettivo', sex: 'Sesso',
+    age: 'Età', height: 'Altezza (cm)', weight: 'Peso (kg)', targetWeight: 'Peso obiettivo (kg)',
+    activity: 'Attività', workouts: 'Allenamenti/sett.', meals: 'Pasti/giorno',
+    diet: 'Dieta', protocol: 'Protocollo', dislikes: 'Cibi sgraditi',
+    cookingTime: 'Tempo cucina', budget: 'Budget', mealsOut: 'Pasti fuori'
+  };
+  var EDITABLE_FIELDS = ['firstName','email','goal','sex','age','height','weight','targetWeight','activity','workouts','meals','diet','protocol','dislikes','cookingTime','budget','mealsOut'];
+
+  var currentCustomer = null;
+
+  function openCustomer(safeEmail) {
+    var email = decodeURIComponent(safeEmail);
+    currentCustomer = email;
+    document.getElementById('cust-modal').classList.add('show');
+    document.getElementById('cm-name').textContent = 'Caricamento…';
+    document.getElementById('cm-email').textContent = email;
+    document.getElementById('cm-body').innerHTML = '<div class="empty">Caricamento…</div>';
+    fetch(API_BASE + '/api/admin/customers/' + encodeURIComponent(email), { headers: headers() })
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(renderCustomerProfile)
+      .catch(function(e) { document.getElementById('cm-body').innerHTML = '<div class="empty">Errore: ' + e.message + '</div>'; });
+  }
+
+  function closeCustomer() { document.getElementById('cust-modal').classList.remove('show'); currentCustomer = null; }
+
+  function renderCustomerProfile(p) {
+    document.getElementById('cm-name').textContent = p.first_name || '(senza nome)';
+    document.getElementById('cm-email').textContent = p.email;
+
+    // Record di riferimento per l'edit: preferisci un subscriber, altrimenti l'ordine più recente
+    var editScope = null, editId = null;
+    if (p.subscribers && p.subscribers.length) { editScope = 'subscriber'; editId = p.subscribers[0].id; }
+    else if (p.orders && p.orders.length) { editScope = 'order'; editId = p.orders[0].id; }
+
+    var prof = p.profile || {};
+    var fieldsHtml = EDITABLE_FIELDS.map(function(k) {
+      var v = (prof[k] === null || prof[k] === undefined) ? '' : prof[k];
+      return '<div class="field"><label>' + (FIELD_LABELS[k] || k) + '</label>'
+        + '<input id="cf-' + k + '" value="' + escapeHtml(String(v)) + '"></div>';
+    }).join('');
+
+    var payHtml = (p.payments && p.payments.length)
+      ? p.payments.map(function(pay) {
+          return '<div class="tx-row"><div><span class="tx-plan">' + pay.plan + '</span> '
+            + '<span class="tx-email">' + pay.type + '</span></div>'
+            + '<div class="tx-amount">' + fmtEuro(pay.amount_cents) + '</div>'
+            + '<div class="tx-date">' + fmtDate(pay.date) + '</div></div>';
+        }).join('')
+      : '<div class="empty-tx">Nessun pagamento.</div>';
+
+    var plansHtml = (p.plans_generated && p.plans_generated.length)
+      ? p.plans_generated.map(function(pl) {
+          var dl = pl.pdf_available
+            ? '<button class="btn-sm btn-download" onclick="downloadPdf(\'' + pl.order_id + '\')">📄 PDF</button>'
+            : '<span style="color:var(--muted);font-size:12px;">no PDF</span>';
+          return '<div class="tx-row"><div><span class="tx-plan">' + pl.plan + '</span> '
+            + '<span class="badge-status ' + badgeClass(pl.status) + '">' + pl.status + '</span></div>'
+            + '<div>' + dl + '</div>'
+            + '<div class="tx-date">' + fmtDate(pl.created_at) + '</div></div>';
+        }).join('')
+      : '<div class="empty-tx">Nessun piano.</div>';
+
+    var subsHtml = (p.subscribers && p.subscribers.length)
+      ? p.subscribers.map(function(s) {
+          return '<div class="tx-row"><div><span class="tx-plan">' + s.plan + '</span> '
+            + '<span class="badge-status ' + badgeClass(s.status) + '">' + s.status + '</span>'
+            + (s.checkin_due ? ' <span class="pill">check-in in attesa</span>' : '') + '</div>'
+            + '<div class="tx-amount">mese ' + s.plan_month + '</div>'
+            + '<div class="tx-date">prox: ' + fmtDate(s.next_plan_due_at) + '</div></div>';
+        }).join('')
+      : '<div class="empty-tx">Nessun abbonamento.</div>';
+
+    var actionsHtml =
+      '<button class="btn-sm" style="background:var(--green); color:white; padding:8px 14px;" onclick="saveCustomerFields(\'' + editScope + '\', \'' + editId + '\')">💾 Salva modifiche</button> '
+      + '<button class="btn-sm" style="background:#9A7B33; color:white; padding:8px 14px;" onclick="customerRequestUpdate()">📩 Richiedi aggiornamento mensile</button> '
+      + '<button class="btn-sm" style="background:var(--green-dark); color:white; padding:8px 14px;" onclick="customerForcePlan()">⚡ Forza generazione piano</button>';
+
+    document.getElementById('cm-body').innerHTML =
+        '<div class="section-title">Anagrafica & dati antropometrici</div>'
+      + '<div class="field-grid">' + fieldsHtml + '</div>'
+      + (editScope ? '<div style="margin-top:14px;">' + actionsHtml + '</div>'
+                   : '<div class="sub" style="margin-top:10px;">Nessun record modificabile.</div>')
+      + '<div class="section-title">Pagamenti (' + (p.totals ? fmtEuro(p.totals.paid_cents) : '€0') + ' totali)</div>' + payHtml
+      + '<div class="section-title">Piani generati</div>' + plansHtml
+      + '<div class="section-title">Abbonamenti</div>' + subsHtml
+      + '<div class="danger-zone">'
+      +   '<div class="section-title">Zona pericolo — GDPR</div>'
+      +   '<div class="sub" style="margin-bottom:8px;">Anonimizza gli ordini pagati (conserva importi/date per la contabilità) ed elimina i record non pagati. Irreversibile.</div>'
+      +   '<button class="btn-sm btn-delete" style="padding:8px 14px; margin:0;" onclick="customerGdprDelete()">🗑 Cancella tutti i dati cliente</button>'
+      + '</div>';
+  }
+
+  function saveCustomerFields(scope, recordId) {
+    if (!scope || scope === 'null' || !recordId || recordId === 'null') { alert('Nessun record da aggiornare.'); return; }
+    var fields = {};
+    EDITABLE_FIELDS.forEach(function(k) {
+      var el = document.getElementById('cf-' + k);
+      if (!el) return;
+      var v = el.value.trim();
+      if (['age','height'].indexOf(k) >= 0) { if (v !== '') fields[k] = parseInt(v, 10); }
+      else if (['weight','targetWeight'].indexOf(k) >= 0) { fields[k] = (v === '') ? null : parseFloat(v); }
+      else { fields[k] = (v === '') ? null : v; }
+    });
+    fetch(API_BASE + '/api/admin/customers/update', {
+      method: 'PATCH', headers: headers(),
+      body: JSON.stringify({ scope: scope, record_id: recordId, fields: fields })
+    })
+      .then(function(r) { return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res) {
+        if (res.ok && res.j.updated) { alert('Dati aggiornati.'); openCustomer(encodeURIComponent(currentCustomer)); loadCustomers(); }
+        else { alert('Errore: ' + (res.j.detail || JSON.stringify(res.j))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
+  }
+
+  function customerRequestUpdate() {
+    if (!confirm('Inviare la richiesta di aggiornamento mensile (check-in) agli abbonamenti attivi di questo cliente?')) return;
+    fetch(API_BASE + '/api/admin/customers/' + encodeURIComponent(currentCustomer) + '/request-update', { method: 'POST', headers: headers() })
+      .then(function(r) { return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res) {
+        if (res.ok && res.j.queued) { alert('Email di aggiornamento inviata.'); }
+        else { alert('Errore: ' + (res.j.detail || JSON.stringify(res.j))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
+  }
+
+  function customerForcePlan() {
+    if (!confirm('Forzare la generazione del piano?\n\nSe il cliente ha un abbonamento attivo verrà generato e inviato subito; altrimenti viene rigenerato l\'ultimo ordine pagato.')) return;
+    fetch(API_BASE + '/api/admin/customers/' + encodeURIComponent(currentCustomer) + '/force-plan', { method: 'POST', headers: headers() })
+      .then(function(r) { return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res) {
+        if (res.ok && res.j.queued) { alert('Generazione avviata (' + res.j.mode + '). Arriva tra qualche minuto.'); }
+        else { alert('Errore: ' + (res.j.detail || JSON.stringify(res.j))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
+  }
+
+  function customerGdprDelete() {
+    if (!confirm('GDPR — cancellare TUTTI i dati di ' + currentCustomer + '?\n\nGli ordini pagati vengono anonimizzati (importi/date restano per la contabilità), i non pagati eliminati, i PDF rimossi. Irreversibile.')) return;
+    if (!confirm('Conferma definitiva: procedere con la cancellazione?')) return;
+    fetch(API_BASE + '/api/admin/customers/' + encodeURIComponent(currentCustomer), { method: 'DELETE', headers: headers() })
+      .then(function(r) { return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res) {
+        if (res.ok && res.j.deleted) {
+          var msg = 'Dati cancellati.\nOrdini anonimizzati: ' + res.j.orders_anonymized + '\nOrdini eliminati: ' + res.j.orders_deleted;
+          if (res.j.warning) msg += '\n\n⚠ ' + res.j.warning;
+          alert(msg);
+          closeCustomer(); loadCustomers();
+        } else { alert('Errore: ' + (res.j.detail || JSON.stringify(res.j))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
+  }
+
+  // ── Traffico ───────────────────────────────────────────────────────────────
+  function loadTraffic() {
+    fetch(API_BASE + '/api/admin/traffic', { headers: headers() })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (!data || !data.totals) return;
+        var t = data.totals;
+        document.getElementById('tr-kpi-signups').textContent = t.signups;
+        document.getElementById('tr-kpi-paid').textContent = t.paid;
+        var cr = t.signups > 0 ? Math.round((t.paid / t.signups) * 1000) / 10 : 0;
+        document.getElementById('tr-kpi-cr').textContent = cr + '% conversione';
+        document.getElementById('tr-kpi-revenue').textContent = fmtEuro(t.revenue_cents);
+
+        var src = data.by_source || [];
+        document.getElementById('tr-source-body').innerHTML = src.length
+          ? src.map(function(r) {
+              return '<tr>'
+                + '<td><strong>' + escapeHtml(r.source) + '</strong></td>'
+                + '<td>' + escapeHtml(r.medium) + '</td>'
+                + '<td>' + escapeHtml(r.campaign) + '</td>'
+                + '<td style="text-align:center;">' + r.signups + '</td>'
+                + '<td style="text-align:center;">' + r.paid + '</td>'
+                + '<td style="text-align:center;">' + r.conversion_pct + '%</td>'
+                + '<td style="font-weight:700;">' + fmtEuro(r.revenue_cents) + '</td>'
+                + '</tr>';
+            }).join('')
+          : '<tr><td colspan="7" class="empty">Nessun dato di traffico ancora. Usa link con ?utm_source=… nelle promo.</td></tr>';
+
+        var ref = data.by_referrer || [];
+        document.getElementById('tr-ref-body').innerHTML = ref.length
+          ? ref.map(function(r) {
+              return '<tr><td>' + escapeHtml(r.referrer) + '</td>'
+                + '<td style="text-align:center;">' + r.signups + '</td>'
+                + '<td style="text-align:center;">' + r.paid + '</td>'
+                + '<td style="font-weight:700;">' + fmtEuro(r.revenue_cents) + '</td></tr>';
+            }).join('')
+          : '<tr><td colspan="4" class="empty">Nessun referrer.</td></tr>';
+      })
+      .catch(function() {
+        document.getElementById('tr-source-body').innerHTML = '<tr><td colspan="7" class="empty">Errore di rete.</td></tr>';
+      });
   }
 
   // ── Affiliati ─────────────────────────────────────────────────────────────
@@ -652,6 +1019,7 @@
             + '<td style="font-weight:700;">' + fmtEuro(a.lifetime_earned_cents || 0) + '</td>'
             + '<td style="white-space:nowrap;">'
               + '<button class="btn-sm btn-download" onclick="copyPortalLink(\'' + a.id + '\')">🔗 Portal</button>'
+              + '<button class="btn-sm btn-delete" onclick="deleteAffiliate(\'' + a.id + '\', \'' + escapeHtml(a.name) + '\')">🗑</button>'
             + '</td>'
             + '</tr>';
         }).join('');
