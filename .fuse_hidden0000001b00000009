@@ -221,7 +221,5 @@ function showErr(msg) {
 
 load();
 </script>
-  <script src="cookie-banner.js"></script>
-  <script src="ga4-analytics.js"></script>
 </body>
 </html>

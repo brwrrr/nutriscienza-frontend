@@ -892,7 +892,6 @@
     updateProgress();
   </script>
 <script src="cookie-banner.js"></script>
-<script src="ga4-analytics.js"></script>
 <script src="affiliate-tracker.js" defer></script>
 <script src="traffic-tracker.js" defer></script>
 </body>
