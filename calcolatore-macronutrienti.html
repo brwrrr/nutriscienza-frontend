@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calcolatore Macronutrienti Gratis — Calcolo Macros, Calorie e TDEE | NutriScienza</title>
+  <meta name="description" content="Calcolatore macronutrienti gratuito e scientifico: calcola in 30 secondi le tue calorie (TDEE), proteine, carboidrati e grassi con la formula Mifflin-St Jeor. Conforme alle linee guida LARN/SINU.">
+  <link rel="canonical" href="https://nutriscienza.org/calcolatore-macronutrienti.html">
+  <meta property="og:title" content="Calcolatore Macronutrienti Gratis — NutriScienza">
+  <meta property="og:description" content="Calcola gratis calorie, proteine, carboidrati e grassi con formule validate scientificamente (Mifflin-St Jeor, LARN/SINU).">
+  <meta property="og:url" content="https://nutriscienza.org/calcolatore-macronutrienti.html">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calcolatore Macronutrienti NutriScienza",
+    "url": "https://nutriscienza.org/calcolatore-macronutrienti.html",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+    "description": "Calcolatore gratuito di calorie e macronutrienti basato sulla formula Mifflin-St Jeor e sulle linee guida LARN/SINU.",
+    "inLanguage": "it"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Come si calcolano i macronutrienti?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Si parte dal metabolismo basale (BMR) calcolato con la formula Mifflin-St Jeor, si moltiplica per il livello di attività fisica (PAL) per ottenere il fabbisogno calorico totale (TDEE), quindi si applica un deficit o surplus in base all'obiettivo. Le proteine si fissano in g/kg di peso corporeo (1,4–2,0 g/kg), i grassi al 30% delle calorie e i carboidrati coprono il resto." }
+      },
+      {
+        "@type": "Question",
+        "name": "Quante proteine devo assumere al giorno?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Dipende dall'obiettivo: circa 1,8 g per kg di peso corporeo per dimagrire proteggendo la massa magra, 2,0 g/kg per aumentare la massa muscolare, 1,4–1,6 g/kg per mantenimento e salute generale." }
+      },
+      {
+        "@type": "Question",
+        "name": "Cos'è il TDEE?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Il TDEE (Total Daily Energy Expenditure) è il totale delle calorie che bruci in un giorno: metabolismo basale più attività fisica e quotidiana. È il punto di partenza per impostare qualsiasi piano alimentare." }
+      },
+      {
+        "@type": "Question",
+        "name": "Quanto deficit calorico serve per dimagrire?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Un deficit moderato del 15–20% rispetto al TDEE è sostenibile e protegge la massa muscolare. Questo calcolatore applica -18%, in linea con le raccomandazioni per un dimagrimento graduale di 0,5–1% del peso corporeo a settimana." }
+      },
+      {
+        "@type": "Question",
+        "name": "Il calcolatore è affidabile?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Usa la formula Mifflin-St Jeor (1990), lo standard più validato per adulti sani, e coefficienti conformi alle linee guida LARN/SINU. I risultati sono stime di partenza: vanno poi calibrati sui progressi reali." }
+      }
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --green-deep: #2D5F3F;
+      --green-dark: #1A2E22;
+      --green-soft: #4A8264;
+      --cream: #F5F1E8;
+      --cream-light: #FBF9F4;
+      --gold: #C9A66B;
+      --gold-dark: #A88349;
+      --text: #2A2A2A;
+      --text-muted: #6B6B6B;
+      --white: #FFFFFF;
+      --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: var(--text); line-height: 1.6; background: var(--cream-light); -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    header { background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1180px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--text); text-decoration: none; font-size: 15px; font-weight: 500; }
+    .nav-links a:hover { color: var(--green-deep); }
+    .btn-primary { background: var(--green-deep); color: var(--white); padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 15px; border: none; cursor: pointer; display: inline-block; transition: background 0.2s, transform 0.1s; }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .hero { text-align: center; padding: 64px 24px 40px; }
+    .hero .badge { display: inline-block; background: var(--cream); border: 1px solid var(--border); color: var(--green-deep); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(30px, 4.5vw, 46px); color: var(--green-dark); max-width: 760px; margin: 0 auto 16px; line-height: 1.15; }
+    .hero p { color: var(--text-muted); font-size: 17px; max-width: 620px; margin: 0 auto; }
+
+    .calc-wrap { max-width: 880px; margin: 24px auto 0; padding: 0 24px 40px; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 36px; box-shadow: 0 6px 30px rgba(26,46,34,0.06); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { font-size: 14px; font-weight: 600; color: var(--green-dark); }
+    input, select { padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 15px; font-family: 'Inter', sans-serif; background: var(--cream-light); color: var(--text); }
+    input:focus, select:focus { outline: none; border-color: var(--green-soft); }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .seg-4 { grid-template-columns: repeat(4, 1fr); }
+    .seg input[type="radio"] { display: none; }
+    .seg label.opt { border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 8px; text-align: center; cursor: pointer; font-weight: 500; font-size: 14px; color: var(--text-muted); background: var(--cream-light); transition: all 0.15s; }
+    .seg input[type="radio"]:checked + label.opt { border-color: var(--green-deep); background: var(--green-deep); color: var(--white); font-weight: 600; }
+    .calc-btn { width: 100%; margin-top: 26px; font-size: 17px; padding: 16px; }
+    .error-msg { color: #B23A3A; font-size: 14px; margin-top: 12px; text-align: center; display: none; }
+
+    /* Results */
+    #risultati { display: none; margin-top: 36px; }
+    .res-kcal { text-align: center; background: var(--cream); border-radius: 12px; padding: 28px 20px; margin-bottom: 20px; }
+    .res-kcal .num { font-family: 'Playfair Display', serif; font-size: 56px; color: var(--green-deep); line-height: 1; }
+    .res-kcal .lbl { font-size: 15px; color: var(--text-muted); margin-top: 6px; }
+    .res-sub { display: flex; justify-content: center; gap: 28px; margin-top: 14px; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
+    .res-sub strong { color: var(--green-dark); }
+    .macro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .macro-card { border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; background: var(--white); }
+    .macro-card .g { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--green-dark); }
+    .macro-card .name { font-weight: 600; font-size: 14px; margin-top: 2px; }
+    .macro-card .pct { font-size: 13px; color: var(--text-muted); }
+    .macro-bar { display: flex; height: 12px; border-radius: 100px; overflow: hidden; margin: 20px 0 6px; }
+    .macro-bar div { height: 100%; }
+    .bar-p { background: var(--green-deep); }
+    .bar-c { background: var(--gold); }
+    .bar-f { background: var(--green-soft); }
+    .bar-legend { display: flex; justify-content: center; gap: 20px; font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
+
+    /* CTA */
+    .cta-box { margin-top: 28px; background: linear-gradient(135deg, var(--green-dark), var(--green-deep)); border-radius: 14px; padding: 32px; text-align: center; color: var(--white); }
+    .cta-box h3 { font-size: 24px; margin-bottom: 10px; color: var(--white); }
+    .cta-box p { font-size: 15px; opacity: 0.9; max-width: 560px; margin: 0 auto 20px; }
+    .cta-box .btn-gold { background: var(--gold); color: var(--green-dark); padding: 14px 30px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 16px; display: inline-block; transition: background 0.2s; }
+    .cta-box .btn-gold:hover { background: var(--gold-dark); color: var(--white); }
+    .cta-box .note { font-size: 13px; opacity: 0.7; margin-top: 12px; }
+
+    /* Content sections */
+    .block { padding: 56px 0; }
+    .block-alt { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .block h2 { font-size: 30px; color: var(--green-dark); margin-bottom: 18px; }
+    .prose { max-width: 760px; margin: 0 auto; }
+    .prose p { margin-bottom: 14px; color: var(--text); font-size: 16px; }
+    .prose ul { margin: 0 0 14px 22px; }
+    .prose li { margin-bottom: 8px; }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .faq-q { font-weight: 600; font-size: 17px; color: var(--green-dark); margin-bottom: 8px; font-family: 'Playfair Display', serif; }
+    .faq-a { color: var(--text-muted); font-size: 15px; }
+
+    footer { background: var(--green-dark); color: rgba(255,255,255,0.75); padding: 40px 0; text-align: center; font-size: 14px; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .seg-4 { grid-template-columns: 1fr 1fr; }
+      .macro-grid { grid-template-columns: 1fr; }
+      .calc-card { padding: 24px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo">Nutri<span>Scienza</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#come-funziona">Come funziona</a></li>
+      <li><a href="index.html#piani">Piani</a></li>
+      <li><a href="index.html#scienza">La scienza</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a href="index.html#piani" class="btn-primary">Inizia ora</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="badge">Gratuito · Nessuna registrazione</span>
+  <h1>Calcolatore Macronutrienti e Calorie</h1>
+  <p>Calcola in 30 secondi il tuo fabbisogno calorico (TDEE) e la ripartizione ideale di proteine, carboidrati e grassi. Formula Mifflin-St Jeor, coefficienti conformi alle linee guida LARN/SINU.</p>
+</section>
+
+<div class="calc-wrap">
+  <div class="calc-card">
+    <form id="calc-form" novalidate>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Sesso</label>
+          <div class="seg">
+            <input type="radio" name="sesso" id="sesso-m" value="M" checked><label class="opt" for="sesso-m">Uomo</label>
+            <input type="radio" name="sesso" id="sesso-f" value="F"><label class="opt" for="sesso-f">Donna</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="eta">Età (anni)</label>
+          <input type="number" id="eta" min="18" max="99" placeholder="es. 32" required>
+        </div>
+        <div class="form-group">
+          <label for="peso">Peso (kg)</label>
+          <input type="number" id="peso" min="35" max="250" step="0.1" placeholder="es. 74" required>
+        </div>
+        <div class="form-group full">
+          <label for="altezza">Altezza (cm)</label>
+          <input type="number" id="altezza" min="130" max="230" placeholder="es. 176" required>
+        </div>
+        <div class="form-group full">
+          <label>Livello di attività fisica</label>
+          <div class="seg seg-4">
+            <input type="radio" name="attivita" id="att-1" value="sedentario"><label class="opt" for="att-1">Sedentario</label>
+            <input type="radio" name="attivita" id="att-2" value="leggero" checked><label class="opt" for="att-2">Leggero<br><small>1–2 all./sett.</small></label>
+            <input type="radio" name="attivita" id="att-3" value="moderato"><label class="opt" for="att-3">Moderato<br><small>3–4 all./sett.</small></label>
+            <input type="radio" name="attivita" id="att-4" value="intenso"><label class="opt" for="att-4">Intenso<br><small>5+ all./sett.</small></label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>Obiettivo</label>
+          <div class="seg seg-4">
+            <input type="radio" name="obiettivo" id="ob-1" value="dimagrire" checked><label class="opt" for="ob-1">Dimagrire</label>
+            <input type="radio" name="obiettivo" id="ob-2" value="mantenere"><label class="opt" for="ob-2">Mantenere</label>
+            <input type="radio" name="obiettivo" id="ob-3" value="massa"><label class="opt" for="ob-3">Massa</label>
+            <input type="radio" name="obiettivo" id="ob-4" value="salute"><label class="opt" for="ob-4">Salute</label>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn-primary calc-btn">Calcola i miei macros →</button>
+      <div class="error-msg" id="err">Controlla i valori inseriti: età 18–99, peso 35–250 kg, altezza 130–230 cm.</div>
+    </form>
+
+    <div id="risultati">
+      <div class="res-kcal">
+        <div class="num" id="r-kcal">—</div>
+        <div class="lbl" id="r-kcal-lbl">kcal al giorno per il tuo obiettivo</div>
+        <div class="res-sub">
+          <span>Metabolismo basale: <strong id="r-bmr">—</strong> kcal</span>
+          <span>Fabbisogno totale (TDEE): <strong id="r-tdee">—</strong> kcal</span>
+        </div>
+      </div>
+      <div class="bar-legend">
+        <span><span class="dot bar-p"></span>Proteine</span>
+        <span><span class="dot bar-c"></span>Carboidrati</span>
+        <span><span class="dot bar-f"></span>Grassi</span>
+      </div>
+      <div class="macro-bar">
+        <div class="bar-p" id="bar-p"></div>
+        <div class="bar-c" id="bar-c"></div>
+        <div class="bar-f" id="bar-f"></div>
+      </div>
+      <div class="macro-grid" style="margin-top:14px">
+        <div class="macro-card">
+          <div class="g" id="r-prot">—</div>
+          <div class="name">Proteine</div>
+          <div class="pct" id="r-prot-pct">—</div>
+        </div>
+        <div class="macro-card">
+          <div class="g" id="r-carb">—</div>
+          <div class="name">Carboidrati</div>
+          <div class="pct" id="r-carb-pct">—</div>
+        </div>
+        <div class="macro-card">
+          <div class="g" id="r-fat">—</div>
+          <div class="name">Grassi</div>
+          <div class="pct" id="r-fat-pct">—</div>
+        </div>
+      </div>
+
+      <div class="cta-box">
+        <h3>I numeri sono solo l'inizio</h3>
+        <p>Sapere quante calorie e macros ti servono non ti dice <em>cosa mettere nel piatto</em>. Con NutriScienza ricevi un piano alimentare completo costruito sui tuoi numeri: pasti, grammature, alternative e lista della spesa — in PDF entro 24 ore.</p>
+        <a href="index.html#piani" class="btn-gold" id="cta-piani">Trasforma i tuoi macros in un piano completo →</a>
+        <div class="note">Piani da €19 · Metodologia LARN/SINU · Garanzia soddisfatti o rimborsati</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="block block-alt">
+  <div class="container prose">
+    <h2>Come funziona il calcolo</h2>
+    <p>Questo calcolatore usa esattamente la stessa metodologia con cui costruiamo i piani alimentari NutriScienza:</p>
+    <ul>
+      <li><strong>Metabolismo basale (BMR)</strong> — formula di Mifflin-St Jeor (1990), lo standard più validato in letteratura per adulti sani.</li>
+      <li><strong>Fabbisogno totale (TDEE)</strong> — BMR moltiplicato per il tuo livello di attività fisica (PAL 1,20–1,725).</li>
+      <li><strong>Calorie obiettivo</strong> — deficit del 18% per dimagrire, surplus del 12% per la massa, mantenimento negli altri casi.</li>
+      <li><strong>Proteine</strong> — da 1,4 a 2,0 g per kg di peso corporeo in base all'obiettivo, per proteggere e costruire massa magra.</li>
+      <li><strong>Grassi</strong> — 30% delle calorie totali, in linea con le raccomandazioni LARN/SINU.</li>
+      <li><strong>Carboidrati</strong> — coprono l'energia rimanente, il carburante di allenamenti e vita quotidiana.</li>
+    </ul>
+    <p>Il risultato è una stima di partenza solida. Il corpo però non è una calcolatrice: il fabbisogno reale va calibrato osservando i progressi settimana dopo settimana — è esattamente quello che facciamo nei <a href="index.html#piani">piani NutriScienza</a> con gli aggiornamenti mensili.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container prose">
+    <h2>Domande frequenti</h2>
+    <div class="faq-item">
+      <div class="faq-q">Come si calcolano i macronutrienti?</div>
+      <div class="faq-a">Si parte dal metabolismo basale (Mifflin-St Jeor), si moltiplica per il livello di attività (PAL) ottenendo il TDEE, poi si applica deficit o surplus secondo l'obiettivo. Le proteine si fissano in g/kg di peso, i grassi al 30% delle calorie, i carboidrati coprono il resto.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Quante proteine devo assumere al giorno?</div>
+      <div class="faq-a">Circa 1,8 g/kg per dimagrire proteggendo la massa magra, 2,0 g/kg per la crescita muscolare, 1,4–1,6 g/kg per mantenimento e salute generale.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Cos'è il TDEE?</div>
+      <div class="faq-a">Il Total Daily Energy Expenditure: tutte le calorie che bruci in un giorno, tra metabolismo basale, attività quotidiana e allenamento. È la base di ogni piano alimentare serio.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Quanto deficit calorico serve per dimagrire?</div>
+      <div class="faq-a">Un deficit moderato del 15–20% del TDEE è sostenibile e protegge il muscolo. Qui applichiamo -18%, per un dimagrimento graduale di circa 0,5–1% del peso a settimana.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Il calcolatore è affidabile?</div>
+      <div class="faq-a">Usa formule validate (Mifflin-St Jeor) e coefficienti conformi alle linee guida LARN/SINU. I risultati sono stime di partenza da calibrare poi sui progressi reali — nessuna formula sostituisce il monitoraggio.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p><a href="index.html" class="logo" style="color:var(--white)">Nutri<span>Scienza</span></a></p>
+    <p style="margin-top:10px"><a href="index.html#piani">Piani</a> · <a href="index.html#come-funziona">Come funziona</a> · <a href="privacy-policy.html">Privacy</a> · <a href="termini-e-condizioni.html">Termini</a></p>
+    <p style="margin-top:10px;opacity:0.6">© 2026 NutriScienza — Piani alimentari basati sulla scienza</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Coefficienti identici a backend/app/nutrition.py
+  var PAL = { sedentario: 1.20, leggero: 1.375, moderato: 1.55, intenso: 1.725 };
+  var GOAL_DELTA = { dimagrire: -18, mantenere: 0, massa: 12, salute: 0 };
+  var PROTEIN_PER_KG = { dimagrire: 1.8, mantenere: 1.6, massa: 2.0, salute: 1.4 };
+  var GOAL_LABEL = {
+    dimagrire: "kcal al giorno per dimagrire (deficit 18%)",
+    mantenere: "kcal al giorno per mantenere il peso",
+    massa: "kcal al giorno per aumentare la massa (surplus 12%)",
+    salute: "kcal al giorno per la salute generale"
+  };
+
+  function val(name) {
+    return document.querySelector('input[name="' + name + '"]:checked').value;
+  }
+
+  document.getElementById('calc-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var eta = parseFloat(document.getElementById('eta').value);
+    var peso = parseFloat(document.getElementById('peso').value);
+    var alt = parseFloat(document.getElementById('altezza').value);
+    var err = document.getElementById('err');
+
+    if (!(eta >= 18 && eta <= 99) || !(peso >= 35 && peso <= 250) || !(alt >= 130 && alt <= 230)) {
+      err.style.display = 'block';
+      return;
+    }
+    err.style.display = 'none';
+
+    var sesso = val('sesso'), att = val('attivita'), goal = val('obiettivo');
+
+    // BMR — Mifflin-St Jeor (1990)
+    var bmr = 10 * peso + 6.25 * alt - 5 * eta + (sesso === 'M' ? 5 : -161);
+    var tdee = bmr * PAL[att];
+    var target = tdee * (1 + GOAL_DELTA[goal] / 100);
+    var targetKcal = Math.round(target);
+
+    // Macros — proteine per obiettivo, grassi 30%, carbo il resto
+    var protG = Math.round(PROTEIN_PER_KG[goal] * peso);
+    var fatKcal = targetKcal * 0.30;
+    var fatG = Math.round(fatKcal / 9);
+    var carbKcal = targetKcal - protG * 4 - fatKcal;
+    var carbG = Math.round(Math.max(carbKcal, 0) / 4);
+
+    var pPct = Math.round(protG * 4 / targetKcal * 100);
+    var fPct = Math.round(fatG * 9 / targetKcal * 100);
+    var cPct = Math.max(100 - pPct - fPct, 0);
+
+    document.getElementById('r-kcal').textContent = targetKcal.toLocaleString('it-IT');
+    document.getElementById('r-kcal-lbl').textContent = GOAL_LABEL[goal];
+    document.getElementById('r-bmr').textContent = Math.round(bmr).toLocaleString('it-IT');
+    document.getElementById('r-tdee').textContent = Math.round(tdee).toLocaleString('it-IT');
+    document.getElementById('r-prot').textContent = protG + ' g';
+    document.getElementById('r-carb').textContent = carbG + ' g';
+    document.getElementById('r-fat').textContent = fatG + ' g';
+    document.getElementById('r-prot-pct').textContent = pPct + '% delle calorie';
+    document.getElementById('r-carb-pct').textContent = cPct + '% delle calorie';
+    document.getElementById('r-fat-pct').textContent = fPct + '% delle calorie';
+    document.getElementById('bar-p').style.width = pPct + '%';
+    document.getElementById('bar-c').style.width = cPct + '%';
+    document.getElementById('bar-f').style.width = fPct + '%';
+
+    var box = document.getElementById('risultati');
+    box.style.display = 'block';
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    if (typeof gtag === 'function') {
+      gtag('event', 'macro_calculator_submit', { goal: goal, activity: att });
+    }
+  });
+
+  document.getElementById('cta-piani').addEventListener('click', function () {
+    if (typeof gtag === 'function') {
+      gtag('event', 'macro_calculator_cta_click');
+    }
+  });
+})();
+</script>
+<script src="cookie-banner.js"></script>
+<script src="ga4-analytics.js"></script>
+<script src="traffic-tracker.js" defer></script>
+</body>
+</html>
