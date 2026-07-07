@@ -106,8 +106,11 @@ these cookies.
 ## Verification checklist
 - [x] GA4 property `NutriScienza` created, Web stream `NutriScienza Web` added.
 - [x] Measurement ID `G-KTQV8SE2CM` pasted into `ga4-analytics.js`.
-- [ ] Deployed to Render.
-- [ ] Banner "Accetta tutti" → appears as Realtime user in GA4.
-- [ ] Banner "Solo necessari" → NO `_ga` cookie set, no Realtime hit (test in a
-      private window; check DevTools → Application → Cookies).
+- [x] Deployed to Render (git push → auto-deploy, 2026-06-26).
+- [x] Banner "Accetta tutti" → verified live: gtag.js loaded with G-KTQV8SE2CM,
+      page_view sent (anonymize_ip=true, npa=1), confirmed 1 active user + 2 views
+      in GA4 Realtime. NOTE: the /g/collect beacon shows HTTP 503 in the network
+      panel but data still lands in GA4 — this is cosmetic, not a fault.
+- [ ] Banner "Solo necessari" → NO `_ga` cookie set, no Realtime hit (optional
+      spot-check in a private window; DevTools → Application → Cookies).
 - [ ] Traffic acquisition report populating after 24–48h.

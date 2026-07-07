@@ -839,6 +839,8 @@
       + '<button class="btn-sm" style="background:#9A7B33; color:white; padding:8px 14px;" onclick="customerRequestUpdate()">📩 Richiedi aggiornamento mensile</button> '
       + '<button class="btn-sm" style="background:var(--green-dark); color:white; padding:8px 14px;" onclick="customerForcePlan()">⚡ Forza generazione piano</button>';
 
+    var upsellHtml = renderUpsellSection(p.base_upsell);
+
     document.getElementById('cm-body').innerHTML =
         '<div class="section-title">Anagrafica & dati antropometrici</div>'
       + '<div class="field-grid">' + fieldsHtml + '</div>'
@@ -847,11 +849,48 @@
       + '<div class="section-title">Pagamenti (' + (p.totals ? fmtEuro(p.totals.paid_cents) : '€0') + ' totali)</div>' + payHtml
       + '<div class="section-title">Piani generati</div>' + plansHtml
       + '<div class="section-title">Abbonamenti</div>' + subsHtml
+      + upsellHtml
       + '<div class="danger-zone">'
       +   '<div class="section-title">Zona pericolo — GDPR</div>'
       +   '<div class="sub" style="margin-bottom:8px;">Anonimizza gli ordini pagati (conserva importi/date per la contabilità) ed elimina i record non pagati. Irreversibile.</div>'
       +   '<button class="btn-sm btn-delete" style="padding:8px 14px; margin:0;" onclick="customerGdprDelete()">🗑 Cancella tutti i dati cliente</button>'
       + '</div>';
+  }
+
+  function renderUpsellSection(u) {
+    if (!u || !u.has_base_order) return '';  // niente ordine Base → sezione non pertinente
+    var statusHtml, btnLabel, btnDisabled = '';
+    if (u.is_active_subscriber) {
+      statusHtml = '<span style="color:var(--muted);">Cliente già abbonato — upsell non pertinente.</span>';
+      btnDisabled = 'disabled style="opacity:.5;cursor:not-allowed;"';
+      btnLabel = '✉ Invia email upsell';
+    } else if (u.sent_at) {
+      statusHtml = '<span class="badge-status ' + badgeClass('sent') + '">inviata</span> '
+        + '<span class="tx-date">il ' + fmtDate(u.sent_at) + '</span>';
+      btnLabel = '✉ Invia di nuovo';
+    } else {
+      statusHtml = '<span class="pill">non ancora inviata</span>';
+      btnLabel = '✉ Invia email upsell ora';
+    }
+    var btn = '<button class="btn-sm" ' + btnDisabled
+      + ' style="background:#9A7B33;color:white;padding:8px 14px;margin-top:10px;"'
+      + ' onclick="customerSendUpsell()">' + btnLabel + '</button>';
+    return '<div class="section-title">Upsell Base → Completo</div>'
+      + '<div class="sub" style="margin-bottom:6px;">Stato email "il tuo piano ha una data di scadenza": ' + statusHtml + '</div>'
+      + (u.is_active_subscriber ? '' : btn);
+  }
+
+  function customerSendUpsell() {
+    if (!confirm('Inviare ora l\'email di upsell Base → Completo a questo cliente?\n\nIgnora la finestra automatica dei 30–45 giorni.')) return;
+    fetch(API_BASE + '/api/admin/customers/' + encodeURIComponent(currentCustomer) + '/send-upsell', { method: 'POST', headers: headers() })
+      .then(function(r) { return r.json().then(function(j){ return { ok:r.ok, j:j }; }); })
+      .then(function(res) {
+        if (res.ok && res.j.sent) {
+          alert(res.j.was_already_sent ? 'Email di upsell re-inviata.' : 'Email di upsell inviata.');
+          openCustomer(encodeURIComponent(currentCustomer));  // ricarica il profilo → mostra la data
+        } else { alert('Errore: ' + (res.j.detail || JSON.stringify(res.j))); }
+      })
+      .catch(function(e) { alert('Errore: ' + e.message); });
   }
 
   function saveCustomerFields(scope, recordId) {
