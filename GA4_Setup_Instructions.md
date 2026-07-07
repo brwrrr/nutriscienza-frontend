@@ -86,9 +86,10 @@ https://ga-dev-tools.google/campaign-url-builder/
 (banner must define `NS_Cookies` first).
 
 ### Pages covered
-GA4 is on all **11 public pages**: index, questionario, checkin, grazie,
-affiliate, esempio-piano, piano_base_esempio, piano_completo_esempio,
+GA4 is on all **10 public pages**: index, questionario, checkin, grazie,
+affiliate, piano_base_esempio, piano_completo_esempio,
 privacy-policy, cookie-policy, termini-e-condizioni.
+(esempio-piano was removed 2026-07-07.)
 
 **`admin.html` is intentionally excluded** — internal admin sessions would
 otherwise pollute your traffic data. (affiliate.html and the two `piano_*_esempio`

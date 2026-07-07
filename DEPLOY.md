@@ -114,7 +114,7 @@ You'll need this for the Stripe webhook (Step 3) and optionally in `API_BASE` in
 
 ### Rename `nutriscienza.html` → `index.html`
 
-Before uploading the frontend, rename `nutriscienza.html` to `index.html`. This ensures `nutriscienza.org/` loads the landing page automatically. The example plan pages (`esempio-piano.html`) already link to `index.html`, so this is consistent.
+Before uploading the frontend, rename `nutriscienza.html` to `index.html`. This ensures `nutriscienza.org/` loads the landing page automatically. (Note: `esempio-piano.html` was removed 2026-07-07 — a `_redirects` file now 301s the old URL to `/#piani`.)
 
 ---
 
