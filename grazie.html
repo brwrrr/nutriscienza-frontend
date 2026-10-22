@@ -240,6 +240,34 @@
     let attempts = 0;
     const MAX_ATTEMPTS = 75;  // 75 × 4 s = ~5 min — copre il Coach (12 settimane + workout)
 
+    // ── Purchase tracking (2026-10-22) ───────────────────────────────────────
+    // Fires GA4 'purchase' once per order (list price; promo codes not deducted).
+    // Also dispatches a 'nsPurchase' DOM event so ad pixels (e.g. OpenAI) can hook in.
+    // Fully wrapped in try/catch: a tracking error can never affect the page.
+    var PLAN_PRICE = { base: 19, completo: 29, coach: 99 };
+    var PLAN_NAME  = { base: 'Piano Base', completo: 'Piano Completo', coach: 'Piano Coach' };
+    var purchaseSent = false;
+    function trackPurchase(data) {
+      try {
+        if (purchaseSent || !data || !data.plan || !orderId) return;
+        if (['paid', 'generating', 'sent'].indexOf(data.status) === -1) return;
+        var plan = String(data.plan).toLowerCase();
+        var value = PLAN_PRICE[plan];
+        if (value === undefined) return;
+        purchaseSent = true;
+        var key = 'ns_purchase_' + orderId;
+        try { if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); } catch (e) {}
+        var payload = {
+          transaction_id: orderId,
+          value: value,
+          currency: 'EUR',
+          items: [{ item_id: plan, item_name: PLAN_NAME[plan], price: value, quantity: 1 }]
+        };
+        if (typeof window.nsTrack === 'function') window.nsTrack('purchase', payload);
+        try { document.dispatchEvent(new CustomEvent('nsPurchase', { detail: payload })); } catch (e) {}
+      } catch (e) { /* never break the page */ }
+    }
+
     function poll() {
       if (attempts++ >= MAX_ATTEMPTS) { clearInterval(pollTimer); return; }
 
@@ -247,6 +275,7 @@
         .then(function(r) { return r.ok ? r.json() : null; })
         .then(function(data) {
           if (!data) return;
+          trackPurchase(data);
           var step = (STATUS_STEP[data.status] !== undefined) ? STATUS_STEP[data.status] : 0;
           if (step === -1) {
             clearInterval(pollTimer);

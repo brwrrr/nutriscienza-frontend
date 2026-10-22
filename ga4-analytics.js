@@ -22,6 +22,29 @@
   // Not configured yet → do nothing.
   if (!GA_ID || GA_ID.indexOf('G-') !== 0 || GA_ID === 'G-XXXXXXXXXX') return;
 
+  // ── Event queue (2026-10-22) ─────────────────────────────────────────
+  // window.nsTrack(name, params): sends a GA4 event once GA is loaded.
+  // Events fired before consent are queued; if consent is never given they
+  // are simply dropped (nothing leaves the browser). Never throws.
+  var pending = [];
+  window.nsTrack = function (name, params) {
+    try {
+      if (window.__nsGaLoaded && typeof window.gtag === 'function') {
+        window.gtag('event', name, params || {});
+      } else {
+        pending.push([name, params || {}]);
+      }
+    } catch (e) { /* never break the page */ }
+  };
+  function flushPending() {
+    try {
+      while (pending.length) {
+        var ev = pending.shift();
+        window.gtag('event', ev[0], ev[1]);
+      }
+    } catch (e) {}
+  }
+
   function loadGA() {
     if (window.__nsGaLoaded) return;
     window.__nsGaLoaded = true;
@@ -43,6 +66,7 @@
       allow_google_signals: false,
       allow_ad_personalization_signals: false
     });
+    flushPending();
   }
 
   // 1) Returning visitor who already accepted analytics → load immediately.
