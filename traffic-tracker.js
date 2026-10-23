@@ -24,12 +24,21 @@
 (function () {
   'use strict';
 
+  // GDPR/ePrivacy: salviamo nel browser SOLO con consenso analitico ('all').
+  // Senza consenso il dato resta in memoria (vale solo per la pagina corrente).
+  var mem = null;
+  function consented() {
+    try { var o = JSON.parse(localStorage.getItem('ns_cookie_consent'));
+      return !!(o && o.level === 'all' && Date.now() < o.expires); } catch (e) { return false; }
+  }
+
   var KEY = 'ns_traffic';
   var TTL_MS = 60 * 24 * 60 * 60 * 1000; // 60 giorni
 
   function nowMs() { return Date.now(); }
 
   function read() {
+    if (!consented()) return mem;
     try {
       var raw = localStorage.getItem(KEY);
       if (!raw) return null;
@@ -41,6 +50,8 @@
   }
 
   function store(data) {
+    mem = data;
+    if (!consented()) return;
     try {
       localStorage.setItem(KEY, JSON.stringify({ data: data, exp: nowMs() + TTL_MS }));
     } catch (e) { /* localStorage disabled — drop silently */ }
@@ -73,7 +84,8 @@
         utmMedium: clean(p.get('utm_medium')),
         utmCampaign: clean(p.get('utm_campaign')),
         referrer: externalReferrer(),
-        landingPage: clean(window.location.pathname + window.location.search, 400)
+        // ns_lp = pagina d'arrivo originale, passata nel link quando non c'è consenso
+        landingPage: clean(p.get('ns_lp') || (window.location.pathname + window.location.search), 400)
       };
       // Inferenza leggera: se non c'è utm_source ma c'è un referrer esterno,
       // usa il dominio del referrer come sorgente (es. google, instagram).
@@ -89,6 +101,43 @@
   }
 
   captureFirstTouch();
+
+  // Senza consenso non salviamo nulla nel browser: per non perdere la provenienza
+  // tra homepage/guide e questionario la passiamo nei link interni (parametri URL,
+  // nessuna memorizzazione sul dispositivo).
+  function decorateLinks() {
+    try {
+      if (consented()) return;
+      var t = mem || {};
+      var ref = (window.NSAffiliate && window.NSAffiliate.getRef()) || null;
+      var params = {};
+      if (t.utmSource) params.utm_source = t.utmSource;
+      if (t.utmMedium) params.utm_medium = t.utmMedium;
+      if (t.utmCampaign) params.utm_campaign = t.utmCampaign;
+      if (t.landingPage && (t.utmSource || ref)) params.ns_lp = t.landingPage;
+      if (ref) params.ref = ref;
+      if (!Object.keys(params).length) return;
+      var links = document.querySelectorAll('a[href]');
+      for (var i = 0; i < links.length; i++) {
+        var a = links[i], raw = a.getAttribute('href');
+        if (!raw || raw.charAt(0) === '#' || /^(mailto|tel|javascript):/i.test(raw)) continue;
+        var u = new URL(raw, window.location.href);
+        if (u.origin !== window.location.origin) continue;
+        if (u.pathname === window.location.pathname) continue;           // ancore nella stessa pagina
+        if (/(privacy|cookie|termini|esempio)/.test(u.pathname)) continue;
+        if (!/(\/|\.html)$/.test(u.pathname)) continue;
+        for (var k in params) { if (!u.searchParams.has(k)) u.searchParams.set(k, params[k]); }
+        a.setAttribute('href', u.pathname.replace(/^\//, '') + u.search + u.hash);
+      }
+    } catch (e) { /* mai bloccare la navigazione */ }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', decorateLinks);
+  else decorateLinks();
+
+  window.addEventListener('ns:consent', function (e) {
+    if (e.detail === 'all') { if (mem) store(mem); }
+    else { try { localStorage.removeItem(KEY); } catch (x) {} }
+  });
 
   window.NSTraffic = {
     get: function () { return read() || {}; },

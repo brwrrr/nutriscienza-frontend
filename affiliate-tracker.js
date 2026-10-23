@@ -25,6 +25,14 @@
 (function () {
   'use strict';
 
+  // GDPR/ePrivacy: salviamo nel browser SOLO con consenso analitico ('all').
+  // Senza consenso il dato resta in memoria (vale solo per la pagina corrente).
+  var mem = null;
+  function consented() {
+    try { var o = JSON.parse(localStorage.getItem('ns_cookie_consent'));
+      return !!(o && o.level === 'all' && Date.now() < o.expires); } catch (e) { return false; }
+  }
+
   var KEY = 'ns_aff_ref';
   var TTL_MS = 60 * 24 * 60 * 60 * 1000; // 60 giorni
   var REF_PATTERN = /^[A-Z0-9_-]{3,40}$/i;
@@ -32,6 +40,8 @@
   function nowMs() { return Date.now(); }
 
   function store(ref) {
+    mem = ref.toUpperCase();
+    if (!consented()) return;
     try {
       localStorage.setItem(KEY, JSON.stringify({
         ref: ref.toUpperCase(),
@@ -41,6 +51,7 @@
   }
 
   function read() {
+    if (!consented()) return mem;
     try {
       var raw = localStorage.getItem(KEY);
       if (!raw) return null;
@@ -70,6 +81,11 @@
   captureFromUrl();
 
   // Esponi helper globale per il codice del questionario
+  window.addEventListener('ns:consent', function (e) {
+    if (e.detail === 'all') { if (mem) store(mem); }
+    else { try { localStorage.removeItem(KEY); } catch (x) {} }
+  });
+
   window.NSAffiliate = {
     getRef: function () { return read(); },
     clear: function () { try { localStorage.removeItem(KEY); } catch (e) {} },

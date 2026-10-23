@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fabbisogno calorico giornaliero: come calcolarlo (formula ed esempio) | NutriScienza</title>
+  <meta name="description" content="Come calcolare il fabbisogno calorico giornaliero: metabolismo basale con Mifflin-St Jeor, livello di attività (PAL), TDEE e calorie per dimagrire, con un esempio numerico completo.">
+  <link rel="canonical" href="https://nutriscienza.org/fabbisogno-calorico.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="NutriScienza">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:title" content="Fabbisogno calorico giornaliero: come calcolarlo (formula ed esempio) | NutriScienza">
+  <meta property="og:description" content="Come calcolare il fabbisogno calorico giornaliero: metabolismo basale con Mifflin-St Jeor, livello di attività (PAL), TDEE e calorie per dimagrire, con un esempio numerico completo.">
+  <meta property="og:url" content="https://nutriscienza.org/fabbisogno-calorico.html">
+  <meta property="og:image" content="https://nutriscienza.org/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1A2E22">
+  <link rel="stylesheet" href="fonts.css">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Article",
+   "headline": "Fabbisogno calorico giornaliero: come calcolarlo",
+   "description": "Come calcolare il fabbisogno calorico giornaliero: metabolismo basale con Mifflin-St Jeor, livello di attività (PAL), TDEE e calorie per dimagrire, con un esempio numerico completo.",
+   "inLanguage": "it",
+   "datePublished": "2026-10-23",
+   "dateModified": "2026-10-23",
+   "mainEntityOfPage": "https://nutriscienza.org/fabbisogno-calorico.html",
+   "image": "https://nutriscienza.org/og-image.png",
+   "author": {
+    "@type": "Organization",
+    "name": "NutriScienza",
+    "url": "https://nutriscienza.org/"
+   },
+   "publisher": {
+    "@type": "Organization",
+    "name": "NutriScienza",
+    "url": "https://nutriscienza.org/",
+    "logo": {
+     "@type": "ImageObject",
+     "url": "https://nutriscienza.org/og-image.png"
+    }
+   }
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "NutriScienza",
+     "item": "https://nutriscienza.org/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Fabbisogno calorico giornaliero: come calcolarlo",
+     "item": "https://nutriscienza.org/fabbisogno-calorico.html"
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Qual è la formula più precisa per il fabbisogno calorico?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Per adulti sani la più usata e validata è l'equazione di Mifflin-St Jeor (1990). Resta comunque una stima: va verificata osservando l'andamento del peso nelle settimane successive."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Che differenza c'è tra metabolismo basale e fabbisogno calorico?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Il metabolismo basale (BMR) è l'energia consumata a riposo. Il fabbisogno calorico totale (TDEE) aggiunge l'energia spesa per attività quotidiane e allenamento: si ottiene moltiplicando il BMR per il livello di attività fisica (PAL)."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Quante calorie togliere per dimagrire?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Un deficit moderato del 15–20% rispetto al TDEE è sostenibile per la maggior parte degli adulti sani. Nei piani NutriScienza applichiamo −18%."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Ogni quanto ricalcolare il fabbisogno?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Quando il peso cambia in modo significativo, o se dopo 3–4 settimane i progressi non sono quelli attesi. Il fabbisogno diminuisce quando si perde peso."
+     }
+    }
+   ]
+  }
+ ]
+}
+  </script>
+  <style>
+    :root {
+      --green-deep: #2D5F3F;
+      --green-dark: #1A2E22;
+      --green-soft: #4A8264;
+      --cream: #F5F1E8;
+      --cream-light: #FBF9F4;
+      --gold: #C9A66B;
+      --gold-dark: #A88349;
+      --text: #2A2A2A;
+      --text-muted: #6B6B6B;
+      --white: #FFFFFF;
+      --border: #E5E0D3;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: var(--text); line-height: 1.6; background: var(--cream-light); -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+    header { background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 18px 24px; max-width: 1180px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { color: var(--text); text-decoration: none; font-size: 15px; font-weight: 500; }
+    .nav-links a:hover { color: var(--green-deep); }
+    .btn-primary { background: var(--green-deep); color: var(--white); padding: 12px 24px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 15px; border: none; cursor: pointer; display: inline-block; transition: background 0.2s, transform 0.1s; }
+    .btn-primary:hover { background: var(--green-dark); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .hero { text-align: center; padding: 64px 24px 40px; }
+    .hero .badge { display: inline-block; background: var(--cream); border: 1px solid var(--border); color: var(--green-deep); font-size: 13px; font-weight: 600; padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(30px, 4.5vw, 46px); color: var(--green-dark); max-width: 760px; margin: 0 auto 16px; line-height: 1.15; }
+    .hero p { color: var(--text-muted); font-size: 17px; max-width: 620px; margin: 0 auto; }
+
+    .calc-wrap { max-width: 880px; margin: 24px auto 0; padding: 0 24px 40px; }
+    .calc-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 36px; box-shadow: 0 6px 30px rgba(26,46,34,0.06); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    label { font-size: 14px; font-weight: 600; color: var(--green-dark); }
+    input, select { padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 15px; font-family: 'Inter', sans-serif; background: var(--cream-light); color: var(--text); }
+    input:focus, select:focus { outline: none; border-color: var(--green-soft); }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .seg-4 { grid-template-columns: repeat(4, 1fr); }
+    .seg input[type="radio"] { display: none; }
+    .seg label.opt { border: 1.5px solid var(--border); border-radius: 8px; padding: 11px 8px; text-align: center; cursor: pointer; font-weight: 500; font-size: 14px; color: var(--text-muted); background: var(--cream-light); transition: all 0.15s; }
+    .seg input[type="radio"]:checked + label.opt { border-color: var(--green-deep); background: var(--green-deep); color: var(--white); font-weight: 600; }
+    .calc-btn { width: 100%; margin-top: 26px; font-size: 17px; padding: 16px; }
+    .error-msg { color: #B23A3A; font-size: 14px; margin-top: 12px; text-align: center; display: none; }
+
+    /* Results */
+    #risultati { display: none; margin-top: 36px; }
+    .res-kcal { text-align: center; background: var(--cream); border-radius: 12px; padding: 28px 20px; margin-bottom: 20px; }
+    .res-kcal .num { font-family: 'Playfair Display', serif; font-size: 56px; color: var(--green-deep); line-height: 1; }
+    .res-kcal .lbl { font-size: 15px; color: var(--text-muted); margin-top: 6px; }
+    .res-sub { display: flex; justify-content: center; gap: 28px; margin-top: 14px; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
+    .res-sub strong { color: var(--green-dark); }
+    .macro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .macro-card { border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; background: var(--white); }
+    .macro-card .g { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--green-dark); }
+    .macro-card .name { font-weight: 600; font-size: 14px; margin-top: 2px; }
+    .macro-card .pct { font-size: 13px; color: var(--text-muted); }
+    .macro-bar { display: flex; height: 12px; border-radius: 100px; overflow: hidden; margin: 20px 0 6px; }
+    .macro-bar div { height: 100%; }
+    .bar-p { background: var(--green-deep); }
+    .bar-c { background: var(--gold); }
+    .bar-f { background: var(--green-soft); }
+    .bar-legend { display: flex; justify-content: center; gap: 20px; font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; }
+
+    /* CTA */
+    .cta-box { margin-top: 28px; background: linear-gradient(135deg, var(--green-dark), var(--green-deep)); border-radius: 14px; padding: 32px; text-align: center; color: var(--white); }
+    .cta-box h3 { font-size: 24px; margin-bottom: 10px; color: var(--white); }
+    .cta-box p { font-size: 15px; opacity: 0.9; max-width: 560px; margin: 0 auto 20px; }
+    .cta-box .btn-gold { background: var(--gold); color: var(--green-dark); padding: 14px 30px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 16px; display: inline-block; transition: background 0.2s; }
+    .cta-box .btn-gold:hover { background: var(--gold-dark); color: var(--white); }
+    .cta-box .note { font-size: 13px; opacity: 0.7; margin-top: 12px; }
+
+    /* Content sections */
+    .block { padding: 56px 0; }
+    .block-alt { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .block h2 { font-size: 30px; color: var(--green-dark); margin-bottom: 18px; }
+    .prose { max-width: 760px; margin: 0 auto; }
+    .prose p { margin-bottom: 14px; color: var(--text); font-size: 16px; }
+    .prose ul { margin: 0 0 14px 22px; }
+    .prose li { margin-bottom: 8px; }
+    .prose a { color: var(--green-deep); font-weight: 600; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 3px; }
+    .prose a:hover { color: var(--gold-dark); }
+    .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; }
+    .faq-q { font-weight: 600; font-size: 17px; color: var(--green-dark); margin-bottom: 8px; font-family: 'Playfair Display', serif; }
+    .faq-a { color: var(--text-muted); font-size: 15px; }
+
+    footer { background: var(--green-dark); color: rgba(255,255,255,0.75); padding: 40px 0; text-align: center; font-size: 14px; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .seg-4 { grid-template-columns: 1fr 1fr; }
+      .macro-grid { grid-template-columns: 1fr; }
+      .calc-card { padding: 24px 18px; }
+    }
+  </style>
+  <style>
+.article-meta{font-size:14px;color:rgba(255,255,255,.65);margin-top:14px}
+.prose h2{margin-top:8px}
+.prose h3{font-size:21px;margin:30px 0 10px;color:var(--green-deep)}
+.prose ol{padding-left:22px;margin-bottom:16px}.prose ol li{margin-bottom:8px}
+.tbl{width:100%;border-collapse:collapse;margin:18px 0 22px;font-size:15px;background:var(--white);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.tbl th,.tbl td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.tbl th{background:var(--cream);font-weight:600;font-size:13px;letter-spacing:.3px;text-transform:uppercase;color:var(--green-deep)}
+.tbl tr:last-child td{border-bottom:none}
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.calc-step{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:4px 12px 12px 4px;padding:18px 22px;margin:18px 0;font-size:15.5px}
+.calc-step code{font-family:inherit;font-weight:600;color:var(--green-deep)}
+.note-box{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin:24px 0;font-size:14.5px}
+.sources{font-size:14px;color:var(--text-muted)}.sources li{margin-bottom:6px}
+.guides-nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.guides-nav a{border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:14px;text-decoration:none;color:var(--green-deep);background:var(--white)}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo">Nutri<span>Scienza</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#come-funziona">Come funziona</a></li>
+      <li><a href="index.html#piani">Piani</a></li>
+      <li><a href="index.html#scienza">La scienza</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <a href="index.html#piani" class="btn-primary">Inizia ora</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <span class="badge">Guida · Aggiornata ottobre 2026</span>
+  <h1>Fabbisogno calorico giornaliero: come calcolarlo</h1>
+  <p>Metabolismo basale, livello di attività, TDEE e calorie per il tuo obiettivo. Formule, tabelle e un esempio numerico completo.</p>
+  <p class="article-meta">A cura della redazione NutriScienza · Fonti scientifiche in fondo alla pagina</p>
+</section>
+
+<section class="block">
+  <div class="container prose">
+    <p>Il <strong>fabbisogno calorico giornaliero</strong> è la quantità di energia (in kcal) di cui il tuo corpo ha bisogno in un giorno. Conoscerlo è il primo passo di qualsiasi piano alimentare serio: per dimagrire, mantenere il peso o aumentare la massa muscolare. In questa guida vedi come si calcola, passo per passo, con un esempio numerico completo.</p>
+
+    <h2>1. Metabolismo basale (BMR)</h2>
+    <p>Il metabolismo basale è l'energia che il corpo consuma a riposo, solo per mantenere le funzioni vitali. La formula oggi più usata per stimarlo negli adulti sani è l'<strong>equazione di Mifflin-St Jeor</strong> (1990). Una revisione sistematica del 2005 l'ha indicata come la più affidabile tra le equazioni predittive confrontate, sia in persone normopeso sia con obesità.</p>
+    <div class="calc-step">
+      <strong>Uomo:</strong> BMR = 10 × peso (kg) + 6,25 × altezza (cm) − 5 × età + 5<br>
+      <strong>Donna:</strong> BMR = 10 × peso (kg) + 6,25 × altezza (cm) − 5 × età − 161
+    </div>
+
+    <h2>2. Livello di attività fisica (PAL) e TDEE</h2>
+    <p>Al metabolismo basale si aggiunge l'energia spesa per muoversi, lavorare e allenarsi. Per stimarla si moltiplica il BMR per un coefficiente di attività fisica (PAL). Il risultato è il <strong>TDEE</strong> (<em>Total Daily Energy Expenditure</em>), cioè il tuo fabbisogno calorico totale.</p>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Livello di attività</th><th>Descrizione</th><th>PAL</th></tr>
+      <tr><td>Sedentario</td><td>Lavoro seduto, poco movimento, nessun allenamento</td><td>1,20</td></tr>
+      <tr><td>Leggero</td><td>Camminate, 1–3 allenamenti leggeri a settimana</td><td>1,375</td></tr>
+      <tr><td>Moderato</td><td>3–5 allenamenti a settimana o lavoro in piedi</td><td>1,55</td></tr>
+      <tr><td>Intenso</td><td>Allenamento quasi quotidiano o lavoro fisico pesante</td><td>1,725</td></tr>
+    </table></div>
+
+    <h2>3. Calorie per il tuo obiettivo</h2>
+    <ul>
+      <li><strong>Dimagrire:</strong> un deficit moderato, intorno al 15–20% del TDEE, è sostenibile e aiuta a proteggere la massa muscolare. Deficit molto aggressivi sono più difficili da mantenere e aumentano la perdita di massa magra.</li>
+      <li><strong>Mantenere:</strong> calorie pari al TDEE.</li>
+      <li><strong>Aumentare la massa muscolare:</strong> un surplus contenuto, intorno al 10–15%, insieme all'allenamento di forza.</li>
+    </ul>
+
+    <h2>Esempio completo</h2>
+    <p>Donna, 35 anni, 165 cm, 68 kg, attività leggera, obiettivo dimagrimento.</p>
+    <div class="calc-step">
+      <strong>BMR</strong> = 10 × 68 + 6,25 × 165 − 5 × 35 − 161 = <code>1.375 kcal</code><br>
+      <strong>TDEE</strong> = 1.375 × 1,375 = <code>1.891 kcal</code><br>
+      <strong>Obiettivo dimagrimento</strong> (−18%) = <code>circa 1.550 kcal al giorno</code>
+    </div>
+    <p>Da qui si ricavano i macronutrienti:</p>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Macronutriente</th><th>Criterio</th><th>Grammi/giorno</th><th>kcal</th></tr>
+      <tr><td>Proteine</td><td>1,8 g per kg di peso (protegge la massa magra in deficit)</td><td>122 g</td><td>488</td></tr>
+      <tr><td>Grassi</td><td>30% delle calorie</td><td>52 g</td><td>468</td></tr>
+      <tr><td>Carboidrati</td><td>Energia restante</td><td>148 g</td><td>592</td></tr>
+    </table></div>
+    <p>Puoi ripetere questo calcolo sui tuoi dati in 30 secondi con il <a href="calcolatore-macronutrienti.html">calcolatore gratuito di calorie e macronutrienti</a>.</p>
+
+    <h2>Perché è solo un punto di partenza</h2>
+    <p>Ogni formula è una <strong>stima</strong>: due persone con gli stessi dati possono avere fabbisogni reali diversi. Per questo il numero va verificato nel tempo. Se dopo 3–4 settimane il peso non si muove nella direzione attesa, si ricalcola. È il principio del check-in mensile dei piani NutriScienza: il nuovo peso entra nel calcolo e calorie e macro vengono aggiornati.</p>
+    <h3>Errori comuni</h3>
+    <ul>
+      <li>Sovrastimare il livello di attività: è l'errore più frequente. Nel dubbio scegli il livello più basso.</li>
+      <li>Tagliare troppo le calorie, scendendo sotto il metabolismo basale per lunghi periodi.</li>
+      <li>Non ricalcolare mai: quando il peso cambia, cambia anche il fabbisogno.</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>Vuoi questi numeri trasformati in un menù?</h3>
+      <p>NutriScienza calcola calorie e macro sui tuoi dati con lo stesso metodo e li trasforma in un piano settimanale con lista della spesa, in PDF entro 24 ore.</p>
+      <a href="questionario.html" class="btn-gold" data-cta="guida-fabbisogno-calorico">Crea il mio piano</a>
+      <p class="note">Oppure <a href="calcolatore-macronutrienti.html" style="color:inherit">calcola gratis calorie e macro</a> · Piano Base €19 una tantum</p>
+    </div>
+    <div class="note-box"><strong>Nota importante.</strong> Questa guida ha finalità educative e informative. Non è una diagnosi né una prescrizione e non sostituisce il parere del medico o di un professionista della nutrizione, in particolare in presenza di patologie, in gravidanza o allattamento, o in caso di disturbi del comportamento alimentare.</div>
+  </div>
+</section>
+
+<section class="block block-alt">
+  <div class="container prose">
+    <h2>Domande frequenti</h2>
+    <div class="faq-item">
+      <div class="faq-q">Qual è la formula più precisa per il fabbisogno calorico?</div>
+      <div class="faq-a">Per adulti sani la più usata e validata è l'equazione di Mifflin-St Jeor (1990). Resta comunque una stima: va verificata osservando l'andamento del peso nelle settimane successive.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Che differenza c'è tra metabolismo basale e fabbisogno calorico?</div>
+      <div class="faq-a">Il metabolismo basale (BMR) è l'energia consumata a riposo. Il fabbisogno calorico totale (TDEE) aggiunge l'energia spesa per attività quotidiane e allenamento: si ottiene moltiplicando il BMR per il livello di attività fisica (PAL).</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Quante calorie togliere per dimagrire?</div>
+      <div class="faq-a">Un deficit moderato del 15–20% rispetto al TDEE è sostenibile per la maggior parte degli adulti sani. Nei piani NutriScienza applichiamo −18%.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Ogni quanto ricalcolare il fabbisogno?</div>
+      <div class="faq-a">Quando il peso cambia in modo significativo, o se dopo 3–4 settimane i progressi non sono quelli attesi. Il fabbisogno diminuisce quando si perde peso.</div>
+    </div>
+    <h2 style="margin-top:40px">Fonti</h2>
+    <ul class="sources">
+      <li>Mifflin MD, St Jeor ST, et al. <em>A new predictive equation for resting energy expenditure in healthy individuals.</em> Am J Clin Nutr. 1990;51(2):241-247.</li>
+      <li>Frankenfield D, Roth-Yousey L, Compher C. <em>Comparison of predictive equations for resting metabolic rate in healthy nonobese and obese adults: a systematic review.</em> J Am Diet Assoc. 2005;105(5):775-789.</li>
+      <li>FAO/WHO/UNU. <em>Human energy requirements.</em> Report of a Joint Expert Consultation, Roma, 2004.</li>
+      <li>SINU — Società Italiana di Nutrizione Umana. <em>LARN: Livelli di Assunzione di Riferimento di Nutrienti ed energia per la popolazione italiana</em>, IV Revisione, 2014.</li>
+    </ul>
+    <p style="margin-top:24px"><strong>Altre guide:</strong></p>
+    <div class="guides-nav"><a href="piano-alimentare-vegetariano-proteico.html">Vegetariano proteico</a> <a href="dieta-mediterranea-menu-settimanale.html">Menù mediterraneo</a> <a href="calcolatore-macronutrienti.html">Calcolatore macronutrienti</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p><a href="index.html" class="logo" style="color:var(--white)">Nutri<span>Scienza</span></a></p>
+    <p style="margin-top:10px">Guide: <a href="fabbisogno-calorico.html">Fabbisogno calorico</a> · <a href="piano-alimentare-vegetariano-proteico.html">Vegetariano proteico</a> · <a href="dieta-mediterranea-menu-settimanale.html">Menù mediterraneo</a> · <a href="calcolatore-macronutrienti.html">Calcolatore</a></p>
+    <p style="margin-top:10px"><a href="index.html#piani">Piani</a> · <a href="privacy-policy.html">Privacy</a> · <a href="cookie-policy.html">Cookie</a> · <a href="termini-e-condizioni.html">Termini</a> · <a href="#" onclick="NS_Cookies.reset();return false;">Preferenze cookie</a></p>
+    <p style="margin-top:10px;opacity:0.6">© 2026 NutriScienza — Contenuti educativi, non sostituiscono il parere di un medico o di un professionista della nutrizione.</p>
+  </div>
+</footer>
+
+<script src="cookie-banner.js"></script>
+<script src="ga4-analytics.js"></script>
+<script src="affiliate-tracker.js" defer></script>
+<script src="traffic-tracker.js" defer></script>
+</body>
+</html>

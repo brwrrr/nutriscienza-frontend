@@ -14,6 +14,7 @@
   function saveConsent(level) {
     var expires = Date.now() + EXPIRY_DAYS * 864e5;
     localStorage.setItem(STORAGE_KEY, JSON.stringify({ level: level, expires: expires }));
+    try { window.dispatchEvent(new CustomEvent('ns:consent', { detail: level })); } catch (e) {}
   }
 
   function loadConsent() {
@@ -28,6 +29,21 @@
 
   /* Public API */
   window.NS_Cookies = {
+    /* Revoca/modifica consenso: cancella preferenze + dati di tracciamento e ripropone il banner */
+    reset: function () {
+      try {
+        ['ns_cookie_consent', 'ns_traffic', 'ns_aff_ref'].forEach(function (k) { localStorage.removeItem(k); });
+        var host = location.hostname.replace(/^www\./, '');
+        document.cookie.split(';').forEach(function (c) {
+          var n = c.split('=')[0].trim();
+          if (n.indexOf('_ga') === 0) {
+            document.cookie = n + '=; Max-Age=0; path=/';
+            document.cookie = n + '=; Max-Age=0; path=/; domain=.' + host;
+          }
+        });
+      } catch (e) {}
+      location.reload();
+    },
     hasConsent: function (category) {
       var obj = loadConsent();
       if (!obj) return false;

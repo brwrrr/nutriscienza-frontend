@@ -4,9 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NutriScienza — Il tuo questionario personalizzato</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://nutriscienza.org/questionario.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NutriScienza">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:title" content="NutriScienza — Il tuo questionario personalizzato">
+  <meta property="og:description" content="NutriScienza — Il tuo questionario personalizzato">
+  <meta property="og:url" content="https://nutriscienza.org/questionario.html">
+  <meta property="og:image" content="https://nutriscienza.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1A2E22">
+  <link rel="stylesheet" href="fonts.css">
   <style>
     :root {
       --green-deep: #2D5F3F;
@@ -292,6 +302,12 @@
       display: none;
     }
     .error-msg.show { display: block; }
+
+    /* Consensi GDPR (step 6) */
+    .consent-field{margin-top:4px}
+    .consent-label{display:flex!important;gap:12px;align-items:flex-start;font-weight:400!important;font-size:14px!important;line-height:1.55;text-transform:none!important;letter-spacing:0!important;color:var(--text,#2A2A2A);cursor:pointer}
+    .consent-label input[type="checkbox"]{display:inline-block!important;position:static!important;opacity:1!important;width:18px;height:18px;margin-top:2px;flex-shrink:0;accent-color:#2D5F3F}
+    .consent-label a{color:#2D5F3F}
   </style>
 </head>
 <body>
@@ -379,7 +395,7 @@
           <div>
             <label>Età <span class="hint">(anni)</span></label>
             <div class="input-suffix">
-              <input type="number" name="age" min="16" max="90" placeholder="32" required>
+              <input type="number" name="age" min="18" max="90" placeholder="32" required>
               <span>anni</span>
             </div>
           </div>
@@ -614,7 +630,7 @@
         <div class="step-eyebrow">Ultimo passo</div>
         <h2>Scegli il tuo piano.</h2>
         <p class="lead">Il PDF arriverà entro 24 ore all'email che ci indichi.</p>
-        <div class="error-msg" id="err-6">Seleziona un piano e inserisci una email valida.</div>
+        <div class="error-msg" id="err-6">Seleziona un piano, inserisci una email valida e accetta i due consensi.</div>
 
         <div class="plans">
           <label class="plan">
@@ -650,9 +666,9 @@
             <div class="plan-price">€99 <small>/mese</small></div>
             <ul class="plan-features">
               <li>12 settimane periodizzate</li>
+              <li>Dieta + programma di allenamento</li>
               <li>Protocolli specialistici</li>
-              <li>Check-in settimanali</li>
-              <li>Consulto incluso</li>
+              <li>Check-in mensile</li>
             </ul>
           </label>
         </div>
@@ -665,6 +681,15 @@
         <div class="field">
           <label>La tua email <span class="hint">(qui ti invieremo il PDF)</span></label>
           <input type="email" name="email" placeholder="nome@esempio.it" required>
+        </div>
+
+        <div class="field consent-field">
+          <label class="consent-label"><input type="checkbox" name="healthConsent" value="1" required>
+            <span>Acconsento al trattamento dei miei <strong>dati relativi alla salute</strong> (peso, misure, allergie e intolleranze) per generare il mio piano, come descritto nell'<a href="privacy-policy.html" target="_blank">informativa privacy</a>, incluso l'invio ai fornitori indicati, alcuni con sede negli USA (es. il modello AI che compone i menù). Posso revocarlo in qualsiasi momento.</span></label>
+        </div>
+        <div class="field consent-field">
+          <label class="consent-label"><input type="checkbox" name="termsAccepted" value="1" required>
+            <span>Ho almeno <strong>18 anni</strong> e accetto i <a href="termini-e-condizioni.html" target="_blank">Termini e condizioni</a>. So che il piano ha finalità educative e non sostituisce il parere di un medico.</span></label>
         </div>
 
         <div class="summary">
@@ -764,9 +789,13 @@
 
       // For non-radio required, check value
       required.forEach(el => {
-        if (el.type !== 'radio' && !el.value.trim()) valid = false;
+        if (el.type === 'checkbox') { if (!el.checked) valid = false; }
+        else if (el.type !== 'radio' && !el.value.trim()) valid = false;
         if (el.type === 'email' && el.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value)) valid = false;
       });
+
+      const ageEl = stepEl.querySelector('input[name="age"]');
+      if (ageEl && ageEl.value && parseInt(ageEl.value, 10) < 18) valid = false;
 
       if (!valid) {
         $('#err-' + n).classList.add('show');
@@ -847,6 +876,10 @@
         plan: data.get('plan'),
         firstName: data.get('firstName'),
         email: data.get('email'),
+        // Consensi GDPR — il backend li verifica e ne registra data/ora
+        healthConsent: data.get('healthConsent') === '1',
+        termsAccepted: data.get('termsAccepted') === '1',
+        consentVersion: 'privacy-2026-10-23',
         // Affiliate tracker — null se nessun ref valido in localStorage
         affiliateRef: (window.NSAffiliate && window.NSAffiliate.getRef()) || null,
       };

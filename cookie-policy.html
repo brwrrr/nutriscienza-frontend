@@ -5,9 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cookie Policy — NutriScienza</title>
   <meta name="description" content="Informativa sull'uso dei cookie sul sito NutriScienza, ai sensi del Provvedimento del Garante Privacy e della Direttiva ePrivacy.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://nutriscienza.org/cookie-policy.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NutriScienza">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:title" content="Cookie Policy — NutriScienza">
+  <meta property="og:description" content="Informativa sull'uso dei cookie sul sito NutriScienza, ai sensi del Provvedimento del Garante Privacy e della Direttiva ePrivacy.">
+  <meta property="og:url" content="https://nutriscienza.org/cookie-policy.html">
+  <meta property="og:image" content="https://nutriscienza.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1A2E22">
+  <link rel="stylesheet" href="fonts.css">
   <style>
     :root {
       --green-deep: #2D5F3F; --green-dark: #1A2E22; --gold: #C9A66B;
@@ -110,7 +120,7 @@
         </nav>
 
         <div class="legal-content">
-          <span class="updated">Ultimo aggiornamento: maggio 2026</span>
+          <span class="updated">Ultimo aggiornamento: 23 ottobre 2026</span>
 
           <div class="legal-section" id="cosa-sono">
             <h2>1. Cosa sono i cookie</h2>
@@ -140,48 +150,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td><code>ns_session</code></td>
-                  <td><span class="tag tag-tech">Tecnico</span></td>
-                  <td>Sessione</td>
-                  <td>Gestione della sessione utente autenticato</td>
-                </tr>
-                <tr>
-                  <td><code>ns_consent</code></td>
-                  <td><span class="tag tag-tech">Tecnico</span></td>
-                  <td>12 mesi</td>
-                  <td>Memorizza le preferenze di consenso ai cookie</td>
-                </tr>
-                <tr>
-                  <td><code>ns_csrf</code></td>
-                  <td><span class="tag tag-tech">Tecnico</span></td>
-                  <td>Sessione</td>
-                  <td>Protezione contro attacchi CSRF nei form</td>
-                </tr>
-                <tr>
-                  <td><code>_ga</code></td>
-                  <td><span class="tag tag-analytics">Analitico</span></td>
-                  <td>2 anni</td>
-                  <td>Google Analytics — distingue gli utenti unici (ID anonimizzato)</td>
-                </tr>
-                <tr>
-                  <td><code>_ga_*</code></td>
-                  <td><span class="tag tag-analytics">Analitico</span></td>
-                  <td>2 anni</td>
-                  <td>Google Analytics — mantiene lo stato della sessione</td>
-                </tr>
-                <tr>
-                  <td><code>__stripe_mid</code></td>
-                  <td><span class="tag tag-tech">Tecnico</span></td>
-                  <td>1 anno</td>
-                  <td>Stripe — prevenzione frodi durante il pagamento</td>
-                </tr>
-                <tr>
-                  <td><code>__stripe_sid</code></td>
-                  <td><span class="tag tag-tech">Tecnico</span></td>
-                  <td>Sessione</td>
-                  <td>Stripe — sicurezza della sessione di pagamento</td>
-                </tr>
+                <tr><td><code>ns_cookie_consent</code></td><td>Tecnico (local storage)</td><td>180 giorni</td><td>Memorizza le tue scelte sui cookie</td></tr>
+                <tr><td><code>ns_traffic</code></td><td>Analitico (local storage) — solo con consenso</td><td>60 giorni</td><td>Ricorda da quale canale sei arrivato (UTM, sito di provenienza); associato all'ordine se acquisti</td></tr>
+                <tr><td><code>ns_aff_ref</code></td><td>Analitico (local storage) — solo con consenso</td><td>60 giorni</td><td>Ricorda il codice dell'affiliato che ti ha indirizzato, per calcolarne la commissione</td></tr>
+                <tr><td><code>_ga</code></td><td>Analitico — solo con consenso</td><td>2 anni</td><td>Google Analytics — distingue i visitatori (identificativo pseudonimo)</td></tr>
+                <tr><td><code>_ga_*</code></td><td>Analitico — solo con consenso</td><td>2 anni</td><td>Google Analytics — mantiene lo stato della sessione</td></tr>
+                <tr><td><code>__stripe_mid</code>, <code>__stripe_sid</code></td><td>Tecnico (Stripe)</td><td>1 anno / 30 minuti</td><td>Impostati da Stripe sulla pagina di pagamento, per sicurezza e prevenzione frodi</td></tr>
               </tbody>
             </table>
           </div>
@@ -204,11 +178,11 @@
               <li>Accettare solo i cookie tecnici strettamente necessari</li>
               <li>Personalizzare le tue preferenze per categoria</li>
             </ul>
-            <p>Puoi modificare le tue preferenze in qualsiasi momento cliccando su "Gestisci preferenze cookie" nel footer del Sito.</p>
+            <p>Puoi modificare le tue preferenze in qualsiasi momento cliccando su "Gestisci preferenze cookie" qui sotto o su "Preferenze cookie" nel footer del Sito. Revocando il consenso cancelliamo anche i dati di provenienza salvati nel tuo browser.</p>
             <div class="consent-box">
               <h3>Vuoi modificare le tue preferenze?</h3>
               <p>Puoi aggiornare il tuo consenso in qualsiasi momento. Le modifiche hanno effetto immediato.</p>
-              <a href="#" class="consent-btn" onclick="alert('Il pannello preferenze cookie verrà visualizzato qui.'); return false;">Gestisci preferenze cookie</a>
+              <a href="#" class="consent-btn" onclick="NS_Cookies.reset(); return false;">Gestisci preferenze cookie</a>
             </div>
           </div>
 

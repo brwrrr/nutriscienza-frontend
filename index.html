@@ -5,9 +5,160 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NutriScienza — Il tuo piano alimentare personalizzato, basato sulla scienza</title>
   <meta name="description" content="Piani alimentari e di allenamento personalizzati. Metodologia conforme alle linee guida LARN/SINU. Calcoli validati Mifflin-St Jeor. PDF consegnato via email entro 24 ore.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="canonical" href="https://nutriscienza.org/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NutriScienza">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:title" content="NutriScienza — Piano alimentare personalizzato, basato sulla scienza">
+  <meta property="og:description" content="Piani alimentari e di allenamento personalizzati. Metodologia conforme alle linee guida LARN/SINU. Calcoli validati Mifflin-St Jeor. PDF consegnato via email entro 24 ore.">
+  <meta property="og:url" content="https://nutriscienza.org/">
+  <meta property="og:image" content="https://nutriscienza.org/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1A2E22">
+  <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://nutriscienza.org/#org",
+   "name": "NutriScienza",
+   "url": "https://nutriscienza.org/",
+   "logo": "https://nutriscienza.org/og-image.png",
+   "email": "supporto@nutriscienza.org",
+   "areaServed": "IT"
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://nutriscienza.org/#website",
+   "url": "https://nutriscienza.org/",
+   "name": "NutriScienza",
+   "inLanguage": "it",
+   "publisher": {
+    "@id": "https://nutriscienza.org/#org"
+   }
+  },
+  {
+   "@type": "Service",
+   "@id": "https://nutriscienza.org/#service",
+   "name": "Piano alimentare personalizzato NutriScienza",
+   "serviceType": "Piano alimentare personalizzato online",
+   "provider": {
+    "@id": "https://nutriscienza.org/#org"
+   },
+   "areaServed": "IT",
+   "inLanguage": "it",
+   "description": "Piano alimentare in PDF calcolato sui dati dell'utente (equazione Mifflin-St Jeor, riferimenti LARN/SINU) e composto con l'aiuto dell'intelligenza artificiale. Strumento educativo, non sostituisce il parere medico.",
+   "offers": [
+    {
+     "@type": "Offer",
+     "name": "Piano Base",
+     "price": "19.00",
+     "priceCurrency": "EUR",
+     "description": "Piano di 7 giorni in PDF, pagamento una tantum",
+     "url": "https://nutriscienza.org/questionario.html",
+     "availability": "https://schema.org/InStock"
+    },
+    {
+     "@type": "Offer",
+     "name": "Piano Completo",
+     "price": "29.00",
+     "priceCurrency": "EUR",
+     "description": "4 settimane, programma di allenamento e check-in mensile; abbonamento mensile",
+     "url": "https://nutriscienza.org/questionario.html",
+     "availability": "https://schema.org/InStock",
+     "priceSpecification": {
+      "@type": "UnitPriceSpecification",
+      "price": "29.00",
+      "priceCurrency": "EUR",
+      "referenceQuantity": {
+       "@type": "QuantitativeValue",
+       "value": 1,
+       "unitCode": "MON"
+      }
+     }
+    },
+    {
+     "@type": "Offer",
+     "name": "Piano Coach",
+     "price": "99.00",
+     "priceCurrency": "EUR",
+     "description": "12 settimane periodizzate; abbonamento mensile",
+     "url": "https://nutriscienza.org/questionario.html",
+     "availability": "https://schema.org/InStock",
+     "priceSpecification": {
+      "@type": "UnitPriceSpecification",
+      "price": "99.00",
+      "priceCurrency": "EUR",
+      "referenceQuantity": {
+       "@type": "QuantitativeValue",
+       "value": 1,
+       "unitCode": "MON"
+      }
+     }
+    }
+   ]
+  },
+  {
+   "@type": "FAQPage",
+   "@id": "https://nutriscienza.org/#faq",
+   "mainEntity": [
+    {
+     "@type": "Question",
+     "name": "Su quali criteri scientifici si basano i piani?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Ogni piano è generato in modo automatico a partire dai tuoi dati reali, applicando criteri pubblici e tracciabili: linee guida LARN (SINU, IV revisione 2014), Dietary Reference Intakes dell'Institute of Medicine, riferimenti EFSA e WHO/FAO. Il fabbisogno energetico è calcolato con l'equazione Mifflin-St Jeor (1990), tra le più validate in letteratura per adulti sani. Il piano non costituisce diagnosi medica né sostituisce la consulenza di un medico, di un dietologo o di un biologo nutrizionista, in particolare in presenza di patologie."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "In quanto tempo ricevo il PDF?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Entro 24 ore dall'invio del questionario, direttamente all'indirizzo email che ci hai indicato. Spesso lo riceverai in poche ore."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Posso annullare l'abbonamento quando voglio?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Sì, in qualsiasi momento, dal tuo account. Nessun vincolo, nessun costo nascosto. Mantieni l'accesso al piano in corso fino alla fine del ciclo già pagato."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Va bene anche per intolleranze, allergie o diete particolari?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Certo. Nel questionario puoi indicare intolleranze (lattosio, glutine), preferenze (vegetariano, vegano, pescetariano) e protocolli specifici (chetogenica, mediterranea, IF) — il piano sarà costruito coerentemente con i tuoi vincoli."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Sostituisce il parere di un medico?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "No. NutriScienza fornisce piani nutrizionali educativi basati su linee guida riconosciute, e non sostituisce visite mediche, dietologiche o terapie personalizzate per condizioni patologiche. In presenza di patologie consulta sempre il tuo medico curante."
+     }
+    },
+    {
+     "@type": "Question",
+     "name": "Posso pagare con bonifico o solo con carta?",
+     "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Accettiamo carte di credito/debito, Apple Pay, Google Pay e PayPal. Il pagamento è gestito interamente da Stripe (standard PCI-DSS Level 1): i dati della tua carta non transitano mai dai nostri server."
+     }
+    }
+   ]
+  }
+ ]
+}
+  </script>
+  <link rel="stylesheet" href="fonts.css">
   <style>
     :root {
       --green-deep: #2D5F3F;
@@ -413,6 +564,46 @@
       color: var(--gold); letter-spacing: 0.4px;
     }
 
+
+    /* Trasparenza v2 */
+.tx{padding:104px 0;background:var(--green-dark);color:#E9E4D8;position:relative;overflow:hidden}
+.tx::before{content:"";position:absolute;inset:0;background:radial-gradient(900px 420px at 85% -10%,rgba(201,166,107,.16),transparent 60%);pointer-events:none}
+.tx .container{position:relative}
+.tx-head{max-width:760px;margin:0 auto 60px;text-align:center}
+.tx-eyebrow{display:inline-block;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.tx-head h2{font-size:clamp(30px,4.4vw,46px);line-height:1.15;color:#fff;margin-bottom:18px}
+.tx-head h2 em{font-style:italic;color:var(--gold)}
+.tx-head p{font-size:18px;color:#BFC8C0;max-width:620px;margin:0 auto}
+.tx-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;counter-reset:s;list-style:none}
+.tx-step{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:28px 24px;position:relative}
+.tx-step.lock{background:rgba(201,166,107,.08);border-color:rgba(201,166,107,.45)}
+.tx-num{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.tx-num::after{content:"";flex:1;height:1px;background:rgba(201,166,107,.35)}
+.tx-tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;padding:4px 9px;border-radius:999px;margin-bottom:12px}
+.tag-you{background:rgba(255,255,255,.10);color:#E9E4D8}
+.tag-sci{background:var(--gold);color:var(--green-dark)}
+.tag-ai{background:rgba(74,130,100,.35);color:#CFE6D8}
+.tx-step h3{font-size:21px;color:#fff;margin-bottom:10px;line-height:1.25}
+.tx-step p{font-size:15px;color:#BFC8C0}
+.tx-step p strong{color:#fff;font-weight:600}
+.tx-guard{margin:40px auto 0;max-width:860px;display:flex;gap:18px;align-items:flex-start;background:rgba(255,255,255,.04);border-left:3px solid var(--gold);border-radius:4px 14px 14px 4px;padding:22px 26px}
+.tx-guard svg{flex-shrink:0;margin-top:3px}
+.tx-guard p{font-size:16px;color:#DAD5C9}
+.tx-guard strong{color:#fff}
+.tx-honest{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:56px;padding-top:40px;border-top:1px solid rgba(255,255,255,.10)}
+.tx-honest div{display:flex;gap:14px}
+.tx-honest b{display:block;color:#fff;font-weight:600;margin-bottom:4px}
+.tx-honest span{font-size:14.5px;color:#AEB8B0}
+.tx-honest i{flex-shrink:0;width:26px;height:26px;border-radius:50%;border:1px solid rgba(201,166,107,.6);color:var(--gold);font-style:normal;font-size:13px;display:grid;place-items:center;margin-top:2px}
+.tx-cta{margin-top:52px;text-align:center}
+.tx-cta .btn-g{display:inline-block;background:var(--gold);color:var(--green-dark);font-weight:600;padding:16px 30px;border-radius:999px;text-decoration:none;transition:background .2s}
+.tx-cta .btn-g:hover{background:#D8B87E}
+.tx-cta .btn-o{display:inline-block;margin-left:12px;color:#fff;font-weight:500;padding:15px 26px;border-radius:999px;text-decoration:none;border:1px solid rgba(255,255,255,.3)}
+.tx-cta .btn-o:hover{border-color:var(--gold);color:var(--gold)}
+.tx-cta small{display:block;margin-top:16px;font-size:13px;color:#8F9A92}
+@media (max-width:980px){.tx-flow{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.tx{padding:64px 0}.tx-flow,.tx-honest{grid-template-columns:1fr}.tx-guard{padding:18px}.tx-cta .btn-o{margin:12px 0 0}.tx-cta a{display:block}}
+
     /* Testimonials */
     .testimonials { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
     .testimonial {
@@ -462,7 +653,7 @@
 
     /* Footer */
     footer { background: var(--green-dark); color: rgba(255,255,255,0.7); padding: 56px 0 32px; font-size: 14px; }
-    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
     .footer-grid h4 { color: var(--white); font-family: 'Inter', sans-serif; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
     .footer-grid ul { list-style: none; }
     .footer-grid li { margin-bottom: 8px; }
@@ -599,7 +790,7 @@
           <div class="hero-badge-top">Conforme LARN/SINU</div>
           <div class="hero-img-wrap">
             <img
-              src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=900&q=85"
+              src="img/piatto.webp"
               alt="Piano alimentare personalizzato — cibo sano e colorato"
               loading="eager"
             />
@@ -871,7 +1062,7 @@
   <!-- ── FOOD STRIP ── -->
   <div class="food-strip">
     <img
-      src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1600&q=85"
+      src="img/hero.webp"
       alt="Cibo sano e colorato — cucina mediterranea"
       loading="lazy"
     />
@@ -883,39 +1074,59 @@
     </div>
   </div>
 
-  <!-- ── TRASPARENZA (sostituisce le testimonianze — riattivare solo con recensioni reali + consenso firmato) ── -->
-  <section class="block">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-eyebrow">Trasparenza</div>
-        <h2>Cosa NutriScienza è — e cosa non è.</h2>
-      </div>
-      <div class="testimonials">
-
-        <div class="testimonial">
-          <div class="t-info">
-            <div class="t-name">Uno strumento, basato sulla scienza</div>
-          </div>
-          <p>NutriScienza è uno strumento digitale che genera il tuo piano in modo automatico dai dati che inserisci, applicando linee guida pubbliche (LARN/SINU, EFSA, WHO/FAO) e l'equazione Mifflin-St Jeor. Nessun calcolo nascosto: la metodologia è tracciabile.</p>
-        </div>
-
-        <div class="testimonial">
-          <div class="t-info">
-            <div class="t-name">Non è consulenza medica</div>
-          </div>
-          <p>Il piano ha finalità educative e informative. Non è una diagnosi, una terapia né una prescrizione, e non sostituisce il parere di un medico, di un dietologo o di un biologo nutrizionista — soprattutto in presenza di patologie.</p>
-        </div>
-
-        <div class="testimonial">
-          <div class="t-info">
-            <div class="t-name">Recensioni: solo quando saranno vere</div>
-          </div>
-          <p>Siamo un progetto giovane. Preferiamo non mostrare recensioni finché non arrivano da clienti reali, con il loro consenso. Quando ci saranno, le troverai qui.</p>
-        </div>
-
-      </div>
+  <!-- ── TRASPARENZA v2 — come funziona davvero (AI + scienza). Recensioni: riattivare solo con clienti reali + consenso firmato ── -->
+  <section class="tx" id="come-funziona-davvero">
+  <div class="container">
+    <div class="tx-head">
+      <span class="tx-eyebrow">Trasparenza · Come funziona davvero</span>
+      <h2>L'AI scrive il tuo menù.<br><em>I numeri li decide la scienza.</em></h2>
+      <p>Usiamo un'intelligenza artificiale di ultima generazione, ma non le lasciamo decidere quanto devi mangiare. Ecco cosa succede ai tuoi dati, passo per passo.</p>
     </div>
-  </section>
+
+    <ol class="tx-flow">
+      <li class="tx-step">
+        <div class="tx-num">01</div>
+        <span class="tx-tag tag-you">I tuoi dati</span>
+        <h3>Parti da numeri reali, i tuoi</h3>
+        <p>Peso, altezza, età, attività, obiettivo, allergie, gusti. <strong>Nessun template</strong>, nessuna media generica.</p>
+      </li>
+      <li class="tx-step lock">
+        <div class="tx-num">02</div>
+        <span class="tx-tag tag-sci">Scienza · formule fisse</span>
+        <h3>Calorie e macro: calcolati, non "inventati"</h3>
+        <p>Equazione <strong>Mifflin-St Jeor</strong> e linee guida <strong>LARN/SINU</strong>. Formule pubbliche: stessi dati, stesso risultato, ogni volta.</p>
+      </li>
+      <li class="tx-step">
+        <div class="tx-num">03</div>
+        <span class="tx-tag tag-ai">Intelligenza artificiale</span>
+        <h3>L'AI compone i pasti attorno ai tuoi numeri</h3>
+        <p>Un modello AI avanzato (<strong>Claude, di Anthropic</strong>) crea menù vari e mediterranei che rispettano i tuoi target e i tuoi vincoli.</p>
+      </li>
+      <li class="tx-step">
+        <div class="tx-num">04</div>
+        <span class="tx-tag tag-you">Ogni mese</span>
+        <h3>Il piano si adatta ai tuoi progressi</h3>
+        <p>Con il check-in mensile aggiorni il tuo peso: calorie e macro vengono ricalcolati e il piano successivo riparte dai <strong>tuoi dati nuovi</strong>. <em>(Piano Completo e Coach)</em></p>
+      </li>
+    </ol>
+
+    <div class="tx-guard">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A66B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <p><strong>Perché questa separazione conta:</strong> le AI sono bravissime a creare ricette, ma possono sbagliare i conti. Per questo i tuoi target sono calcolati prima, con formule fisse, e l'AI li riceve come vincoli che non può modificare.</p>
+    </div>
+
+    <div class="tx-honest">
+      <div><i>!</i><p><b>Non è consulenza medica</b><span>È uno strumento educativo. Non sostituisce medico, dietologo o biologo nutrizionista. Con patologie, gravidanza o disturbi alimentari, parla prima con un professionista.</span></p></div>
+      <div><i>✓</i><p><b>Zero recensioni inventate</b><span>Siamo un progetto giovane e italiano. Pubblicheremo recensioni solo quando arriveranno da clienti reali, con il loro consenso.</span></p></div>
+    </div>
+
+    <div class="tx-cta">
+      <a href="piano_base_esempio.html" class="btn-g" data-cta="trasparenza-esempio">Guarda un piano di esempio, gratis</a>
+      <a href="#piani" class="btn-o" data-cta="trasparenza-prezzi">Crea il mio piano</a>
+      <small>Vedi esattamente cosa ricevi, prima di pagare.</small>
+    </div>
+  </div>
+</section>
 
   <!-- ── FAQ ── -->
   <section class="block faq-bg" id="faq">
@@ -980,6 +1191,14 @@
           </ul>
         </div>
         <div>
+          <h4>Guide</h4>
+          <ul>
+            <li><a href="fabbisogno-calorico.html">Fabbisogno calorico</a></li>
+            <li><a href="piano-alimentare-vegetariano-proteico.html">Vegetariano proteico</a></li>
+            <li><a href="dieta-mediterranea-menu-settimanale.html">Menù mediterraneo</a></li>
+          </ul>
+        </div>
+        <div>
           <h4>Azienda</h4>
           <ul>
             <li><a href="#scienza">Chi siamo</a></li>
@@ -992,6 +1211,7 @@
             <li><a href="privacy-policy.html">Privacy Policy</a></li>
             <li><a href="termini-e-condizioni.html">Termini e condizioni</a></li>
             <li><a href="cookie-policy.html">Cookie Policy</a></li>
+            <li><a href="#" onclick="NS_Cookies.reset();return false;">Preferenze cookie</a></li>
           </ul>
         </div>
       </div>
