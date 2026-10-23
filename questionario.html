@@ -882,6 +882,8 @@
         consentVersion: 'privacy-2026-10-23',
         // Affiliate tracker — null se nessun ref valido in localStorage
         affiliateRef: (window.NSAffiliate && window.NSAffiliate.getRef()) || null,
+        // Codice promo dal link email upsell (?promo=) — validato dal backend
+        promoCode: new URLSearchParams(window.location.search).get('promo') || null,
       };
 
       // Attribuzione traffico (first-touch) — per sapere dove investire in promo.
