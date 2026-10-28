@@ -353,6 +353,32 @@
         </table>
       </div>
 
+      <div class="dashboard-card-title">Guida gratuita — "L'ordine giusto nel piatto"</div>
+      <div class="kpi-grid" style="margin-bottom:18px;">
+        <div class="stat-card">
+          <div class="label">Download PDF</div>
+          <div class="value" id="gd-total">—</div>
+          <div class="kpi-sub" id="gd-split">— da email · — dalla pagina</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Download ultimi 7 giorni</div>
+          <div class="value" id="gd-7d">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Richieste guida (email)</div>
+          <div class="value" id="gd-leads">—</div>
+          <div class="kpi-sub" id="gd-optin">— consenso marketing</div>
+        </div>
+      </div>
+      <div class="table-wrap" style="margin-bottom:24px;">
+        <table>
+          <thead>
+            <tr><th>Sorgente</th><th>Medium</th><th>Campagna</th><th>Richieste</th><th>Opt-in</th><th>Acquirenti</th></tr>
+          </thead>
+          <tbody id="gd-source-body"><tr><td colspan="6" class="empty">Caricamento…</td></tr></tbody>
+        </table>
+      </div>
+
       <div class="dashboard-card-title">Referrer (traffico senza tag UTM)</div>
       <div class="table-wrap">
         <table>
@@ -981,6 +1007,24 @@
                 + '</tr>';
             }).join('')
           : '<tr><td colspan="7" class="empty">Nessun dato di traffico ancora. Usa link con ?utm_source=… nelle promo.</td></tr>';
+
+        var g = data.guide || {}, ch = g.by_channel || {};
+        document.getElementById('gd-total').textContent = g.total != null ? g.total : 0;
+        document.getElementById('gd-split').textContent = (ch.email || 0) + ' da email · ' + (ch.pagina || 0) + ' dalla pagina';
+        document.getElementById('gd-7d').textContent = g.last_7_days != null ? g.last_7_days : 0;
+        document.getElementById('gd-leads').textContent = g.guide_requests != null ? g.guide_requests : 0;
+        document.getElementById('gd-optin').textContent = (g.marketing_opt_in || 0) + ' consenso marketing';
+        var gl = data.leads_by_source || [];
+        document.getElementById('gd-source-body').innerHTML = gl.length
+          ? gl.map(function(r) {
+              return '<tr><td><strong>' + escapeHtml(r.source) + '</strong></td>'
+                + '<td>' + escapeHtml(r.medium) + '</td>'
+                + '<td>' + escapeHtml(r.campaign) + '</td>'
+                + '<td style="text-align:center;">' + r.leads + '</td>'
+                + '<td style="text-align:center;">' + (r.marketing_opt_in || 0) + '</td>'
+                + '<td style="text-align:center;font-weight:700;">' + (r.buyers || 0) + '</td></tr>';
+            }).join('')
+          : '<tr><td colspan="6" class="empty">Nessuna richiesta della guida ancora.</td></tr>';
 
         var ref = data.by_referrer || [];
         document.getElementById('tr-ref-body').innerHTML = ref.length

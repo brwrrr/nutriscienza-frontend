@@ -234,6 +234,8 @@
   var API_BASE = (location.hostname === 'localhost' || location.hostname.indexOf('127.') === 0)
     ? 'http://localhost:8000' : 'https://nutriscienza-api.onrender.com';
   var CONSENT_VERSION = 'guide-2026-10-28';
+  // Download contato dal backend (aggregato, anonimo), poi redirect al PDF statico.
+  document.getElementById('dlLink').href = API_BASE + '/api/guide/ordine-dei-cibi/download?c=pagina';
 
   function source() {
     var p = new URLSearchParams(location.search);
