@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>L'ordine giusto nel piatto — Guida gratuita | NutriScienza</title>
+  <meta name="description" content="Stesso piatto, ordine diverso: cosa dicono gli studi sull'ordine dei cibi e la glicemia, e come applicarlo a pasta, pizza e colazione. Guida PDF gratuita.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://nutriscienza.org/ordine-dei-cibi.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NutriScienza">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:title" content="L'ordine giusto nel piatto — Guida gratuita">
+  <meta property="og:description" content="Stesso piatto, ordine diverso. Cosa dice la ricerca e come applicarlo ai pasti italiani.">
+  <meta property="og:url" content="https://nutriscienza.org/ordine-dei-cibi.html">
+  <meta property="og:image" content="https://nutriscienza.org/og-image.png">
+  <meta name="theme-color" content="#1A2E22">
+  <link rel="stylesheet" href="fonts.css">
+  <style>
+    :root {
+      --green-deep: #2D5F3F; --green-dark: #1A2E22; --green-soft: #4A8264;
+      --cream: #F5F1E8; --cream-light: #FBF9F4; --gold: #C9A66B; --gold-dark: #A88349;
+      --text: #2A2A2A; --text-muted: #6B6B6B; --white: #FFFFFF; --border: #E5E0D3; --error: #B23A3A;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', -apple-system, sans-serif; color: var(--text); line-height: 1.6; background: var(--cream-light); -webkit-font-smoothing: antialiased; }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
+    a { color: var(--green-deep); }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+    header { border-bottom: 1px solid var(--border); background: var(--white); }
+    .bar { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; max-width: 1080px; margin: 0 auto; }
+    .logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--green-deep); text-decoration: none; }
+    .logo span { color: var(--gold); }
+    .bar small { font-size: 13px; color: var(--text-muted); }
+
+    /* Hero */
+    .hero { background: var(--green-dark); color: var(--white); padding: 48px 0 56px; }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+    .kicker { font-size: 12px; letter-spacing: 1.6px; text-transform: uppercase; font-weight: 700; color: var(--gold); margin-bottom: 14px; }
+    .hero h1 { font-size: clamp(36px, 6vw, 58px); line-height: 1.05; color: var(--white); margin-bottom: 18px; }
+    .hero h1 em { color: var(--gold); font-style: italic; }
+    .hero .lead { font-size: 18px; color: rgba(255,255,255,0.85); max-width: 520px; }
+    .steps { display: flex; gap: 10px; margin-top: 28px; flex-wrap: wrap; }
+    .steps div { border: 1px solid rgba(201,166,107,0.45); border-radius: 10px; padding: 12px 14px; font-size: 14px; color: rgba(255,255,255,0.9); flex: 1 1 140px; }
+    .steps b { display: block; font-family: 'Playfair Display', serif; font-size: 24px; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+
+    /* Form card */
+    .card { background: var(--white); color: var(--text); border-radius: 16px; padding: 30px; box-shadow: 0 18px 50px rgba(0,0,0,0.25); }
+    .card h2 { font-size: 24px; color: var(--green-dark); margin-bottom: 6px; line-height: 1.2; }
+    .card .sub { font-size: 14.5px; color: var(--text-muted); margin-bottom: 18px; }
+    .card label.lbl { display: block; font-size: 14px; font-weight: 600; color: var(--green-dark); margin-bottom: 6px; }
+    .card input[type=email] { width: 100%; padding: 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 16px; font-family: inherit; background: var(--cream-light); }
+    .card input[type=email]:focus { outline: none; border-color: var(--green-soft); }
+    .check { display: flex; gap: 10px; align-items: flex-start; margin-top: 14px; font-size: 13.5px; color: var(--text); line-height: 1.45; cursor: pointer; }
+    .check input { margin-top: 3px; width: 17px; height: 17px; accent-color: var(--green-deep); flex-shrink: 0; }
+    .btn { display: block; width: 100%; margin-top: 18px; background: var(--green-deep); color: var(--white); border: none; border-radius: 8px; padding: 16px; font-size: 17px; font-weight: 700; font-family: inherit; cursor: pointer; transition: background .2s; text-align: center; text-decoration: none; }
+    .btn:hover { background: var(--green-dark); }
+    .btn:disabled { opacity: .6; cursor: wait; }
+    .legal { font-size: 12px; color: var(--text-muted); margin-top: 12px; line-height: 1.5; }
+    .err { color: var(--error); font-size: 14px; margin-top: 10px; display: none; }
+    .ok { display: none; text-align: center; }
+    .ok .tick { width: 56px; height: 56px; border-radius: 50%; background: var(--cream); color: var(--green-deep); font-size: 28px; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; }
+    .ok p { font-size: 15px; color: var(--text-muted); margin-bottom: 6px; }
+    .ok .btn-gold { background: var(--gold); color: var(--green-dark); }
+    .ok .btn-gold:hover { background: var(--gold-dark); color: var(--white); }
+
+    /* Sections */
+    .sec { padding: 64px 0; }
+    .sec h2 { font-size: clamp(26px, 4vw, 34px); color: var(--green-dark); margin-bottom: 14px; line-height: 1.2; }
+    .sec p.intro { font-size: 17px; color: var(--text-muted); max-width: 680px; margin-bottom: 28px; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .tile { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+    .tile .num { font-family: 'Playfair Display', serif; font-size: 40px; color: var(--green-deep); line-height: 1; margin-bottom: 8px; }
+    .tile h3 { font-size: 19px; color: var(--green-dark); margin-bottom: 6px; }
+    .tile p { font-size: 15px; color: var(--text-muted); }
+    .tile small { display: block; margin-top: 10px; font-size: 12.5px; color: var(--text-muted); }
+    .inside { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; list-style: none; max-width: 820px; }
+    .inside li { padding-left: 30px; position: relative; font-size: 16px; }
+    .inside li::before { content: '✓'; position: absolute; left: 0; top: 0; width: 22px; height: 22px; border-radius: 50%; background: var(--green-deep); color: var(--white); font-size: 12px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+    .honest { background: var(--cream); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 4px 14px 14px 4px; padding: 22px 26px; max-width: 820px; font-size: 15.5px; }
+    .alt { background: var(--white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .plan { display: flex; gap: 28px; align-items: center; justify-content: space-between; background: linear-gradient(135deg, var(--green-dark), var(--green-deep)); color: var(--white); border-radius: 16px; padding: 32px 36px; }
+    .plan h3 { font-size: 26px; color: var(--white); margin-bottom: 6px; }
+    .plan p { color: rgba(255,255,255,0.85); font-size: 15.5px; max-width: 560px; }
+    .plan .btn { width: auto; display: inline-block; background: var(--gold); color: var(--green-dark); padding: 15px 28px; margin: 0; white-space: nowrap; }
+    .plan .btn:hover { background: var(--gold-dark); color: var(--white); }
+    .sources { font-size: 13.5px; color: var(--text-muted); margin-top: 20px; }
+    .sources li { margin: 0 0 6px 18px; }
+
+    footer { background: var(--green-dark); color: rgba(255,255,255,0.75); padding: 34px 0; text-align: center; font-size: 13.5px; }
+    footer a { color: var(--gold); text-decoration: none; }
+
+    @media (max-width: 860px) {
+      .hero { padding: 26px 0 36px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 22px; }
+      .hero h1 { margin-bottom: 12px; }
+      .hero .lead { font-size: 16px; }
+      .steps { display: none; }
+      .grid3 { grid-template-columns: 1fr; }
+      .inside { grid-template-columns: 1fr; }
+      .plan { flex-direction: column; align-items: flex-start; padding: 28px 24px; }
+      .card { padding: 24px 20px; }
+      .bar small { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <a href="index.html" class="logo">Nutri<span>Scienza</span></a>
+    <small>Nutrizione basata sulla scienza, senza promesse miracolose</small>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">Guida gratuita · PDF</div>
+      <h1>Stesso piatto.<br><em>Ordine diverso.</em></h1>
+      <p class="lead">Mangiare prima verdure e proteine e per ultimi i carboidrati rende più bassa la curva della glicemia dopo il pasto. Nella guida trovi cosa dicono davvero gli studi e come applicarlo a pasta, pizza e colazione, senza togliere niente.</p>
+      <div class="steps">
+        <div><b>1</b>Prima le verdure</div>
+        <div><b>2</b>Poi proteine e grassi</div>
+        <div><b>3</b>Per ultimi i carboidrati</div>
+      </div>
+    </div>
+
+    <div class="card" id="guida">
+      <form id="leadForm" novalidate>
+        <h2>Ricevi la guida gratis</h2>
+        <p class="sub">5 pagine, fonti scientifiche incluse. Te la inviamo subito via email.</p>
+        <label class="lbl" for="email">La tua email</label>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="nome@email.it" required>
+        <label class="check">
+          <input type="checkbox" id="marketing" name="marketing">
+          <span>Sì, voglio ricevere altri consigli pratici e le offerte di NutriScienza via email (al massimo due a settimana, cancellazione con un clic). <em>Facoltativo.</em></span>
+        </label>
+        <button type="submit" class="btn" id="submitBtn">Inviami la guida →</button>
+        <p class="err" id="err"></p>
+        <p class="legal">Usiamo la tua email per inviarti la guida richiesta e, solo se hai spuntato la casella, per i nostri consigli e offerte. Nessuna cessione a terzi. Dettagli nell'<a href="privacy-policy.html#guide" target="_blank" rel="noopener">informativa privacy</a>.</p>
+      </form>
+
+      <div class="ok" id="ok">
+        <div class="tick">✓</div>
+        <h2>Guida in arrivo!</h2>
+        <p>L'abbiamo inviata a <strong id="okEmail"></strong>. Controlla anche lo spam o la scheda Promozioni.</p>
+        <p>Puoi anche scaricarla subito:</p>
+        <a class="btn btn-gold" href="guide/guida-ordine-dei-cibi.pdf" target="_blank" rel="noopener" id="dlLink">Scarica la guida (PDF)</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <h2>Cosa dice la ricerca, in breve</h2>
+    <p class="intro">Studi clinici con lo stesso pasto consumato in ordini diversi, in giorni diversi. I risultati sono riportati con i loro limiti: niente promesse.</p>
+    <div class="grid3">
+      <div class="tile">
+        <div class="num">−54%</div>
+        <h3>Picco glicemico</h3>
+        <p>Con i carboidrati mangiati per ultimi invece che per primi.</p>
+        <small>16 adulti con diabete tipo 2 · Shukla et al., 2017</small>
+      </div>
+      <div class="tile">
+        <div class="num">Anche</div>
+        <h3>nelle persone sane</h3>
+        <p>Verdure per prime: glicemia e insulina più basse dopo il pasto, anche mangiando in fretta.</p>
+        <small>18 giovani donne sane · Imai et al., 2023</small>
+      </div>
+      <div class="tile">
+        <div class="num">+38%</div>
+        <h3>GLP-1</h3>
+        <p>L'ormone che aumenta la sazietà, più alto quando i carboidrati arrivano per ultimi.</p>
+        <small>Shukla et al., 2017</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt">
+  <div class="wrap">
+    <h2>Cosa trovi nella guida</h2>
+    <p class="intro">Pensata per la tavola italiana, dove il primo arriva prima del secondo.</p>
+    <ul class="inside">
+      <li>Perché l'ordine dei cibi cambia la glicemia, spiegato semplice</li>
+      <li>La regola in 3 passi, senza togliere niente dal piatto</li>
+      <li>Pranzo con primo e secondo, pizza, colazione, aperitivo: come adattarli</li>
+      <li>I 3 errori più comuni (e cosa l'ordine dei cibi <em>non</em> fa)</li>
+      <li>Quando parlarne con il medico</li>
+      <li>Le fonti scientifiche, con i link agli studi</li>
+    </ul>
+    <p style="margin-top:28px"><a href="#guida" class="btn" style="display:inline-block;width:auto;padding:14px 28px">Ricevi la guida gratis</a></p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="honest">
+      <strong>Onestà prima di tutto.</strong> Gli studi sull'ordine dei cibi sono piccoli e misurano la glicemia nelle ore dopo un pasto. Non dimostrano che l'ordine dei cibi, da solo, faccia dimagrire: il peso dipende soprattutto da quanto mangi. È un'abitudine semplice e gratuita, non una soluzione miracolosa. Se hai il diabete o assumi farmaci per la glicemia, parlane con il tuo medico.
+    </div>
+
+    <div class="plan" style="margin-top:40px">
+      <div>
+        <h3>Vuoi anche le quantità giuste?</h3>
+        <p>Il Piano Base calcola calorie e macronutrienti sui tuoi dati (Mifflin-St Jeor, LARN) e ti invia un piano alimentare in PDF, con i pasti già nell'ordine giusto. €19 una tantum, nessun abbonamento.</p>
+      </div>
+      <a href="questionario.html?piano=base" class="btn" id="planCta">Crea il tuo piano · €19</a>
+    </div>
+
+    <ul class="sources">
+      <li>Shukla AP et al. BMJ Open Diabetes Res Care 2017;5:e000440 — <a href="https://doi.org/10.1136/bmjdrc-2017-000440" target="_blank" rel="noopener">doi:10.1136/bmjdrc-2017-000440</a></li>
+      <li>Imai S et al. Nutrients 2023;15(5):1174 — <a href="https://doi.org/10.3390/nu15051174" target="_blank" rel="noopener">doi:10.3390/nu15051174</a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><a href="index.html" class="logo" style="color:var(--white)">Nutri<span>Scienza</span></a></p>
+    <p style="margin-top:10px"><a href="index.html#piani">Piani</a> · <a href="privacy-policy.html">Privacy</a> · <a href="cookie-policy.html">Cookie</a> · <a href="termini-e-condizioni.html">Termini</a> · <a href="#" onclick="NS_Cookies.reset();return false;">Preferenze cookie</a></p>
+    <p style="margin-top:10px;opacity:0.6">© 2026 NutriScienza — Strumento digitale: piani generati con formule validate e intelligenza artificiale, non da un nutrizionista. Contenuti educativi, non sostituiscono il parere di un medico.</p>
+  </div>
+</footer>
+
+<script src="cookie-banner.js"></script>
+<script src="ga4-analytics.js"></script>
+<script src="affiliate-tracker.js" defer></script>
+<script src="traffic-tracker.js" defer></script>
+<script>
+(function () {
+  var API_BASE = (location.hostname === 'localhost' || location.hostname.indexOf('127.') === 0)
+    ? 'http://localhost:8000' : 'https://nutriscienza-api.onrender.com';
+  var CONSENT_VERSION = 'guide-2026-10-28';
+
+  function source() {
+    var p = new URLSearchParams(location.search);
+    var t = (window.NSTraffic && window.NSTraffic.get()) || {};
+    return {
+      utmSource: p.get('utm_source') || t.utmSource || null,
+      utmMedium: p.get('utm_medium') || t.utmMedium || null,
+      utmCampaign: p.get('utm_campaign') || t.utmCampaign || null,
+      referrer: t.referrer || (document.referrer && document.referrer.indexOf(location.host) === -1 ? document.referrer : null),
+      landingPage: (location.pathname + location.search).slice(0, 400)
+    };
+  }
+
+  // Plan CTA: carry the source into the questionnaire (no storage needed).
+  document.addEventListener('DOMContentLoaded', function () {
+    var s = source(), a = document.getElementById('planCta');
+    var u = new URL(a.getAttribute('href'), location.href);
+    u.searchParams.set('utm_source', s.utmSource || 'landing');
+    u.searchParams.set('utm_medium', s.utmMedium || 'web');
+    u.searchParams.set('utm_campaign', s.utmCampaign || 'guida_ordine');
+    u.searchParams.set('ns_lp', s.landingPage);
+    a.setAttribute('href', u.pathname.replace(/^\//, '') + u.search);
+  });
+
+  var form = document.getElementById('leadForm');
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var err = document.getElementById('err'), btn = document.getElementById('submitBtn');
+    var email = document.getElementById('email').value.trim();
+    err.style.display = 'none';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+      err.textContent = 'Inserisci un indirizzo email valido.'; err.style.display = 'block'; return;
+    }
+    btn.disabled = true; btn.textContent = 'Invio in corso…';
+    var s = source();
+    try {
+      var res = await fetch(API_BASE + '/api/lead', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          marketingConsent: document.getElementById('marketing').checked,
+          consentVersion: CONSENT_VERSION,
+          guide: 'ordine-dei-cibi',
+          utmSource: s.utmSource, utmMedium: s.utmMedium, utmCampaign: s.utmCampaign,
+          referrer: s.referrer, landingPage: s.landingPage
+        })
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      document.getElementById('okEmail').textContent = email;
+      form.style.display = 'none';
+      document.getElementById('ok').style.display = 'block';
+      if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { lead_source: 'guida_ordine' });
+    } catch (x) {
+      err.textContent = 'Non siamo riusciti a inviare la richiesta. Riprova tra poco o scrivici a supporto@nutriscienza.org.';
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Inviami la guida →';
+    }
+  });
+})();
+</script>
+</body>
+</html>

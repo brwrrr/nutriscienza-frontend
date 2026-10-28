@@ -3,5 +3,6 @@ Allow: /
 Disallow: /admin.html
 Disallow: /grazie.html
 Disallow: /checkin.html
+Disallow: /guide/
 
 Sitemap: https://nutriscienza.org/sitemap.xml
