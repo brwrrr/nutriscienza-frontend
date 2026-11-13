@@ -183,6 +183,8 @@
     }
     .chip:hover { border-color: var(--green-soft); }
 
+    .guide-note { font-size: 14px; color: var(--text-muted); margin: -24px 0 28px; }
+    .guide-note a { color: var(--green-deep); font-weight: 600; text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 3px; }
     /* Plan tier (final step) */
     .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
     @media (max-width: 800px) { .plans { grid-template-columns: 1fr; } }
@@ -630,6 +632,7 @@
         <div class="step-eyebrow">Ultimo passo</div>
         <h2>Scegli il tuo piano.</h2>
         <p class="lead">Il PDF arriverà entro 24 ore all'email che ci indichi.</p>
+        <p class="guide-note">Prima di scegliere: <a href="piano-alimentare-personalizzato-online.html" target="_blank" rel="noopener" data-cta="questionario-guida">come funzionano i piani, cosa non sono e quanto costano</a> (si apre in una nuova scheda, le tue risposte restano qui).</p>
         <div class="error-msg" id="err-6">Seleziona un piano, inserisci una email valida e accetta i due consensi.</div>
 
         <div class="plans">
