@@ -378,6 +378,14 @@
           <tbody id="gd-source-body"><tr><td colspan="6" class="empty">Caricamento…</td></tr></tbody>
         </table>
       </div>
+      <div class="table-wrap" style="margin-bottom:24px;">
+        <table>
+          <thead>
+            <tr><th>Pagina del modulo</th><th>Richieste</th><th>Opt-in</th><th>Acquirenti</th><th>Ultima richiesta</th></tr>
+          </thead>
+          <tbody id="gd-page-body"><tr><td colspan="5" class="empty">Caricamento…</td></tr></tbody>
+        </table>
+      </div>
 
       <div class="dashboard-card-title">Referrer (traffico senza tag UTM)</div>
       <div class="table-wrap">
@@ -1025,6 +1033,16 @@
                 + '<td style="text-align:center;font-weight:700;">' + (r.buyers || 0) + '</td></tr>';
             }).join('')
           : '<tr><td colspan="6" class="empty">Nessuna richiesta della guida ancora.</td></tr>';
+        var gp = data.leads_by_page || [];
+        document.getElementById('gd-page-body').innerHTML = gp.length
+          ? gp.map(function(r) {
+              return '<tr><td><strong>' + escapeHtml(r.page) + '</strong></td>'
+                + '<td style="text-align:center;">' + r.leads + '</td>'
+                + '<td style="text-align:center;">' + (r.marketing_opt_in || 0) + '</td>'
+                + '<td style="text-align:center;font-weight:700;">' + (r.buyers || 0) + '</td>'
+                + '<td>' + escapeHtml((r.last_request || '').slice(0, 10)) + '</td></tr>';
+            }).join('')
+          : '<tr><td colspan="5" class="empty">Nessuna richiesta ancora. Per il tasso email di una guida: richieste ÷ visite alla pagina (Cloudflare).</td></tr>';
 
         var ref = data.by_referrer || [];
         document.getElementById('tr-ref-body').innerHTML = ref.length
