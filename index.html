@@ -626,6 +626,14 @@
 
     /* FAQ */
     .faq-bg { background: var(--cream); }
+    /* Guide gratuite */
+    .guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .guide-card { display: block; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 26px 26px 22px; color: var(--text); text-decoration: none; transition: transform .2s, box-shadow .2s, border-color .2s; }
+    .guide-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); border-color: var(--gold); }
+    .guide-card .guide-tag { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600; margin-bottom: 8px; }
+    .guide-card h3 { font-size: 20px; line-height: 1.25; margin-bottom: 8px; color: var(--green-dark); }
+    .guide-card p { font-size: 15px; color: var(--text-muted); margin-bottom: 14px; }
+    .guide-card .guide-more { font-size: 14px; font-weight: 600; color: var(--green-deep); }
     .faq { max-width: 760px; margin: 0 auto; }
     .faq-item {
       background: var(--white); border: 1px solid var(--border);
@@ -1127,6 +1135,55 @@
     </div>
   </div>
 </section>
+
+  <!-- ── Guide gratuite ── -->
+  <section class="block" id="guide">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-eyebrow">Guide gratuite</div>
+        <h2>Prima di decidere, capisci i numeri.</h2>
+        <p>Le stesse formule che usiamo nei piani, spiegate in modo semplice. Gratis, senza registrazione.</p>
+      </div>
+      <div class="guide-grid">
+        <a class="guide-card" href="calcolatore-macronutrienti.html" data-cta="home-guide-calcolatore-macronutrienti">
+          <div class="guide-tag">Strumento</div>
+          <h3>Calcolatore di calorie e macronutrienti</h3>
+          <p>Calorie (TDEE), proteine, carboidrati e grassi in 30 secondi, con Mifflin-St Jeor e LARN. Senza registrazione.</p>
+          <span class="guide-more">Apri il calcolatore &rarr;</span>
+        </a>
+        <a class="guide-card" href="fabbisogno-calorico.html" data-cta="home-guide-fabbisogno-calorico">
+          <div class="guide-tag">Guida</div>
+          <h3>Fabbisogno calorico: come calcolarlo</h3>
+          <p>Metabolismo basale, livello di attività e calorie per il tuo obiettivo, passo per passo con un esempio.</p>
+          <span class="guide-more">Leggi la guida &rarr;</span>
+        </a>
+        <a class="guide-card" href="proteine-al-giorno.html" data-cta="home-guide-proteine-al-giorno">
+          <div class="guide-tag">Guida</div>
+          <h3>Quante proteine al giorno servono?</h3>
+          <p>I valori LARN per adulti, per chi si allena e dopo i 65 anni, e come distribuirle nei pasti.</p>
+          <span class="guide-more">Leggi la guida &rarr;</span>
+        </a>
+        <a class="guide-card" href="dieta-mediterranea-menu-settimanale.html" data-cta="home-guide-dieta-mediterranea-menu-settimanale">
+          <div class="guide-tag">Guida</div>
+          <h3>Dieta mediterranea: menù settimanale</h3>
+          <p>Pranzi e cene per 7 giorni, con le frequenze consigliate di legumi, pesce e carne.</p>
+          <span class="guide-more">Leggi la guida &rarr;</span>
+        </a>
+        <a class="guide-card" href="piano-alimentare-vegetariano-proteico.html" data-cta="home-guide-piano-alimentare-vegetariano-proteico">
+          <div class="guide-tag">Guida</div>
+          <h3>Piano vegetariano proteico</h3>
+          <p>Le migliori fonti vegetali con i grammi di proteine per 100 g e una giornata tipo oltre i 100 g.</p>
+          <span class="guide-more">Leggi la guida &rarr;</span>
+        </a>
+        <a class="guide-card" href="piano-alimentare-personalizzato-online.html" data-cta="home-guide-piano-alimentare-personalizzato-online">
+          <div class="guide-tag">Guida</div>
+          <h3>Piano alimentare personalizzato online</h3>
+          <p>Come si calcola, quanto costa e quando è meglio rivolgersi a un medico.</p>
+          <span class="guide-more">Leggi la guida &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <!-- ── FAQ ── -->
   <section class="block faq-bg" id="faq">
